@@ -93,6 +93,12 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
 
                         identitems = [];
 
+                        for (var property in result.features[0].properties) {
+                            if (result.features[0].properties.hasOwnProperty(property)) {
+                                identitems[property] = result.features[0].properties[property];
+                            }
+                        }
+
                         var popgrid = Ext.create('Ext.grid.property.Grid', {
                             forceFit: true,
                             nameColumnWidth: 250,
