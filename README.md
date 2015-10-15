@@ -15,3 +15,4 @@ But the basic concept works. So far the application
 - Display a property grid (with the identify button) but only for the first resulted geometry of the layer
 - Displays the Legend
 - Go to a pair of Coordinates
+- Query Layers
