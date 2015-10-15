@@ -40,6 +40,7 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
             projection: map.getProjection()
         });
 
+
         var filterFormat = new OpenLayers.Format.Filter.v1_1_0();
         var xmlFormat = new OpenLayers.Format.XML();
 
@@ -47,65 +48,73 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
         var ogcFilterString = xmlFormat.write(ogcFilter);
 
         Ext.Ajax.request({
-            url: OpenLayers.ProxyHost + geoserverWfsDefaults.wfsUrl,
+            url: OpenLayers.ProxyHost + geoserverWfsDefaults.wfsUrl +"request=describeFeatureType&typename="+ selectedLayer[0].params.LAYERS,
             method: 'POST',
-            params: {
-                filter: ogcFilterString,
-                typeName: selectedLayer[0].params.LAYERS,
-                geomnameplacehoder: 'GEOM',
-                version: geoserverWfsDefaults.wfsVersion,
-                request: 'GetFeature',
-                outputFormat: 'json'
-            },
             success: function (response, options) {
-                var result = Ext.JSON.decode(response.responseText);
+                var result = Ext.XML.decode(response.responseText);
 
-                if (response.responseText !== "") {
-                    var geojsonformat = new OpenLayers.Format.GeoJSON(),
-                        features = geojsonformat.read(response.responseText),
-                        featureCount = features.length,
-                        verticeCount = 0;
 
-                    // count the total number of vertices
-                    Ext.each(features, function(feat) {
-                        verticeCount += feat.geometry.getVertices().length;
-                        feat.geometry = feat.geometry.transform(new OpenLayers.Projection('EPSG:2100'), new OpenLayers.Projection('EPSG:900913'))
-                            highlight.addFeatures(feat);
-                    });
+                Ext.Ajax.request({
+                    url: OpenLayers.ProxyHost + geoserverWfsDefaults.wfsUrl,
+                    method: 'POST',
+                    params: {
+                        filter: ogcFilterString,
+                        typeName: selectedLayer[0].params.LAYERS,
+                        geomnameplacehoder: 'GEOM',
+                        version: geoserverWfsDefaults.wfsVersion,
+                        request: 'GetFeature',
+                        outputFormat: 'json'
+                    },
+                    success: function (response, options) {
+                        var result = Ext.JSON.decode(response.responseText);
 
-                }
+                        if (response.responseText !== "") {
+                            var geojsonformat = new OpenLayers.Format.GeoJSON(),
+                                features = geojsonformat.read(response.responseText),
+                                featureCount = features.length,
+                                verticeCount = 0;
 
-                identitems = [];
-                for(var i = 0; i < typeofcrop.data.keys.length; i++)
-                {
-                    var desc = typeofcrop.data.items[i].data.description;
-                    var prop = typeofcrop.data.items[i].data.code;
-                    identitems[desc] = suitability.data.items[result.features[0].properties[prop]-1].data.description;
-                }
+                            // count the total number of vertices
+                            Ext.each(features, function (feat) {
+                                verticeCount += feat.geometry.getVertices().length;
+                                feat.geometry = feat.geometry.transform(new OpenLayers.Projection('EPSG:2100'), new OpenLayers.Projection('EPSG:900913'))
+                                highlight.addFeatures(feat);
+                            });
 
-                var popgrid = Ext.create('Ext.grid.property.Grid', {
-                    forceFit: true,
-                    nameColumnWidth: 250,
-                    source: identitems,
-                    listeners: {
-                        'beforeedit': {
-                            fn: function () {
-                                return false;
-                            }
                         }
+
+                        identitems = [];
+                        for (var i = 0; i < typeofcrop.data.keys.length; i++) {
+                            var desc = typeofcrop.data.items[i].data.description;
+                            var prop = typeofcrop.data.items[i].data.code;
+                            identitems[desc] = suitability.data.items[result.features[0].properties[prop] - 1].data.description;
+                        }
+
+                        var popgrid = Ext.create('Ext.grid.property.Grid', {
+                            forceFit: true,
+                            nameColumnWidth: 250,
+                            source: identitems,
+                            listeners: {
+                                'beforeedit': {
+                                    fn: function () {
+                                        return false;
+                                    }
+                                }
+                            }
+                        });
+
+                        var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);
+                        var attributes = {name: "my name", bar: "foo"};
+                        var feature = new OpenLayers.Feature.Vector(point, attributes);
+
+                        createPopup(feature, popgrid);
+                    },
+                    failure: function (response, options) {
+                        var text = response.responseText;
+                        // process server response here
+                        Ext.log('failure');
                     }
                 });
-
-                var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);
-                var attributes = {name: "my name", bar: "foo"};
-                var feature = new OpenLayers.Feature.Vector(point, attributes);
-
-                createPopup(feature, popgrid);
-            },
-            failure: function (response, options) {
-                var text = response.responseText;
-                // process server response here
-                Ext.log('failure');
             }
         });
         ident.deactivate();
