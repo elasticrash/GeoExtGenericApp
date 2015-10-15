@@ -286,7 +286,7 @@ var search_panel = [
 
                                 if(featureCount == 0)
                                 {
-                                    Ext.Msg.alert('Πληροφορία', 'Δεν υπάρχουν απότελέσματα στην περιοχή που απεικονίζεται στον χάρτη');
+                                    Ext.Msg.alert('info', 'There are no results in this area');
                                 }
 
                                 // count the total number of vertices
