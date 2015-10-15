@@ -1,0 +1,487 @@
+<html>
+<head>
+<title>test map</title>
+<meta charset="utf-8">
+<title>SOIL DANGER</title>
+
+<link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
+<script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all-debug.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/css/example.css"/>
+<link href="resources/css/icon.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
+<script src="resources/js/thirdParty/proj4js-combined.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="resources/js/libs/Config.js"></script>
+
+<script>
+    Ext.Loader.setConfig({
+        enabled: true,
+        disableCaching: false,
+        paths: {
+            GeoExt: "resources/js/thirdParty/geoext2/src/GeoExt",
+            Ext: "http://cdn.sencha.com/ext/gpl/4.2.1/src"
+        }
+    });
+
+    var map;
+    var mapPanel;
+
+    var epsg900913 = new OpenLayers.Projection('EPSG:900913');
+    var epsg = new OpenLayers.Projection(geoserverWmsDefaults.wmsSrsName);
+    var popup;
+
+    var selectedLayer;
+    var infoControls;
+    var pgrid;
+    var cgeom;
+    var vector;
+    var highlight;
+
+    Ext.require([
+        'Ext.direct.*',
+        'Ext.data.*',
+        'Ext.tree.*',
+        'Ext.Window',
+        'Ext.container.Viewport',
+        'Ext.layout.container.Border',
+        'Ext.form.ComboBox',
+        'GeoExt.tree.OverlayLayerContainer',
+        'GeoExt.tree.BaseLayerContainer',
+        'GeoExt.tree.View',
+        'GeoExt.tree.Column',
+        'GeoExt.data.ScaleStore',
+        'GeoExt.data.LayerTreeModel',
+        'GeoExt.data.proxy.Protocol',
+        'Ext.tree.plugin.TreeViewDragDrop',
+        'GeoExt.panel.Map',
+        'GeoExt.Action',
+        'GeoExt.window.Popup',
+        'GeoExt.selection.FeatureModel',
+        'Ext.grid.GridPanel',
+        'GeoExt.grid.column.Symbolizer'
+    ]);
+
+</script>
+
+<script src="resources/js/libs/GISHelper.js"></script>
+<script src="resources/js/libs/Helper.js"></script>
+<script src="resources/js/libs/MapReport.js"></script>
+<script src="resources/js/libs/CustomControls.js"></script>
+<script src="resources/js/libs/DownloadAreas.js"></script>
+<script type="text/javascript" src="resources/js/panels.js"></script>
+
+
+<script>
+
+Ext.application({
+    name: 'test',
+    launch: function() {
+
+        OpenLayers.ProxyHost = "cgi-bin/proxy.cgi?url=";
+
+        map = new OpenLayers.Map("map", {
+            projection: epsg900913,
+            resolutions:[793.75158750317507,529.16772500211675,264.58386250105838,
+                132.29193125052919,66.145965625264594,33.072982812632297,
+                13.229193125052918,7.9375158750317505,3.3072982812632294,
+                1.3229193125052918,0.66145965625264591,0.26458386250105836,
+                0.13229193125052918,0.066145965625264591,0.026458386250105836
+            ],
+            displayProjection: epsg,
+            controls:[
+                new OpenLayers.Control.PanZoomBar(),
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.ScaleLine(),
+                new OpenLayers.Control.MousePosition]
+        });
+
+
+        var layer = new OpenLayers.Layer.OSM("OpenLayers");
+
+        var ktimalayer = new OpenLayers.Layer.WMS( 'Κτηματολόγιο',"http://gis.ktimanet.gr/wms/wmsopen/wmsserver.aspx?",
+                {
+                    layers: 'BASEMAP' ,
+                    format: 'image/png',
+                    transparent: 'true',
+                    version: '1.1.1'
+                },{
+                    isBaseLayer: true
+                });
+
+        //VECTOR LAYER
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+        var layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
+        layer_style.fillOpacity = 0.7;
+        layer_style.graphicOpacity = 1;
+        layer_style.fillColor ='#0000FF';
+        layer_style.border = 3;
+
+        vector = new OpenLayers.Layer.Vector("Επίπεδο Αποτελεσμάτων", {
+            style: layer_style,
+            renderers: renderer,
+            projection: epsg
+        });
+
+        highlight = new OpenLayers.Layer.Vector("Επίπεδο Επισήμανσης", {
+            style: layer_style,
+            renderers: renderer,
+            projection: epsg
+        });
+
+        var selectCtrl = new OpenLayers.Control.SelectFeature(vector);
+
+        //WMS CAPABILITIES
+        wmscapstore = Ext.create('GeoExt.data.WmsCapabilitiesLayerStore', {
+            storeId: 'wmscapsStore',
+            method: 'POST',
+            url: "cgi-bin/proxy.cgi?url="+encodeURIComponent("http://144.76.39.165:8082/geoserver/wms?request=getCapabilities"),
+            autoLoad: true
+        });
+
+        //LAYERS
+        wmscapstore.load({
+            callback: function(records, operation, success) {
+                for(var i = 0; i < wmscapstore.data.keys.length; i++) {
+
+                    for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
+                        opmaps[i] = new OpenLayers.Layer.WMS(
+                                wmscapstore.data.items[i].data.title + " ("+ wmscapstore.data.items[i].data.styles[j].name+")", geoserverWmsDefaults.wmsUrl,
+                                {
+                                    LAYERS: wmscapstore.data.items[i].data.name,
+                                    STYLES: wmscapstore.data.items[i].data.styles[j].name,
+                                    format: 'image/png',
+                                    transparent: true
+                                },
+                                {
+                                    buffer: 0,
+                                    displayOutsideMaxExtent: true,
+                                    isBaseLayer: false,
+                                    visibility: false
+                                }
+                        );
+
+                        map.addLayers(opmaps);
+
+                        var treeNode = tree.getRootNode();
+                        treeNode.getChildAt(0).appendChild({
+                            text: opmaps[i].name,
+                            layer: opmaps[i],
+                            leaf: true,
+                            checked: false,
+                            children: [],
+                            nodeType: "gx_overlaylayercontainer"
+                        });
+                    }
+                }
+            }});
+
+        //ADD LAYER
+        map.addLayer(layer);
+        map.addLayer(vector);
+        map.addLayer(highlight);
+        //SCALE STORE
+        var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
+        var zoomSelector = Ext.create("Ext.form.ComboBox", {
+            store: scaleStore,
+            fieldLabel: "Κλίμακα",
+            listConfig: {
+                getInnerTpl: function() {
+                    return "1: {scale:round(0)}";
+                }
+            },
+            editable: false,
+            triggerAction: 'all',
+            queryMode: 'local',
+            labelWidth: 120
+        });
+
+        //TOOLS
+        zoomSelector.on('select',
+                function(combo, record, index) {
+                    map.zoomTo(record[0].get("level"));
+                },
+                this
+        );
+
+
+        var zoomin_action = new GeoExt.Action({
+            control: new OpenLayers.Control.ZoomBox,
+            map: map,
+            iconCls: 'icon-zoom-area',
+            // button options
+            toggleGroup: "tools",
+            allowDepress: false,
+            tooltip: "Zoom In",
+            // check item options
+            group: "tools"
+        });
+
+        var nagivate_action = Ext.create('GeoExt.Action', {
+            control: new OpenLayers.Control.Navigation(),
+            map: map,
+            iconCls: 'icon-pan',
+            // button options
+            toggleGroup: "tools",
+            allowDepress: false,
+            pressed: true,
+            tooltip: "navigate",
+            // check item options
+            group: "tools",
+            checked: true
+        });
+
+        var zoomBox = Ext.create('Ext.button.Button', zoomin_action);
+        var navigate = Ext.create('Ext.button.Button', nagivate_action);
+        var resetSelections = Ext.create('Ext.button.Button', {
+            tooltip: 'Καθαρισμός Αποτελεσμάτων',
+            iconCls: 'icon-reset',
+            handler: function() {
+                highlight.removeAllFeatures();
+                vector.removeAllFeatures();
+            }
+        });
+
+        var printbutton =
+        {
+            xtype: 'button',
+            text: "",
+            iconCls: 'icon-print',
+            margin: 5,
+            handler: function () {
+                var print = Ext.create(Elpho.widgets.MapPrintWindow);
+
+            }
+        };
+
+        var XEMselection = Ext.create('Ext.button.Button',{
+            iconCls: 'icon-info',
+            tooltip: "Identify",
+            handler: function() {
+                ident.activate();
+            }
+        });
+
+        map.events.register('zoomend', this, function() {
+            var scale = scaleStore.queryBy(function(record){
+                return this.map.getZoom() == record.data.level;
+            });
+
+            if (scale.length > 0) {
+                scale = scale.items[0];
+                zoomSelector.setValue("1 : " + parseInt(scale.data.scale));
+            } else {
+                if (!zoomSelector.rendered) return;
+                zoomSelector.clearValue();
+            }
+        });
+
+        var uploadArea = Elpho.tools.DownloadParcelButton;
+
+        ctrl = new OpenLayers.Control.NavigationHistory();
+        map.addControl(ctrl);
+
+        var paction = Ext.create('GeoExt.Action', {
+            iconCls: 'icon-previous',
+            control: ctrl.previous,
+            disabled: true,
+            tooltip: "προηγούμενη οθόνη"
+        });
+
+        var previous = Ext.create('Ext.button.Button', paction);
+
+        var naction = Ext.create('GeoExt.Action', {
+            iconCls: 'icon-next',
+            control: ctrl.next,
+            disabled: true,
+            tooltip: "επόμενη οθόνη"
+        });
+
+        var next = Ext.create('Ext.button.Button', naction);
+
+        var downloadArea = Ext.create('Ext.button.Button', {
+            tooltip: 'Υπάρχουσες περιοχές ελέγχου',
+            iconCls: 'icon-download',
+            handler: function() {
+
+                Ext.define('DList', {
+                    extend: 'Ext.data.Model',
+                    fields: [
+                        {name: 'id', type: 'int'},
+                        {name: 'filter', type: 'string'},
+                        {name: 'request', type: 'string'},
+                        {name: 'description', type: 'string'}
+                    ]
+                });
+
+                var Grid1Store = Ext.create('Ext.data.Store', {
+                    model: 'DList',
+                    autoLoad: true,
+                    proxy: {
+                        type: 'ajax',
+                        url: 'rest/getControlAreas',
+                        method: "GET",
+                        reader: {
+                            type: 'json',
+                            root: ''
+                        }
+                    }
+                });
+
+                pgrid = Ext.create('Ext.grid.GridPanel', {
+                    title: "Πίνακας Περιοχών Εξαγωγής",
+                    store: Grid1Store,
+                    forcefit: true,
+                    columns: [
+                        {text: 'Περιγραφή', dataIndex: 'description'},
+                        {id: 'wmsindex',text: "Επιλογή Χάρτη", width: 250,renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                            var id = Ext.id();
+                            var cid = Ext.id();
+                            Ext.defer(function() {
+                                Ext.create('Ext.form.ComboBox', {
+                                    renderTo: id,
+                                    id:cid,
+                                    width: 150,
+                                    store: wmscapstore,
+                                    queryMode: 'local',
+                                    displayField: 'name'
+                                });
+                            }, 50);
+
+                            record.comboid = cid;
+
+                            return Ext.String.format('<div id="{0}"></div>', id);
+                        }},
+                        {text: 'Μεταφόρτωση Περιοχής',
+                            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                                var id = Ext.id();
+                                Ext.defer(function () {
+                                    Ext.widget('button', {
+                                        renderTo: id,
+                                        iconCls: 'icon-save',
+                                        handler: function () {
+                                            var selectedRecord = pgrid.getSelectionModel().getSelection()[0];
+                                            var vlvalue = Ext.getCmp(selectedRecord.comboid).getValue();
+
+                                            window.open(record.data.request);
+                                            var ilots = record.data.request.replace("PARCELS_FINAL", "ILOTS");
+                                            window.open(ilots);
+                                        }
+                                    });
+                                }, 80);
+                                return Ext.String.format('<div id="{0}"></div>', id);
+                            }, width:200
+                        }
+                    ]
+                });
+
+                var mform = Ext.create('widget.window', {
+                    height: 300,
+                    width: 600,
+                    layout   : 'fit',
+                    title: "Μεταφορτώση περιοχών Ελέγχων",
+                    closable: true,
+                    maximizable: false,
+                    resizable: false,
+                    items: [pgrid]
+                });
+                mform.show();
+                mform.on('close', function () {
+                    mform.destroy();
+                    mform = null;
+                });
+            }
+        });
+
+        //MAP PANEL
+        mapPanel = Ext.create('GeoExt.panel.Map', {
+            border: true,
+            region: "center",
+            map: map,
+            center: [2639241, 4591171],
+            zoom: 7,
+            tbar: [zoomSelector, zoomBox,navigate,XEMselection,printbutton,uploadArea,downloadArea,resetSelections, previous, next]
+        });
+
+        opmaps = []
+
+        //TREE
+        var store = Ext.create('Ext.data.TreeStore', {
+            model: 'GeoExt.data.LayerTreeModel',
+            root: {
+                text: "Root",
+                expanded: true,
+                children: [
+                    {
+                        text: "Dynamic Layers",
+                        leaf: false,
+                        expanded: true,
+                        children: []
+                    },
+                    {
+                        plugins: [{
+                            ptype: 'gx_baselayercontainer',
+                            loader: {store: mapPanel.layers} // BASE "REFERENCE" LAYERS FROM arcticMapPanel
+                        }],
+                        expanded: true,
+                        text: 'BaseLayers'
+                    }
+                ]
+            }
+        });
+
+        var tree = Ext.create('GeoExt.tree.Panel', {
+                    border: true,
+                    region: "west",
+                    title: "Layers",
+                    width: 290,
+                    split: true,
+                    collapsible: true,
+                    collapseMode: "mini",
+                    autoScroll: true,
+                    store: store,
+                    rootVisible: false,
+                    lines: false,
+                    listeners: {
+                        checkchange: {
+                            fn: function (record, checked, opts) {
+                                record.data.layer.setVisibility(checked)
+                            }
+                        }
+                    }
+                }
+        );
+
+        tree.on('itemclick', function(view, record, item, index, event) {
+            selectedLayer = [record.data.layer];
+            if(selectedLayer[0].params.STYLES!="") {
+                Ext.get(legend_image).dom.src = geoserverWmsDefaults.wmsUrl + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=30&HEIGHT=30&STRICT=false&style=" +
+                        selectedLayer[0].params.STYLES;
+            }
+        })
+
+        map.addControl(ident);
+
+        Ext.create('Ext.Viewport', {
+            layout: "fit",
+            hideBorders: true,
+            items: {
+                layout: "border",
+                deferredRender: false,
+                items: [mapPanel, tree, east_search_panel]
+            }
+        });
+
+        map.addControl(selectCtrl);
+        map.addControl(infoControls);
+        selectCtrl.activate();
+    }
+
+
+
+});
+</script>
+
+</head>
+<body> </body>
+</html>

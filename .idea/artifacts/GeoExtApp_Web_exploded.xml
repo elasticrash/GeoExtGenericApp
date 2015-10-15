@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="GeoExtApp:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/GeoExtApp_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="GeoExtApp/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="javaee-facet-classes" facet="GeoExtApp/web/Web" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
