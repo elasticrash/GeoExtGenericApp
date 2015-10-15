@@ -2,7 +2,7 @@
 <head>
 <title>test map</title>
 <meta charset="utf-8">
-<title>SOIL DANGER</title>
+<title>GeoExt 2 Generic GIS WEB APP</title>
 
 <link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
 <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all-debug.js"></script>
@@ -14,6 +14,9 @@
 <script src="resources/js/libs/Config.js"></script>
 
 <script>
+
+var language = window.navigator.userLanguage || window.navigator.language;
+
     Ext.Loader.setConfig({
         enabled: true,
         disableCaching: false,
@@ -413,7 +416,7 @@ Ext.application({
                     {
                         plugins: [{
                             ptype: 'gx_baselayercontainer',
-                            loader: {store: mapPanel.layers} // BASE "REFERENCE" LAYERS FROM arcticMapPanel
+                            loader: {store: mapPanel.layers}
                         }],
                         expanded: true,
                         text: 'BaseLayers'
