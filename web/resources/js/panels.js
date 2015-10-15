@@ -2,9 +2,9 @@
  * Created by stefanos on 8/10/2015.
  */
 //GENERIC
-var Search="Αναζήτηση";
-var None = "Επιλέξτε";
-var To = "Εώς";
+var Search="Search";
+var None = "Select";
+var To = "From";
 //ANAZHTHSH ME SYNTETAGMENH
 var CoordinateSearch= "Go to Coordinate";
 
@@ -121,7 +121,7 @@ var itemtab = Ext.create('Ext.tab.Panel', {
     autoHeight: true,
     items: [
         {
-            title: 'Βασική Αναζήτηση',
+            title: 'Search Panel',
             items:search_panel
         }
     ]

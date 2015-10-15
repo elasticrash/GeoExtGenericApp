@@ -98,16 +98,6 @@ Ext.application({
 
         var layer = new OpenLayers.Layer.OSM("OpenLayers");
 
-        var ktimalayer = new OpenLayers.Layer.WMS( 'Κτηματολόγιο',"http://gis.ktimanet.gr/wms/wmsopen/wmsserver.aspx?",
-                {
-                    layers: 'BASEMAP' ,
-                    format: 'image/png',
-                    transparent: 'true',
-                    version: '1.1.1'
-                },{
-                    isBaseLayer: true
-                });
-
         //VECTOR LAYER
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
@@ -117,13 +107,13 @@ Ext.application({
         layer_style.fillColor ='#0000FF';
         layer_style.border = 3;
 
-        vector = new OpenLayers.Layer.Vector("Επίπεδο Αποτελεσμάτων", {
+        vector = new OpenLayers.Layer.Vector("Result Layer", {
             style: layer_style,
             renderers: renderer,
             projection: epsg
         });
 
-        highlight = new OpenLayers.Layer.Vector("Επίπεδο Επισήμανσης", {
+        highlight = new OpenLayers.Layer.Vector("Select Layer", {
             style: layer_style,
             renderers: renderer,
             projection: epsg
@@ -135,7 +125,7 @@ Ext.application({
         wmscapstore = Ext.create('GeoExt.data.WmsCapabilitiesLayerStore', {
             storeId: 'wmscapsStore',
             method: 'POST',
-            url: "cgi-bin/proxy.cgi?url="+encodeURIComponent("http://144.76.39.165:8082/geoserver/wms?request=getCapabilities"),
+            url: "cgi-bin/proxy.cgi?url="+encodeURIComponent(geoserverWmsDefaults.wmsUrl +"request=getCapabilities"),
             autoLoad: true
         });
 
@@ -184,7 +174,7 @@ Ext.application({
         var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
         var zoomSelector = Ext.create("Ext.form.ComboBox", {
             store: scaleStore,
-            fieldLabel: "Κλίμακα",
+            fieldLabel: "Scale",
             listConfig: {
                 getInnerTpl: function() {
                     return "1: {scale:round(0)}";
@@ -234,7 +224,7 @@ Ext.application({
         var zoomBox = Ext.create('Ext.button.Button', zoomin_action);
         var navigate = Ext.create('Ext.button.Button', nagivate_action);
         var resetSelections = Ext.create('Ext.button.Button', {
-            tooltip: 'Καθαρισμός Αποτελεσμάτων',
+            tooltip: 'Clear Results',
             iconCls: 'icon-reset',
             handler: function() {
                 highlight.removeAllFeatures();
@@ -285,7 +275,7 @@ Ext.application({
             iconCls: 'icon-previous',
             control: ctrl.previous,
             disabled: true,
-            tooltip: "προηγούμενη οθόνη"
+            tooltip: "Previous Extent"
         });
 
         var previous = Ext.create('Ext.button.Button', paction);
@@ -294,13 +284,13 @@ Ext.application({
             iconCls: 'icon-next',
             control: ctrl.next,
             disabled: true,
-            tooltip: "επόμενη οθόνη"
+            tooltip: "Next Extent"
         });
 
         var next = Ext.create('Ext.button.Button', naction);
 
         var downloadArea = Ext.create('Ext.button.Button', {
-            tooltip: 'Υπάρχουσες περιοχές ελέγχου',
+            tooltip: 'Download Area',
             iconCls: 'icon-download',
             handler: function() {
 
@@ -319,7 +309,7 @@ Ext.application({
                     autoLoad: true,
                     proxy: {
                         type: 'ajax',
-                        url: 'rest/getControlAreas',
+                        //url: 'rest/getControlAreas',
                         method: "GET",
                         reader: {
                             type: 'json',
@@ -329,12 +319,12 @@ Ext.application({
                 });
 
                 pgrid = Ext.create('Ext.grid.GridPanel', {
-                    title: "Πίνακας Περιοχών Εξαγωγής",
+                    title: "Table Of Exported Areas",
                     store: Grid1Store,
                     forcefit: true,
                     columns: [
-                        {text: 'Περιγραφή', dataIndex: 'description'},
-                        {id: 'wmsindex',text: "Επιλογή Χάρτη", width: 250,renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                        {text: 'Description', dataIndex: 'description'},
+                        {id: 'wmsindex',text: "Select Area", width: 250,renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                             var id = Ext.id();
                             var cid = Ext.id();
                             Ext.defer(function() {
@@ -352,7 +342,7 @@ Ext.application({
 
                             return Ext.String.format('<div id="{0}"></div>', id);
                         }},
-                        {text: 'Μεταφόρτωση Περιοχής',
+                        {text: 'Upload Area',
                             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                                 var id = Ext.id();
                                 Ext.defer(function () {
@@ -379,7 +369,7 @@ Ext.application({
                     height: 300,
                     width: 600,
                     layout   : 'fit',
-                    title: "Μεταφορτώση περιοχών Ελέγχων",
+                    title: "Upload Area",
                     closable: true,
                     maximizable: false,
                     resizable: false,

@@ -31,28 +31,36 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
         var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);//.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'));
 
 
-        //http://144.76.39.165:8082/geoserver/wfs?request=describeFeatureType&typename=ELPHO:SUITABILITY
-
-        var olFilter = new OpenLayers.Filter.Spatial({
-            type: OpenLayers.Filter.Spatial.INTERSECTS,
-            property: "GEOM",
-            value: point,
-            projection: map.getProjection()
-        });
-
-
-        var filterFormat = new OpenLayers.Format.Filter.v1_1_0();
-        var xmlFormat = new OpenLayers.Format.XML();
-
-        var ogcFilter = filterFormat.write(olFilter);
-        var ogcFilterString = xmlFormat.write(ogcFilter);
 
         Ext.Ajax.request({
-            url: OpenLayers.ProxyHost + geoserverWfsDefaults.wfsUrl +"request=describeFeatureType&typename="+ selectedLayer[0].params.LAYERS,
-            method: 'POST',
+            url: OpenLayers.ProxyHost + encodeURIComponent(geoserverWfsDefaults.wfsUrl+"request=describeFeatureType&typename="+ selectedLayer[0].params.LAYERS),
+            method: 'GET',
             success: function (response, options) {
-                var result = Ext.XML.decode(response.responseText);
+                var result = response.responseXML;
 
+                var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
+                var GEOMcolumn;
+                for(var i= 0; i < Columnchilds.length; i++)
+                {
+                    if(Columnchilds[i].attributes.type.nodeValue == "gml:GeometryPropertyType")
+                    {
+                        GEOMcolumn = Columnchilds[i].attributes.name.nodeValue;
+                    }
+                }
+
+                var olFilter = new OpenLayers.Filter.Spatial({
+                    type: OpenLayers.Filter.Spatial.INTERSECTS,
+                    property: GEOMcolumn,
+                    value: point,
+                    projection: map.getProjection()
+                });
+
+
+                var filterFormat = new OpenLayers.Format.Filter.v1_1_0();
+                var xmlFormat = new OpenLayers.Format.XML();
+
+                var ogcFilter = filterFormat.write(olFilter);
+                var ogcFilterString = xmlFormat.write(ogcFilter);
 
                 Ext.Ajax.request({
                     url: OpenLayers.ProxyHost + geoserverWfsDefaults.wfsUrl,
@@ -60,7 +68,7 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
                     params: {
                         filter: ogcFilterString,
                         typeName: selectedLayer[0].params.LAYERS,
-                        geomnameplacehoder: 'GEOM',
+                        geomnameplacehoder: GEOMcolumn,
                         version: geoserverWfsDefaults.wfsVersion,
                         request: 'GetFeature',
                         outputFormat: 'json'
@@ -84,11 +92,6 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
                         }
 
                         identitems = [];
-                        for (var i = 0; i < typeofcrop.data.keys.length; i++) {
-                            var desc = typeofcrop.data.items[i].data.description;
-                            var prop = typeofcrop.data.items[i].data.code;
-                            identitems[desc] = suitability.data.items[result.features[0].properties[prop] - 1].data.description;
-                        }
 
                         var popgrid = Ext.create('Ext.grid.property.Grid', {
                             forceFit: true,
@@ -130,7 +133,7 @@ function createPopup(feature, popgrid) {
         win.close();
     }
     popupOpts = Ext.apply({
-        title: 'Πληροφορίες',
+        title: 'Info',
         location: feature,
         width:400,
         map:map,

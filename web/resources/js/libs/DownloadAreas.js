@@ -15,7 +15,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
     renderConfirmThreshold: 25000,
     updateStatusText: '',
     renderConfirmMsg: '',
-    tooltip: 'Δημιουργία Περιοχής Εξαγωγής',
+    tooltip: 'Upload Area',
     iconCls: 'icon-upload',
     requires: ['GeoExt.Action'],
     constructor: function() {
