@@ -30,24 +30,6 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
         var xyz = map.getLonLatFromPixel(e.xy);
         var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);//.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'));
 
-
-
-        Ext.Ajax.request({
-            url: OpenLayers.ProxyHost + encodeURIComponent(geoserverWfsDefaults.wfsUrl+"request=describeFeatureType&typename="+ selectedLayer[0].params.LAYERS),
-            method: 'GET',
-            success: function (response, options) {
-                var result = response.responseXML;
-
-                var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
-                var GEOMcolumn;
-                for(var i= 0; i < Columnchilds.length; i++)
-                {
-                    if(Columnchilds[i].attributes.type.nodeValue == "gml:GeometryPropertyType")
-                    {
-                        GEOMcolumn = Columnchilds[i].attributes.name.nodeValue;
-                    }
-                }
-
                 var olFilter = new OpenLayers.Filter.Spatial({
                     type: OpenLayers.Filter.Spatial.INTERSECTS,
                     property: GEOMcolumn,
@@ -124,8 +106,6 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
                         Ext.log('failure');
                     }
                 });
-            }
-        });
         ident.deactivate();
     }
 });

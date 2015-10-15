@@ -25,7 +25,7 @@
 
     var map;
     var mapPanel;
-
+    var GEOMcolumn;
     var epsg900913 = new OpenLayers.Projection('EPSG:900913');
     var epsg = new OpenLayers.Projection(geoserverWmsDefaults.wmsSrsName);
     var popup;
@@ -36,6 +36,8 @@
     var cgeom;
     var vector;
     var highlight;
+    var table=[];
+    var operators=[];
 
     Ext.require([
         'Ext.direct.*',
@@ -448,6 +450,27 @@ Ext.application({
                 Ext.get(legend_image).dom.src = geoserverWmsDefaults.wmsUrl + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=30&HEIGHT=30&STRICT=false&style=" +
                         selectedLayer[0].params.STYLES;
             }
+            Ext.Ajax.request({
+                url: OpenLayers.ProxyHost + encodeURIComponent(geoserverWfsDefaults.wfsUrl + "request=describeFeatureType&typename=" + selectedLayer[0].params.LAYERS),
+                method: 'GET',
+                success: function (response, options) {
+                    var result = response.responseXML;
+                    var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
+                    table.length = 0;
+
+                    for (var i = 0; i < Columnchilds.length; i++) {
+                        if (Columnchilds[i].attributes.type.nodeValue == "gml:GeometryPropertyType") {
+                            GEOMcolumn = Columnchilds[i].attributes.name.nodeValue;
+                        }
+                        table[i] = {
+                            value: i,
+                            name: Columnchilds[i].attributes.name.nodeValue,
+                            type: Columnchilds[i].attributes.type.nodeValue
+                        };
+                    }
+                    selectedlayerfields.load();
+                }
+            });
         })
 
         map.addControl(ident);
