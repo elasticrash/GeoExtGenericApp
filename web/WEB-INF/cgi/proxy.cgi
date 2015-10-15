@@ -15,9 +15,7 @@ import sys, os
 
 # Designed to prevent Open Proxy type stuff.
 
-allowedHosts = ['192.168.1.105:8080', 'neptune:80',
-                '144.76.39.165:8082', 'world.freemap.in',
-                'prototype.openmnnd.org', 'geo.openplans.org',
+allowedHosts = ['prototype.openmnnd.org', 'geo.openplans.org',
                 'sigma.openplans.org', 'demo.opengeo.org',
                 'www.openstreetmap.org', 'sample.azavea.com',
                 'v2.suite.opengeo.org', 'v-swe.uni-muenster.de:8080',
