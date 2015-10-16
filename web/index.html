@@ -267,12 +267,10 @@ Ext.application({
             control: new OpenLayers.Control.Navigation(),
             map: map,
             iconCls: 'icon-pan',
-            // button options
             toggleGroup: "tools",
             allowDepress: false,
             pressed: true,
-            tooltip: "navigate",
-            // check item options
+            tooltip: LNavigate,
             group: "tools",
             checked: true
         });
@@ -291,7 +289,7 @@ Ext.application({
         var printbutton =
         {
             xtype: 'button',
-            text: "",
+            text: LPrint,
             iconCls: 'icon-print',
             margin: 5,
             handler: function () {
@@ -302,7 +300,7 @@ Ext.application({
 
         var XEMselection = Ext.create('Ext.button.Button',{
             iconCls: 'icon-info',
-            tooltip: "Identify",
+            tooltip: LIdentify,
             handler: function() {
                 ident.activate();
             }
