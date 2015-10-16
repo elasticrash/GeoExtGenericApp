@@ -24,4 +24,5 @@ There are obviously, a lot of features that are not working properly.
 - Add/Remove Layers
 
 *Distant Future*
--Maybe a Java BackEnd with SQLite to keep preferences and other stuff
+- Search GeonetWork
+- Maybe a Java BackEnd with SQLite to keep preferences and other stuff
