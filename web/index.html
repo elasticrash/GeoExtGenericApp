@@ -1,6 +1,5 @@
 <html>
 <head>
-<title>test map</title>
 <meta charset="utf-8">
 <title>GeoExt 2 Generic GIS WEB APP</title>
 
@@ -135,13 +134,56 @@ Ext.application({
             autoLoad: true
         });
 
+        var menu = Ext.create('Ext.menu.Menu', {
+            id: 'mainMenu',
+            style: {
+                overflow: 'visible'
+            },
+            items: [{
+                xtype: 'button',
+                text: LHideAll,
+                handler: function() {
+                    var treeNode = tree.getRootNode();
+                    while(treeNode.childNodes[0].firstChild) {
+                        treeNode.childNodes[0].removeChild(treeNode.childNodes[0].firstChild);
+                    }
+                    var tmenu = Ext.getCmp('mainMenu');
+                    for(var i =1; i < tmenu.items.items.length; i++)
+                    {
+                        Ext.getCmp(tmenu.items.items[i].id).setChecked(false);
+                    }
+                }
+            }]
+        })
+
+        function onItemCheck(item, checked) {
+            var treeNode = tree.getRootNode();
+            if (checked == false) {
+                for (var j = 0; j < treeNode.childNodes[0].childNodes.length; j++) {
+                    if (item.text == treeNode.getChildAt(0).getChildAt(j).data.text) {
+                        map.removeLayer(item.llmap);
+                        treeNode.getChildAt(0).getChildAt(j).remove(true);
+                    }
+                }
+            }
+            if (checked == true) {
+                map.addLayer(item.llmap);
+                treeNode.getChildAt(0).appendChild({
+                    text: item.text,
+                    layer: item.llmap,
+                    leaf: true,
+                    checked: false,
+                    children: [],
+                    nodeType: "gx_overlaylayercontainer"
+                });
+            }
+        }
         //LAYERS
         wmscapstore.load({
             callback: function(records, operation, success) {
                 for(var i = 0; i < wmscapstore.data.keys.length; i++) {
-
                     for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
-                        opmaps[i] = new OpenLayers.Layer.WMS(
+                        var opmap = new OpenLayers.Layer.WMS(
                                 wmscapstore.data.items[i].data.title + " ("+ wmscapstore.data.items[i].data.styles[j].name+")", geoserverWmsDefaults.wmsUrl,
                                 {
                                     LAYERS: wmscapstore.data.items[i].data.name,
@@ -157,16 +199,24 @@ Ext.application({
                                 }
                         );
 
-                        map.addLayers(opmaps);
+                        map.addLayer(opmap);
 
                         var treeNode = tree.getRootNode();
                         treeNode.getChildAt(0).appendChild({
-                            text: opmaps[i].name,
-                            layer: opmaps[i],
+                            text: opmap.name,
+                            layer: opmap,
                             leaf: true,
                             checked: false,
                             children: [],
                             nodeType: "gx_overlaylayercontainer"
+                        });
+
+                        Ext.getCmp('mainMenu').add({
+                            id: "id"+opmap.id,
+                            text: opmap.name,
+                            checked: true,
+                            checkHandler: onItemCheck,
+                            llmap: opmap
                         });
                     }
                 }
@@ -399,8 +449,6 @@ Ext.application({
             tbar: [zoomSelector, zoomBox,navigate,XEMselection,printbutton,uploadArea,downloadArea,resetSelections, previous, next]
         });
 
-        opmaps = []
-
         //TREE
         var store = Ext.create('Ext.data.TreeStore', {
             model: 'GeoExt.data.LayerTreeModel',
@@ -445,10 +493,19 @@ Ext.application({
                             }
                         }
                     }
+                    ,
+                    tbar:[
+                        {
+                            xtype: 'button',
+                            text: LShowHideLayers,
+                            margin: 5,
+                            menu: menu
+                        }
+                    ]
                 }
         );
 
-        tree.on('itemclick', function(view, record, item, index, event) {
+       tree.on('itemclick', function(view, record, item, index, event) {
             selectedLayer = [record.data.layer];
             if(selectedLayer[0].params.STYLES!="") {
                 Ext.get(legend_image).dom.src = geoserverWmsDefaults.wmsUrl + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=30&HEIGHT=30&STRICT=false&style=" +
