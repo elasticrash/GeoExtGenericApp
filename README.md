@@ -22,3 +22,6 @@ There are obviously, a lot of features that are not working properly.
 - Complete English and Greek language file
 - Select features and download them as a Shapefile
 - Add/Remove Layers
+
+*Distant Future*
+-Maybe a Java BackEnd with SQLite to keep preferences and other stuff
