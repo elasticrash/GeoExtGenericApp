@@ -72,7 +72,7 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
             printwindow.close();
         }
 
-        var printCapabilities={"scales":[{"name":"1:1.000","value":"1000"},{"name":"1:2.000","value":"2000"},{"name":"1:4.000","value":"4000"},{"name":"1:8.000","value":"8000"},{"name":"1:16.000","value":"16000"},{"name":"1:32.000","value":"32000"},{"name":"1:64.000","value":"64000"},{"name":"1:128.000","value":"128000"},{"name":"1:256.000","value":"256000"},{"name":"1:512.000","value":"512000"},{"name":"1:1.024.000","value":"1024000"},{"name":"1:2.048.000","value":"2048000"},{"name":"1:4.096.000","value":"4096000"},{"name":"1:8.192.000","value":"8192000"},{"name":"1:16.384.000","value":"16384000"},{"name":"1:32.768.000","value":"32768000"},{"name":"1:65.536.000","value":"65536000"},{"name":"1:131.072.000","value":"131072000"},{"name":"1:262.144.000","value":"262144000"},{"name":"1:524.288.000","value":"524288000"}],"dpis":[{"name":"75","value":"75"},{"name":"150","value":"150"},{"name":"300","value":"300"}],"layouts":[{"name":"A4","map":{"width":440,"height":600},"rotation":true},{"name":"Legal","map":{"width":440,"height":650},"rotation":true},{"name":"Letter","map":{"width":440,"height":550},"rotation":true}],"printURL":"cgi-bin/proxy.cgi?url=http://144.76.39.165:8082/geoserver/pdf/print.pdf","createURL":"cgi-bin/proxy.cgi?url=http://144.76.39.165:8082/geoserver/pdf/create.json"};
+        var printCapabilities={"scales":[{"name":"1:1.000","value":"1000"},{"name":"1:2.000","value":"2000"},{"name":"1:4.000","value":"4000"},{"name":"1:8.000","value":"8000"},{"name":"1:16.000","value":"16000"},{"name":"1:32.000","value":"32000"},{"name":"1:64.000","value":"64000"},{"name":"1:128.000","value":"128000"},{"name":"1:256.000","value":"256000"},{"name":"1:512.000","value":"512000"},{"name":"1:1.024.000","value":"1024000"},{"name":"1:2.048.000","value":"2048000"},{"name":"1:4.096.000","value":"4096000"},{"name":"1:8.192.000","value":"8192000"},{"name":"1:16.384.000","value":"16384000"},{"name":"1:32.768.000","value":"32768000"},{"name":"1:65.536.000","value":"65536000"},{"name":"1:131.072.000","value":"131072000"},{"name":"1:262.144.000","value":"262144000"},{"name":"1:524.288.000","value":"524288000"}],"dpis":[{"name":"75","value":"75"},{"name":"150","value":"150"},{"name":"300","value":"300"}],"layouts":[{"name":"A4","map":{"width":440,"height":600},"rotation":true},{"name":"Legal","map":{"width":440,"height":650},"rotation":true},{"name":"Letter","map":{"width":440,"height":550},"rotation":true}],"printURL":"cgi-bin/proxy.cgi?url="+geoserver+"geoserver/pdf/print.pdf","createURL":"cgi-bin/proxy.cgi?url="+geoserver+"geoserver/pdf/create.json"};
 
         var printProvider = Ext.create('GeoExt.data.MapfishPrintProvider', {
             method: "POST", // "POST" recommended for production use
@@ -310,7 +310,6 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
         if (Ext.isEmpty(title) || Ext.isEmpty(comment)) {
             Ext.Msg.alert(me.errorLabel, me.incompleteFormText);
         } else {
-            //eplicit override necessary if a preview with no title/comment has been made before:
             printProvider.customParams.mapTitle = title;
             printProvider.customParams.comment = comment;
             printProvider.dpi.data.value = resolution;
@@ -359,22 +358,10 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
         pv.setLoading(true);
     },
     createPrintLegends: function() {
-
-        //TODO: Refactor the way we retrieve visible legends, this is more or less a workaround
         var me = this,
             mapPanel = GeoExt.MapPanel.guess(),
-            //view = Ext.ComponentQuery.query('w_layertreepanel')[0].getView(),
-            //hiddenElements = Ext.DomQuery.select('[class*=gx-tree-layer-icon-hiddenlegend]', view.all.elements),
             hiddenLegends = [],
             visibleLegends = [];
-
-//        Ext.each(hiddenElements, function(el) {
-//            var domEl = Ext.get(el),
-//                layerName = domEl.dom.parentNode.innerText;
-//            //removing carriage returns from text
-//            var escapedLayerName = layerName.replace(/(\n|\r\n)/g, '');
-//            hiddenLegends.push(escapedLayerName);
-//        });
 
         mapPanel.layers.each(function(layerrec) {
             var title = layerrec.get('title');
