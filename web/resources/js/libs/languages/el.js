@@ -6,3 +6,6 @@ var LHideAll = "Απόκρυψη Όλων των Επιπέδων";
 var LNavigate = "Πλοήγηση";
 var LPrint = "Εκτύπωση";
 var LIdentify = "Αναγνώριση";
+var LPreviousExtent = "Προηγούμενη Οθόνη";
+var LNextExtent = "Επόμενη Οθόνη";
+var LDownloadArea = "Αποθήκευση Περιοχής";

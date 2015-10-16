@@ -6,3 +6,6 @@ var LHideAll = "Hide All Layers";
 var LNavigate = "Navigate";
 var LPrint = "Print";
 var LIdentify = "Identify";
+var LPreviousExtent = "Previous Extent";
+var LNextExtent = "Next Extent";
+var LDownloadArea = "Download Area";

@@ -25,7 +25,7 @@ var language = window.navigator.userLanguage || window.navigator.language;
             Ext: "http://cdn.sencha.com/ext/gpl/4.2.1/src"
         }
     });
-
+//Global Variables
     var map;
     var mapPanel;
     var GEOMcolumn;
@@ -64,7 +64,6 @@ var language = window.navigator.userLanguage || window.navigator.language;
         'Ext.grid.GridPanel',
         'GeoExt.grid.column.Symbolizer'
     ]);
-
 </script>
 
 <script src="resources/js/libs/languages/language-selector.js"></script>
@@ -77,7 +76,6 @@ var language = window.navigator.userLanguage || window.navigator.language;
 
 
 <script>
-
 Ext.application({
     name: 'gext2app',
     launch: function() {
@@ -178,7 +176,7 @@ Ext.application({
                 });
             }
         }
-        //LAYERS
+        // Dynamically add layers
         wmscapstore.load({
             callback: function(records, operation, success) {
                 for(var i = 0; i < wmscapstore.data.keys.length; i++) {
@@ -222,10 +220,11 @@ Ext.application({
                 }
             }});
 
-        //ADD LAYER
+        //add predifined local layers
         map.addLayer(layer);
         map.addLayer(vector);
         map.addLayer(highlight);
+
         //SCALE STORE
         var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
         var zoomSelector = Ext.create("Ext.form.ComboBox", {
@@ -250,7 +249,7 @@ Ext.application({
                 this
         );
 
-
+        //zoom in action
         var zoomin_action = new GeoExt.Action({
             control: new OpenLayers.Control.ZoomBox,
             map: map,
@@ -263,6 +262,7 @@ Ext.application({
             group: "tools"
         });
 
+        //pan action
         var nagivate_action = Ext.create('GeoExt.Action', {
             control: new OpenLayers.Control.Navigation(),
             map: map,
@@ -277,6 +277,7 @@ Ext.application({
 
         var zoomBox = Ext.create('Ext.button.Button', zoomin_action);
         var navigate = Ext.create('Ext.button.Button', nagivate_action);
+
         var resetSelections = Ext.create('Ext.button.Button', {
             tooltip:  LClearResults,
             iconCls: 'icon-reset',
@@ -329,7 +330,7 @@ Ext.application({
             iconCls: 'icon-previous',
             control: ctrl.previous,
             disabled: true,
-            tooltip: "Previous Extent"
+            tooltip: LPreviousExtent
         });
 
         var previous = Ext.create('Ext.button.Button', paction);
@@ -338,7 +339,7 @@ Ext.application({
             iconCls: 'icon-next',
             control: ctrl.next,
             disabled: true,
-            tooltip: "Next Extent"
+            tooltip: LNextExtent
         });
 
         var next = Ext.create('Ext.button.Button', naction);
@@ -502,7 +503,7 @@ Ext.application({
                     ]
                 }
         );
-
+        //tree item click event. gets the layer legend and the layer's geometry column name
        tree.on('itemclick', function(view, record, item, index, event) {
             selectedLayer = [record.data.layer];
             if(selectedLayer[0].params.STYLES!="") {
@@ -532,8 +533,10 @@ Ext.application({
             });
         })
 
+        //identify tool, located in the CustomControl.js file
         map.addControl(ident);
 
+        //create viewport
         Ext.create('Ext.Viewport', {
             layout: "fit",
             hideBorders: true,
