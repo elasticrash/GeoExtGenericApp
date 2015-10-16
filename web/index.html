@@ -15,6 +15,7 @@
 
 <script>
 
+//automatically get browser language
 var language = window.navigator.userLanguage || window.navigator.language;
 
     Ext.Loader.setConfig({
@@ -36,7 +37,6 @@ var language = window.navigator.userLanguage || window.navigator.language;
     var selectedLayer;
     var infoControls;
     var pgrid;
-    var cgeom;
     var vector;
     var highlight;
     var table=[];
@@ -68,6 +68,7 @@ var language = window.navigator.userLanguage || window.navigator.language;
 
 </script>
 
+<script src="resources/js/libs/languages/language-selector.js"></script>
 <script src="resources/js/libs/GISHelper.js"></script>
 <script src="resources/js/libs/Helper.js"></script>
 <script src="resources/js/libs/MapReport.js"></script>
@@ -79,7 +80,7 @@ var language = window.navigator.userLanguage || window.navigator.language;
 <script>
 
 Ext.application({
-    name: 'test',
+    name: 'gext2app',
     launch: function() {
 
         OpenLayers.ProxyHost = "cgi-bin/proxy.cgi?url=";
@@ -179,7 +180,7 @@ Ext.application({
         var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
         var zoomSelector = Ext.create("Ext.form.ComboBox", {
             store: scaleStore,
-            fieldLabel: "Scale",
+            fieldLabel: LScale,
             listConfig: {
                 getInnerTpl: function() {
                     return "1: {scale:round(0)}";
@@ -207,7 +208,7 @@ Ext.application({
             // button options
             toggleGroup: "tools",
             allowDepress: false,
-            tooltip: "Zoom In",
+            tooltip: LZoomIn,
             // check item options
             group: "tools"
         });
@@ -229,7 +230,7 @@ Ext.application({
         var zoomBox = Ext.create('Ext.button.Button', zoomin_action);
         var navigate = Ext.create('Ext.button.Button', nagivate_action);
         var resetSelections = Ext.create('Ext.button.Button', {
-            tooltip: 'Clear Results',
+            tooltip:  LClearResults,
             iconCls: 'icon-reset',
             handler: function() {
                 highlight.removeAllFeatures();
