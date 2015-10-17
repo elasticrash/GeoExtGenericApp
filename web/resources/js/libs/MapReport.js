@@ -11,31 +11,31 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
     ],
     a3LandscapeFormatText: 'A3',
     a4LandscapeFormatText: 'A4',
-    autoGenComment: 'Αυτοδημιούργητο',
-    chooseFormatText: 'Επιλέξτε Μέγεθός και προσανατολισμό',
-    descFieldLabel: 'Περιγραφή',
-    errorLabel: 'Σφάλμα',
-    generalText: 'Γενικά',
-    incompleteFormText: 'Παρακαλούμε συμπληρώστε όλα τα πεδία',
-    insertDescText: 'Παρακαλώ εισάγετε μια περιγραφή',
-    insertTitleText: 'Παρακαλώ εισάγετε έναν τίτλο',
-    optionsText: 'Επιλογές',
-    portraitFormat: 'Πορτραίτο',
-    previewCommentText: 'προεπισκόπηση σχόλιου',
-    previewText: 'προεπισκόπηση',
-    printErrorText: 'Εμφανίστηκε ένα σφάλμα κατά την εκτύπωση',
-    printLayoutLabel: 'Διάταξη εκτύπωσης',
-    printPropertiesText: 'ιδιότητες εκτύπωσης',
-    printText: 'Εκτύπωση',
-    resetFieldsText: 'Επαναφορά πεδίων',
-    resolutionLabel: 'Ανάλυση',
-    scaleLabel: 'Κλίμακα',
-    selectResolutionText: 'Επιλογή Ανάλυσης',
-    selectScaleText: 'Επιλογή Κλίμακας',
-    title: 'Εκτύπωση χάρτη',
-    titleFieldLabel: 'Τίτλός',
-    workPrintHtml : 'Επιλέξτε ένα κόμματι χάρτη και στη συνέχεια, πατήστε το κουμπί της εκτύπωσης',
-    workPrintTitle: 'Εκτύπωση Εργασίας',
+    autoGenComment: LAutoGenComment,
+    chooseFormatText: LChooseFormat,
+    descFieldLabel: LDescription,
+    errorLabel: LError,
+    generalText: LGeneral,
+    incompleteFormText: LIncompleteForm,
+    insertDescText: LInsertDescription,
+    insertTitleText: LInsertTitle,
+    optionsText: LOptions,
+    portraitFormat: LPortraitFormat,
+    previewCommentText: LPreviewComment,
+    previewText: LPreview,
+    printErrorText: LPrintError,
+    printLayoutLabel: LPrintLayout,
+    printPropertiesText: LPrintProperties,
+    printText: LPrint,
+    resetFieldsText: LResetFields,
+    resolutionLabel: LResolution,
+    scaleLabel: LScale,
+    selectResolutionText: LSelectResolution,
+    selectScaleText: LSelectScale,
+    title: LPrintTitle,
+    titleFieldLabel: LTitle,
+    workPrintHtml : LWorkPrintHtml,
+    workPrintTitle: LWorkPrint,
     resizable: false,
     layout: 'table',
     border: 0,
@@ -89,16 +89,11 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
         });
 
         printProvider.addListener('beforeprint', function(pp, map, page, options) {
-            //create a legendpanel and add it to the print as option
-            //options.legend = me.createPrintLegends();
         });
 
         var printExtent = Ext.create('GeoExt.plugins.PrintExtent', {
                 printProvider: printProvider
             });
-//            mapPanel = Ext.ComponentQuery.query('gx_mappanel')[0],
-//            map = mapPanel.map;
-
         printExtent.init(mapPanel);
 
         if (!printExtent.page || printExtent.page === null) {
@@ -107,7 +102,6 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
         printExtent.show();
 
         printExtent.page.on("change", function(pp, change) {
-            //we only look at changes in scale
             if (change.scale) {
                 if(Ext.ComponentQuery.query("combo[name='scalecombo']")[0]) {
                     Ext.ComponentQuery.query("combo[name='scalecombo']")[0].setValue(change.scale.data.value);
@@ -116,7 +110,6 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
         });
 
         if (me.getWorkprint()) {
-            // setting the layout to workprint
             var workPrintRec = printProvider.layouts.findRecord("name", "Arbeitsausdruck");
             printProvider.setLayout(workPrintRec);
 
@@ -146,9 +139,6 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
             });
 
         } else {
-            // filter the store to only show "Querformat" entries. see #520
-            //printProvider.layouts.filter('name', /.Querformat$/);
-            //show the complete printdialog
             Ext.applyIf(me, {
                 height: 460,
                 items: [
@@ -209,11 +199,6 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
                                 }),
                                 listeners: {
                                     afterrender: function(combobox) {
-//                                        var a3LandscapeRec = combobox.store.findRecord("name", "A3"),
-//                                            a4LandscapeRec = combobox.store.findRecord("name", "A4");
-//                                        a3LandscapeRec.set('displayname', me.a3LandscapeFormatText);
-//                                        a4LandscapeRec.set('displayname', me.a4LandscapeFormatText);
-//                                        combobox.setValue(a3LandscapeRec);
                                     }
                                 }
                             },{

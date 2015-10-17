@@ -119,7 +119,7 @@ function createPopup(feature, popgrid) {
         win.close();
     }
     popupOpts = Ext.apply({
-        title: Linfo,
+        title: LInfo,
         location: feature,
         width:400,
         map:map,
