@@ -11,8 +11,7 @@ Ext.define('Elpho.tools.PolygonSelectButton', {
     renderConfirmMsg: '',
     iconCls: 'icon-polygon-select',
     tooltip: 'Επιλογή Επιλεγμένου επιπέδου',
-    requires: [
-        'GeoExt.Action'],
+    requires: ['GeoExt.Action'],
     constructor: function() {
         var me = this,
             drawlayer;
