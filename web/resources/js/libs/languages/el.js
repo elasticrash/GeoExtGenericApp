@@ -9,3 +9,7 @@ var LIdentify = "Αναγνώριση";
 var LPreviousExtent = "Προηγούμενη Οθόνη";
 var LNextExtent = "Επόμενη Οθόνη";
 var LDownloadArea = "Αποθήκευση Περιοχής";
+var LLayers = "Επίπεδα";
+var LUploadArea = "Μεταμόρφωση Περιοχής";
+var LTableOfExportedAreas = "Πίνακας Εξαγώμενων Περιοχών";
+var Linfo = "Πληροφορίες";

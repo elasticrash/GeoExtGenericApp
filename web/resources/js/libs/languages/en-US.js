@@ -9,3 +9,7 @@ var LIdentify = "Identify";
 var LPreviousExtent = "Previous Extent";
 var LNextExtent = "Next Extent";
 var LDownloadArea = "Download Area";
+var LLayers = "Layers";
+var LUploadArea = "Upload Area";
+var LTableOfExportedAreas = "Table Of Exported Areas";
+var Linfo = "Info";

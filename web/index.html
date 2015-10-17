@@ -374,7 +374,7 @@ Ext.application({
                 });
 
                 pgrid = Ext.create('Ext.grid.GridPanel', {
-                    title: "Table Of Exported Areas",
+                    title: LTableOfExportedAreas,
                     store: Grid1Store,
                     forcefit: true,
                     columns: [
@@ -397,7 +397,7 @@ Ext.application({
 
                             return Ext.String.format('<div id="{0}"></div>', id);
                         }},
-                        {text: 'Upload Area',
+                        {text: LUploadArea,
                             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                                 var id = Ext.id();
                                 Ext.defer(function () {
@@ -424,7 +424,7 @@ Ext.application({
                     height: 300,
                     width: 600,
                     layout   : 'fit',
-                    title: "Upload Area",
+                    title: LUploadArea,
                     closable: true,
                     maximizable: false,
                     resizable: false,
@@ -476,7 +476,7 @@ Ext.application({
         var tree = Ext.create('GeoExt.tree.Panel', {
                     border: true,
                     region: "west",
-                    title: "Layers",
+                    title: LLayers,
                     width: 290,
                     split: true,
                     collapsible: true,
