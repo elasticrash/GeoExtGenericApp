@@ -3,20 +3,16 @@
 <meta charset="utf-8">
 <title>GeoExt 2 Generic GIS WEB APP</title>
 
-<link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
-<script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all-debug.js"></script>
-<link rel="stylesheet" type="text/css" href="resources/css/example.css"/>
-<link href="resources/css/icon.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
-<script src="resources/js/thirdParty/proj4js-combined.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="resources/js/libs/Config.js"></script>
+    <script async=false defer=false src="resources/js/libs/languages/language-selector.js"></script>
+    <link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
+    <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/css/example.css"/>
+    <link href="resources/css/icon.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
+    <script src="resources/js/thirdParty/proj4js-combined.js"></script>
+    <script src="resources/js/libs/Config.js"></script>
 
-<script>
-
-//automatically get browser language
-var language = window.navigator.userLanguage || window.navigator.language;
-
+    <script>
     Ext.Loader.setConfig({
         enabled: true,
         disableCaching: false,
@@ -66,7 +62,6 @@ var language = window.navigator.userLanguage || window.navigator.language;
     ]);
 </script>
 
-<script src="resources/js/libs/languages/language-selector.js"></script>
 <script src="resources/js/libs/GISHelper.js"></script>
 <script src="resources/js/libs/Helper.js"></script>
 <script src="resources/js/libs/MapReport.js"></script>
@@ -536,7 +531,8 @@ Ext.application({
         //identify tool, located in the CustomControl.js file
         map.addControl(ident);
 
-        //create viewport
+
+            //create viewport
         Ext.create('Ext.Viewport', {
             layout: "fit",
             hideBorders: true,
