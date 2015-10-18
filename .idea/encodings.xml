@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/META-INF" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/WEB-INF/cgi" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/web/index.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/index.jsp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/resources/css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/resources/js" charset="UTF-8" />
   </component>

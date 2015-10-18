@@ -3,14 +3,14 @@
 <meta charset="utf-8">
 <title>GeoExt 2 Generic GIS WEB APP</title>
 
-    <script async=false defer=false src="resources/js/libs/languages/language-selector.js"></script>
+    <script async=false defer=false src="../resources/js/libs/languages/language-selector.js"></script>
     <link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
     <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all.js"></script>
-    <link rel="stylesheet" type="text/css" href="resources/css/example.css"/>
-    <link href="resources/css/icon.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../resources/css/example.css"/>
+    <link href="../resources/css/icon.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
-    <script src="resources/js/thirdParty/proj4js-combined.js"></script>
-    <script src="resources/js/libs/Config.js"></script>
+    <script src="../resources/js/thirdParty/proj4js-combined.js"></script>
+    <script src="../resources/js/libs/Config.js"></script>
 
     <script>
     Ext.Loader.setConfig({
@@ -62,12 +62,12 @@
     ]);
 </script>
 
-<script src="resources/js/libs/GISHelper.js"></script>
-<script src="resources/js/libs/Helper.js"></script>
-<script src="resources/js/libs/MapReport.js"></script>
-<script src="resources/js/libs/CustomControls.js"></script>
-<script src="resources/js/libs/DownloadAreas.js"></script>
-<script type="text/javascript" src="resources/js/panels.js"></script>
+<script src="../resources/js/libs/GISHelper.js"></script>
+<script src="../resources/js/libs/Helper.js"></script>
+<script src="../resources/js/libs/MapReport.js"></script>
+<script src="../resources/js/libs/CustomControls.js"></script>
+<script src="../resources/js/libs/DownloadAreas.js"></script>
+<script type="text/javascript" src="../resources/js/panels.js"></script>
 
 
 <script>
