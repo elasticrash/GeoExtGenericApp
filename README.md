@@ -4,8 +4,9 @@
 *All you need to do to get it working is:*
 
 1. changing the Config.js File located at web/js/libs/
-2. Running it on a Tomcat WebServer (requires a proxy servlet to bypass the cross-origin error of the wfs requests) 
-3. adding your Geoserver Address to the python proxy
+2. Running it on a Tomcat WebServer
+3. Proxy servlet to bypass the cross-origin error of the wfs requests needs python (add path to web.xml)
+4. Add your Geoserver Address to the python proxy
 
 
 There are obviously, a lot of features that are not working properly.
@@ -25,6 +26,8 @@ There are obviously, a lot of features that are not working properly.
 - Add/Remove Layers
 - A Java BackEnd with SQLite to keep preferences and other stuff
   - Db Created
+  - Spring mvc/rest framework added
+    - index.html changed to index.jsp (no jsp tags though in file)
 
 *Distant Future*
 - Search GeonetWork
