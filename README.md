@@ -18,12 +18,14 @@ There are obviously, a lot of features that are not working properly.
 - Query Layers through wfs services
 - Automatically detect browser language and display application in the appropriate language if applicable (english being the default)
 - Show/Hide Layers
+- English and Greek language file (looking for anyone eager to translate to other languages)
 
 *Comming Soon*
-- Complete English and Greek language file
 - Select features and download them as a Shapefile
 - Add/Remove Layers
+- A Java BackEnd with SQLite to keep preferences and other stuff
+  - Db Created
 
 *Distant Future*
 - Search GeonetWork
-- Maybe a Java BackEnd with SQLite to keep preferences and other stuff
+- Add/Search Metadata from SQLite db
