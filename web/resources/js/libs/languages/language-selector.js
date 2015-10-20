@@ -28,12 +28,34 @@ var language = window.navigator.userLanguage || window.navigator.language;
         }
         return xmlhttp;
     }
+
     var XMLHttpFactories = [
         function () {return new XMLHttpRequest()},
         function () {return new ActiveXObject("Msxml2.XMLHTTP")},
         function () {return new ActiveXObject("Msxml3.XMLHTTP")},
         function () {return new ActiveXObject("Microsoft.XMLHTTP")}
     ];
+
+    function getCookie() {
+        var name = "guid=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        }
+        return "";
+    }
+
+    var ck = getCookie();
+    if(ck == "")
+    {
+        var xhrObj = createXMLHTTPObject();
+        xhrObj.open('GET', "rest/guid/", false);
+        xhrObj.send('');
+        document.cookie ="guid=" + xhrObj.responseText;
+    }
+
     if(language == "en-US")
     {
         loadScript('resources/js/libs/languages/en-US.js');

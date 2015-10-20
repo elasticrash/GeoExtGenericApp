@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/rest")
@@ -42,4 +45,17 @@ public class GenericRestController {
         }
         return "X";
     }
+
+    @RequestMapping(value = "/guid", method = RequestMethod.GET)
+    public @ResponseBody
+    String GUID() {
+        DecimalFormat timeFormat4 = new DecimalFormat("0000;0000");
+        
+        Calendar cal = Calendar.getInstance();
+        String val = String.valueOf(cal.get(Calendar.YEAR));
+        val += timeFormat4.format(cal.get(Calendar.DAY_OF_YEAR));
+        val += UUID.randomUUID().toString().replaceAll("-", "");
+        return val;
+    }
+
 }
