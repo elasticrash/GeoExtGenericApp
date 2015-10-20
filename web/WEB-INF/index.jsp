@@ -4,6 +4,7 @@
 <title>GeoExt 2 Generic GIS WEB APP</title>
 
     <script async=false defer=false src="../resources/js/libs/languages/language-selector.js"></script>
+
     <link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
     <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all.js"></script>
     <link rel="stylesheet" type="text/css" href="../resources/css/example.css"/>

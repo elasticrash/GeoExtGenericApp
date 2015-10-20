@@ -6,25 +6,34 @@ var language = window.navigator.userLanguage || window.navigator.language;
 (function () {
 
     function loadScript(url) {
-
-        var script = document.createElement("script")
+        var xhrObj = createXMLHTTPObject();
+        xhrObj.open('GET', url, false);
+        xhrObj.send('');
+        var script = document.createElement('script');
         script.type = "text/javascript";
-
-        if (script.readyState) { //IE
-            script.onreadystatechange = function () {
-                if (script.readyState == "loaded" || script.readyState == "complete") {
-                    script.onreadystatechange = null;
-                }
-            };
-        } else { //Others
-            script.onload = function () {
-            };
-        }
-
-        script.src = url;
+        script.text = xhrObj.responseText;
         document.getElementsByTagName("head")[0].appendChild(script);
     }
 
+    function createXMLHTTPObject() {
+        var xmlhttp = false;
+        for (var i=0;i<XMLHttpFactories.length;i++) {
+            try {
+                xmlhttp = XMLHttpFactories[i]();
+            }
+            catch (e) {
+                continue;
+            }
+            break;
+        }
+        return xmlhttp;
+    }
+    var XMLHttpFactories = [
+        function () {return new XMLHttpRequest()},
+        function () {return new ActiveXObject("Msxml2.XMLHTTP")},
+        function () {return new ActiveXObject("Msxml3.XMLHTTP")},
+        function () {return new ActiveXObject("Microsoft.XMLHTTP")}
+    ];
     if(language == "en-US")
     {
         loadScript('resources/js/libs/languages/en-US.js');
