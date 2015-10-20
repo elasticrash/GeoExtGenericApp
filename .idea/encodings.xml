@@ -7,5 +7,6 @@
     <file url="file://$PROJECT_DIR$/web/WEB-INF/index.jsp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/resources/css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/resources/js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/resources/js/libs/DownloadAreas.js" charset="UTF-8" />
   </component>
 </project>

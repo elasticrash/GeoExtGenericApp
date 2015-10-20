@@ -36,3 +36,7 @@ var LPrintTitle = "Print Title";
 var LTitle = "Title";
 var LWorkPrintHtml = "Please Select a Region and then Press Print";
 var LWorkPrint = "Work Print";
+var LAreaInfo = "Area Info";
+var LSelectedArea = "The Selected Area does not contain any features";
+var LAnswer = "Answer";
+var LAreaSaved = "The Area was saved successfully";

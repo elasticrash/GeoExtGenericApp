@@ -1,9 +1,6 @@
 /**
  * Created by stefanos on 5/5/2015.
  */
-/**
- * Created by stefanos on 5/5/2015.
- */
 Ext.define('Elpho.tools.DownloadParcelButton', {
     extend: 'Ext.button.Button',
     xtype: 't_base_downloadparcelbutton',
@@ -232,7 +229,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                                                     description: Ext.getCmp('dec_id').getValue()
                                                 },
                                                 success: function(response, options) {
-                                                    CustomMessage("Απάντηση", "H Περιοχή Αποθηκεύτηκε με επιτυχία")
+                                                    CustomMessage(LAnswer, LAreaSaved)
                                                 },
                                                 failure: function(response, options) {
                                                 }
@@ -249,7 +246,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                         }
                         else
                         {
-                            CustomMessage("Στοιχεία Περιοχής", "Η Επιλεγμένη Περιοχή δεν διαθέτει αρχικά αγροτεμάχια");
+                            CustomMessage(LAreaInfo, LSelectedArea);
                         }
                     }
                 },

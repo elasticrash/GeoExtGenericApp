@@ -14,4 +14,7 @@
     <mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:annotation-driven />
 
+    <bean id="myBean" class="SQLite.SQLiteConnector" init-method="CreateSchema"/>
+
+
 </beans>
