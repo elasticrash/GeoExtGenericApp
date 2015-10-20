@@ -8,7 +8,6 @@
 3. Proxy servlet to bypass the cross-origin error of the wfs requests needs python (add path to web.xml)
 4. Add your Geoserver Address to the python proxy
 
-
 There are obviously, a lot of features that are not working properly.
 *But the basic concept works. So far the application:*
 - Can load all existing layers from Geoserver
@@ -20,8 +19,9 @@ There are obviously, a lot of features that are not working properly.
 - Automatically detect browser language and display application in the appropriate language if applicable (english being the default)
 - Show/Hide Layers
 - English and Greek language file (looking for anyone eager to translate to other languages)
+- Stores in Cookie a Guid to identify each client instance
 
-*Comming Soon*
+*Comming Soon/Work on progress*
 - Select features and download them as a Shapefile
 - Add/Remove Layers
 - A Java BackEnd with SQLite to keep preferences and other stuff
