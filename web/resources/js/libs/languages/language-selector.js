@@ -4,7 +4,7 @@
 var language = window.navigator.userLanguage || window.navigator.language;
 
 (function () {
-
+//dynamically load the browser language if supported synchronously to avoid the application not loading up properly
     function loadScript(url) {
         var xhrObj = createXMLHTTPObject();
         xhrObj.open('GET', url, false);
