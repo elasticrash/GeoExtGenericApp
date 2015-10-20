@@ -531,7 +531,18 @@ Ext.application({
         //identify tool, located in the CustomControl.js file
         map.addControl(ident);
 
-
+        var toppanel =  Ext.create('Ext.panel.Panel', {
+            border: true,
+            region: "north",
+            height: 30,
+            tbar: []
+        });
+        var bottompanel =  Ext.create('Ext.panel.Panel', {
+            border: true,
+            region: "south",
+            height: 30,
+            tbar: []
+        });
             //create viewport
         Ext.create('Ext.Viewport', {
             layout: "fit",
@@ -539,7 +550,7 @@ Ext.application({
             items: {
                 layout: "border",
                 deferredRender: false,
-                items: [mapPanel, tree, east_search_panel]
+                items: [toppanel,bottompanel,mapPanel, tree, east_search_panel]
             }
         });
 
