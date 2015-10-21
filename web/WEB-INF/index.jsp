@@ -67,6 +67,7 @@
 <script src="../resources/js/libs/MapReport.js"></script>
 <script src="../resources/js/libs/CustomControls.js"></script>
 <script src="../resources/js/libs/DownloadAreas.js"></script>
+<script src="../resources/js/libs/Measure.js"></script>
 <script type="text/javascript" src="../resources/js/panels.js"></script>
 
 
@@ -79,12 +80,6 @@ Ext.application({
 
         map = new OpenLayers.Map("map", {
             projection: epsg900913,
-            resolutions:[793.75158750317507,529.16772500211675,264.58386250105838,
-                132.29193125052919,66.145965625264594,33.072982812632297,
-                13.229193125052918,7.9375158750317505,3.3072982812632294,
-                1.3229193125052918,0.66145965625264591,0.26458386250105836,
-                0.13229193125052918,0.066145965625264591,0.026458386250105836
-            ],
             displayProjection: epsg,
             controls:[
                 new OpenLayers.Control.PanZoomBar(),
@@ -221,28 +216,32 @@ Ext.application({
         map.addLayer(highlight);
 
         //SCALE STORE
-        var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
-        var zoomSelector = Ext.create("Ext.form.ComboBox", {
-            store: scaleStore,
-            fieldLabel: LScale,
-            listConfig: {
-                getInnerTpl: function() {
-                    return "1: {scale:round(0)}";
-                }
-            },
-            editable: false,
-            triggerAction: 'all',
-            queryMode: 'local',
-            labelWidth: 120
-        });
+        //var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
+        //MEASUREMENTS
+        var measurearea = Elpho.tools.MeasureAreaButton;
+        var measureline = Elpho.tools.MeasureLineButton;
 
-        //TOOLS
-        zoomSelector.on('select',
-                function(combo, record, index) {
-                    map.zoomTo(record[0].get("level"));
-                },
-                this
-        );
+        //ZOOM SELECTOR
+//        var zoomSelector = Ext.create("Ext.form.ComboBox", {
+//            store: scaleStore,
+//            fieldLabel: LScale,
+//            listConfig: {
+//                getInnerTpl: function() {
+//                    return "1: {scale:round(0)}";
+//                }
+//            },
+//            editable: false,
+//            triggerAction: 'all',
+//            queryMode: 'local',
+//            labelWidth: 120
+//        });
+
+//        zoomSelector.on('select',
+//                function(combo, record, index) {
+//                    map.zoomTo(record[0].get("level"));
+//                },
+//                this
+//        );
 
         //zoom in action
         var zoomin_action = new GeoExt.Action({
@@ -294,7 +293,7 @@ Ext.application({
             }
         };
 
-        var XEMselection = Ext.create('Ext.button.Button',{
+        var IdentifyButton = Ext.create('Ext.button.Button',{
             iconCls: 'icon-info',
             tooltip: LIdentify,
             handler: function() {
@@ -392,7 +391,8 @@ Ext.application({
 
                             return Ext.String.format('<div id="{0}"></div>', id);
                         }},
-                        {text: LUploadArea,
+                        {
+                            text: LUploadArea,
                             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                                 var id = Ext.id();
                                 Ext.defer(function () {
@@ -439,8 +439,7 @@ Ext.application({
             region: "center",
             map: map,
             center: [2639241, 4591171],
-            zoom: 7,
-            tbar: [zoomSelector, zoomBox,navigate,XEMselection,printbutton,uploadArea,downloadArea,resetSelections, previous, next]
+            zoom: 7
         });
 
         //TREE
@@ -535,7 +534,7 @@ Ext.application({
             border: true,
             region: "north",
             height: 30,
-            tbar: []
+            tbar: [zoomBox,navigate,previous, next,'|',measurearea, measureline,'|',IdentifyButton,'|', printbutton,'|', resetSelections, "|", uploadArea,downloadArea]
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {
             border: true,

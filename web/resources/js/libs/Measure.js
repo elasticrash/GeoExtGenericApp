@@ -2,9 +2,9 @@
 Ext.define('Elpho.tools.MeasureAreaButton', {
     extend: 'Ext.button.Button',
     xtype: 't_measureareabutton',
-    msgBoxTitle: 'Μέτρηση',
-    msgBoxText: 'Εμβαδόν: ',
-    tooltip: 'Μέτρηση Εμβαδού',
+    msgBoxTitle: LMeasurment,
+    msgBoxText: LArea,
+    tooltip: LMeasureArea,
     iconCls: 'icon-measure-area',
     handlerClass: OpenLayers.Handler.Polygon,
     requires: [
@@ -119,9 +119,9 @@ Ext.define('Elpho.tools.MeasureAreaButton', {
 Ext.define('Elpho.tools.MeasureLineButton', {
     extend: 'Ext.button.Button',
     xtype: 't_measurelinebutton',
-    msgBoxTitle: 'Μέτρηση',
-    msgBoxText: 'Απόσταση: ',
-    tooltip: 'Μέτρηση Απόστασης',
+    msgBoxTitle: LMeasurment,
+    msgBoxText: LDistance,
+    tooltip: LMeasureDistance,
     iconCls: 'icon-measure-line',
     handlerClass: OpenLayers.Handler.Path,
     requires: [
