@@ -1,8 +1,11 @@
 package rest;
 
 
+import DTO.DBLayer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +25,6 @@ public class GenericRestController {
     @RequestMapping(value = "/layers", method = RequestMethod.GET)
     public @ResponseBody
     String layers() {
-        //SQLiteConnector.CreateSchema();
         Statement stmt = null;
         Connection c = SQLiteConnector.Connector();
         try {
@@ -44,6 +46,26 @@ public class GenericRestController {
             e.printStackTrace();
         }
         return "X";
+    }
+
+    @RequestMapping(value = "/addlayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    String addlayer(@RequestBody DBLayer dbl) {
+        Statement stmt = null;
+        Connection c = SQLiteConnector.Connector();
+        try {
+            stmt = c.createStatement();
+
+            String sql = "INSERT INTO LAYERS (NAME, NS, ADDRESS, SRS, VISIBLE) VALUES("+dbl.Name+","+dbl.Ns +","+dbl.Address+","+dbl.Visible+")";
+            ResultSet rs =stmt.executeQuery(sql);
+            rs.close();
+            stmt.close();
+            c.close();
+            return "SUCCESS";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "SUCCESS";
     }
 
     @RequestMapping(value = "/guid", method = RequestMethod.GET)
