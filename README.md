@@ -20,14 +20,19 @@ There are obviously, a lot of features that are not working properly.
 - Show/Hide Layers
 - English and Greek language file (looking for anyone eager to translate to other languages)
 - Stores in Cookie a Guid to identify each client instance
+- Spring mvc/rest framework added
 
-*Comming Soon/Work on progress*
+*notes*
+- index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
+
+*Work on progress*
+- A Java BackEnd with SQLite
+- Sql Scripts for building the database
+  - For the time the database gets deleted on application startup
+
+*Comming Soon*
 - Select features and download them as a Shapefile
 - Add/Remove Layers
-- A Java BackEnd with SQLite to keep preferences and other stuff
-  - Db Created
-  - Spring mvc/rest framework added
-    - index.html changed to index.jsp (no jsp tags though in file)
 
 *Distant Future*
 - Search GeonetWork
