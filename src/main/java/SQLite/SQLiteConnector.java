@@ -1,5 +1,6 @@
 package SQLite;
 
+import java.io.File;
 import java.sql.*;
 
 /**
@@ -8,6 +9,8 @@ import java.sql.*;
 public class SQLiteConnector {
     public static void CreateSchema()
     {
+        File f = new File("Geodb.db");
+        f.delete();
         Connection c = null;
         Statement stmt = null;
         try {
@@ -15,7 +18,7 @@ public class SQLiteConnector {
             c = Connector();
             stmt = c.createStatement();
             String sql = "CREATE TABLE if not exists LAYERS " +
-                    "(ID INT PRIMARY KEY NOT NULL," +
+                    "(ID INTEGER PRIMARY KEY," +
                     " NAME TEXT, " +
                     " NS TEXT, " +
                     " ADDRESS TEXT, " +
@@ -38,7 +41,7 @@ public class SQLiteConnector {
         Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:GeoApp.db");
+            c = DriverManager.getConnection("jdbc:sqlite:Geodb.db");
             return c;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

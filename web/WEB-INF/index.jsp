@@ -211,12 +211,12 @@ Ext.application({
                             url: "rest/addlayer",
                             method: 'POST',
                             jsonData: {
-                                NAME: opmap.name,
-                                NS: "ELPHO",
-                                ADDRESS: opmap.url,
-                                SRS: geoserverWmsDefaults.wmsSrsName,
-                                VISIBLE: 1,
-                                USERID: document.cookie.split("=")[1]
+                                Name: opmap.name,
+                                Ns: "ELPHO",
+                                Address: opmap.url,
+                                Srs: geoserverWmsDefaults.wmsSrsName,
+                                Visible: 1,
+                                Userid: document.cookie.split("=")[1]
                             },
                             success: function (response, options) {
                             },

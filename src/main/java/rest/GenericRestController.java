@@ -51,14 +51,14 @@ public class GenericRestController {
     @RequestMapping(value = "/addlayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     String addlayer(@RequestBody DBLayer dbl) {
+
         Statement stmt = null;
         Connection c = SQLiteConnector.Connector();
         try {
             stmt = c.createStatement();
 
-            String sql = "INSERT INTO LAYERS (NAME, NS, ADDRESS, SRS, VISIBLE, USERID) VALUES("+dbl.Name+","+dbl.Ns +","+dbl.Address+","+dbl.Srs+ "," +dbl.Visible +","+ dbl.Userid+")";
-            ResultSet rs =stmt.executeQuery(sql);
-            rs.close();
+            String sql = "INSERT INTO LAYERS (NAME, NS, ADDRESS, SRS, VISIBLE, USERID) VALUES('"+dbl.getName()+"','"+dbl.getNs() +"','"+dbl.getAddress()+"','"+dbl.getSrs()+ "'," +dbl.getVisible() +",'"+ dbl.getUserid()+"')";
+            stmt.executeUpdate(sql);
             stmt.close();
             c.close();
             return "SUCCESS";
