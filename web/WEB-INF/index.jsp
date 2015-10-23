@@ -168,11 +168,11 @@ Ext.application({
         }
         // Dynamically add layers
         wmscapstore.load({
-            callback: function(records, operation, success) {
-                for(var i = 0; i < wmscapstore.data.keys.length; i++) {
+            callback: function (records, operation, success) {
+                for (var i = 0; i < wmscapstore.data.keys.length; i++) {
                     for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
                         var opmap = new OpenLayers.Layer.WMS(
-                                wmscapstore.data.items[i].data.title + " ("+ wmscapstore.data.items[i].data.styles[j].name+")", geoserverWmsDefaults.wmsUrl,
+                                wmscapstore.data.items[i].data.title + " (" + wmscapstore.data.items[i].data.styles[j].name + ")", geoserverWmsDefaults.wmsUrl,
                                 {
                                     LAYERS: wmscapstore.data.items[i].data.name,
                                     STYLES: wmscapstore.data.items[i].data.styles[j].name,
@@ -200,15 +200,33 @@ Ext.application({
                         });
 
                         Ext.getCmp('mainMenu').add({
-                            id: "id"+opmap.id,
+                            id: "id" + opmap.id,
                             text: opmap.name,
                             checked: true,
                             checkHandler: onItemCheck,
                             llmap: opmap
                         });
+
+                        Ext.Ajax.request({
+                            url: "rest/addlayer",
+                            method: 'POST',
+                            jsonData: {
+                                NAME: opmap.name,
+                                NS: "ELPHO",
+                                ADDRESS: opmap.url,
+                                SRS: geoserverWmsDefaults.wmsSrsName,
+                                VISIBLE: 1,
+                                USERID: document.cookie.split("=")[1]
+                            },
+                            success: function (response, options) {
+                            },
+                            failure: function (response, options) {
+                            }
+                        });
                     }
                 }
-            }});
+            }
+        });
 
         //add predifined local layers
         map.addLayer(layer);
@@ -301,19 +319,19 @@ Ext.application({
             }
         });
 
-        map.events.register('zoomend', this, function() {
-            var scale = scaleStore.queryBy(function(record){
-                return this.map.getZoom() == record.data.level;
-            });
-
-            if (scale.length > 0) {
-                scale = scale.items[0];
-                zoomSelector.setValue("1 : " + parseInt(scale.data.scale));
-            } else {
-                if (!zoomSelector.rendered) return;
-                zoomSelector.clearValue();
-            }
-        });
+//        map.events.register('zoomend', this, function() {
+//            var scale = scaleStore.queryBy(function(record){
+//                return this.map.getZoom() == record.data.level;
+//            });
+//
+//            if (scale.length > 0) {
+//                scale = scale.items[0];
+//                zoomSelector.setValue("1 : " + parseInt(scale.data.scale));
+//            } else {
+//                if (!zoomSelector.rendered) return;
+//                zoomSelector.clearValue();
+//            }
+//        });
 
         var uploadArea = Elpho.tools.DownloadParcelButton;
 

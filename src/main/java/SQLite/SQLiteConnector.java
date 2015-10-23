@@ -15,15 +15,18 @@ public class SQLiteConnector {
             c = Connector();
             stmt = c.createStatement();
             String sql = "CREATE TABLE if not exists LAYERS " +
-                    "(ID INT PRIMARY KEY     NOT NULL," +
-                    " NAME           TEXT    NOT NULL, " +
-                    " NS            INT     NOT NULL, " +
-                    " ADDRESS        CHAR(50), " +
-                    " SRS         CHAR(50)," +
-                    " VISIBLE         INTEGER)";
+                    "(ID INT PRIMARY KEY NOT NULL," +
+                    " NAME TEXT, " +
+                    " NS TEXT, " +
+                    " ADDRESS TEXT, " +
+                    " SRS TEXT," +
+                    " VISIBLE INTEGER, "+
+                    " USERID TEXT)";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
+            System.out.println("table created successfully");
+            System.out.println(sql);
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);

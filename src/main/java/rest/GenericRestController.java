@@ -56,7 +56,7 @@ public class GenericRestController {
         try {
             stmt = c.createStatement();
 
-            String sql = "INSERT INTO LAYERS (NAME, NS, ADDRESS, SRS, VISIBLE) VALUES("+dbl.Name+","+dbl.Ns +","+dbl.Address+","+dbl.Visible+")";
+            String sql = "INSERT INTO LAYERS (NAME, NS, ADDRESS, SRS, VISIBLE, USERID) VALUES("+dbl.Name+","+dbl.Ns +","+dbl.Address+","+dbl.Srs+ "," +dbl.Visible +","+ dbl.Userid+")";
             ResultSet rs =stmt.executeQuery(sql);
             rs.close();
             stmt.close();

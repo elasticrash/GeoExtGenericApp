@@ -8,4 +8,6 @@ public class DBLayer {
     public String Ns;
     public String Address;
     public Integer Visible;
+    public String Srs;
+    public String Userid;
 }
