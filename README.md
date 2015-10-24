@@ -24,9 +24,12 @@ There are obviously, a lot of features that are not working properly.
 
 *notes*
 - index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
+- I did a lot of work based on SQLite (not commited) but I am going to switch to Postgres for two reasons
+  - I keep getting, the db, locked and its too much fuss to find a way around it
+  - Since someone has Geoserver, it's a logical choice
 
 *Work on progress*
-- A Java BackEnd with SQLite
+- A Java BackEnd with ~~SQLite~~ PostgreSQL
 - Sql Scripts for building the database
   - For the time the database gets deleted on application startup
 
@@ -36,6 +39,6 @@ There are obviously, a lot of features that are not working properly.
 
 *Distant Future*
 - Search GeonetWork
-- Add/Search Metadata from SQLite db
+- Add/Search Metadata from ~~SQLite~~  PostgreSQL db
 
 [follow me at twitter](http://twitter.com/CodenTonic).
