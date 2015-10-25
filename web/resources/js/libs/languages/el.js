@@ -45,3 +45,5 @@ var LArea = "Εμβαδό";
 var LMeasurment = "Μέτρηση: ";
 var LDistance = "Απόσταση: ";
 var LMeasureDistance = "Μέτρηση Απόστασης";
+var LOptions = "Επιλογές";
+var LLogin = "Σύνδεση";

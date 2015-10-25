@@ -68,6 +68,7 @@
 <script src="../resources/js/libs/CustomControls.js"></script>
 <script src="../resources/js/libs/DownloadAreas.js"></script>
 <script src="../resources/js/libs/Measure.js"></script>
+<script src="../resources/js/libs/login.js"></script>
 <script type="text/javascript" src="../resources/js/panels.js"></script>
 
 
@@ -440,6 +441,24 @@ Ext.application({
             }
         });
 
+        var options = Ext.create('Ext.button.Button', {
+            tooltip: LOptions,
+            iconCls: 'icon-options',
+            scale: 'medium',
+            handler: function() {
+
+            }
+        });
+
+        var login = Ext.create('Ext.button.Button', {
+            tooltip: LLogin,
+            iconCls: 'icon-login',
+            scale: 'medium',
+            handler: function() {
+                OpenLoginForm();
+            }
+        });
+
         //MAP PANEL
         mapPanel = Ext.create('GeoExt.panel.Map', {
             border: true,
@@ -541,7 +560,7 @@ Ext.application({
             border: true,
             region: "north",
             height: 40,
-            tbar: [zoomBox,navigate,previous, next,'|',measurearea, measureline,'|',IdentifyButton,'|', printbutton,'|', resetSelections, "|", uploadArea,downloadArea]
+            tbar: [zoomBox,navigate,previous, next,'|',measurearea, measureline,'|',IdentifyButton,'|', printbutton,'|', resetSelections, "|", uploadArea, downloadArea, "->", options, login]
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {
             border: true,

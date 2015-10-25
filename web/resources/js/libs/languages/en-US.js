@@ -45,3 +45,5 @@ var LArea = "Area: ";
 var LMeasurment = "Measurment";
 var LDistance = "Distance: ";
 var LMeasureDistance = "Measure Distance";
+var LOptions = "Options";
+var LLogin = "Login";
