@@ -207,8 +207,9 @@ Ext.application({
                             llmap: opmap
                         });
 
+                        //CHECK WHETHER THERE IS A NEED TO REWRITE LAYERS TO POSTGRES DB
                         Ext.Ajax.request({
-                            url: "rest/addlayer",
+                            url: "rest/IdExists",
                             method: 'POST',
                             jsonData: {
                                 Name: opmap.name,
@@ -219,10 +220,30 @@ Ext.application({
                                 Userid: document.cookie.split("=")[1]
                             },
                             success: function (response, options) {
+                                var result = Ext.JSON.decode(response.responseText);
+                                if(result.ElementCount == 0) {
+                                    Ext.Ajax.request({
+                                        url: "rest/addlayer",
+                                        method: 'POST',
+                                        jsonData: {
+                                            Name: result.name,
+                                            Ns: result.Ns,
+                                            Address: result.Address,
+                                            Srs: result.Srs,
+                                            Visible: result.Visible,
+                                            Userid: result.Userid
+                                        },
+                                        success: function (response, options) {
+                                        },
+                                        failure: function (response, options) {
+                                        }
+                                    });
+                                }
                             },
                             failure: function (response, options) {
                             }
                         });
+
                     }
                 }
             }

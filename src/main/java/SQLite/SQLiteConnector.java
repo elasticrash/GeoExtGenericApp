@@ -9,16 +9,13 @@ import java.sql.*;
 public class SQLiteConnector {
     public static void CreateSchema()
     {
-        File f = new File("Geodb.db");
-        f.delete();
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
             c = Connector();
             stmt = c.createStatement();
             String sql = "CREATE TABLE if not exists LAYERS " +
-                    "(ID INTEGER PRIMARY KEY," +
+                    "(ID serial primary key," +
                     " NAME TEXT, " +
                     " NS TEXT, " +
                     " ADDRESS TEXT, " +
@@ -34,14 +31,13 @@ public class SQLiteConnector {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
     }
     public static Connection Connector() {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:Geodb.db");
+            DriverManager.registerDriver(new org.postgresql.Driver());
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");
             return c;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -49,4 +45,22 @@ public class SQLiteConnector {
         }
         return null;
     }
+
+//    public static void CreateSchema()
+//    {
+//        Statement stmt;
+//        Connection c = SQLiteConnector.Connector();
+//        try {
+//            String strI = "";
+//            stmt = c.createStatement();
+//
+//            String sql = "CREATE SCHEMA IF NOT EXISTS GEODB";
+//            stmt.executeQuery(sql);
+//                       stmt.close();
+//            c.close();
+//            System.out.println("Schema Created");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

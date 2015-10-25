@@ -5,10 +5,7 @@ import DTO.DBLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import SQLite.SQLiteConnector;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,34 +22,34 @@ public class GenericRestController {
     @RequestMapping(value = "/layers", method = RequestMethod.GET)
     public @ResponseBody
     String layers() {
-        Statement stmt = null;
+        Statement stmt;
         Connection c = SQLiteConnector.Connector();
         try {
+            String strI = "";
             stmt = c.createStatement();
-
         String sql = "SELECT COUNT(*) from LAYERS";
             ResultSet rs =stmt.executeQuery(sql);
             while ( rs.next() ) {
-                int count = rs.getInt("COUNT(*)");
+                int count = rs.getInt("count");
                 StringBuilder sb = new StringBuilder();
                 sb.append(count);
-                String strI = sb.toString();
-              return strI;
+                strI = sb.toString();
+                System.out.println("Number of records in layers "+strI);
             }
             rs.close();
             stmt.close();
             c.close();
+            return strI;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "X";
+        return "ERROR";
     }
 
     @RequestMapping(value = "/addlayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     String addlayer(@RequestBody DBLayer dbl) {
-
-        Statement stmt = null;
+        Statement stmt;
         Connection c = SQLiteConnector.Connector();
         try {
             stmt = c.createStatement();
@@ -61,11 +58,35 @@ public class GenericRestController {
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
+            System.out.println(sql);
+
             return "SUCCESS";
         } catch (SQLException e) {
             e.printStackTrace();
+            return "FAIL";
         }
-        return "SUCCESS";
+    }
+
+    @RequestMapping(value = "/updatelayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    String updatelayer(@RequestBody DBLayer dbl) {
+        Statement stmt;
+        Connection c = SQLiteConnector.Connector();
+        try {
+            stmt = c.createStatement();
+
+            String sql = "UPDATE INTO LAYERS SET NAME ="+dbl.getName()+",NS="+dbl.getNs()+",ADDRESS="+dbl.getAddress()+
+                    ",SRS="+ dbl.getSrs()+",VISIBLE="+dbl.getVisible()+",USERID="+ dbl.getUserid() + "WHERE NAME="+dbl.getName()+" AND USERID="+dbl.getUserid();
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+            System.out.println(sql);
+
+            return "SUCCESS";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
     }
 
     @RequestMapping(value = "/guid", method = RequestMethod.GET)
@@ -80,4 +101,27 @@ public class GenericRestController {
         return val;
     }
 
+    @RequestMapping(value = "/IdExists", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DBLayer IdExists(@RequestBody DBLayer dbl) {
+        Statement stmt;
+        Connection c = SQLiteConnector.Connector();
+        try {
+            stmt = c.createStatement();
+            String sql = "SELECT COUNT(*) from LAYERS WHERE USERID='"+dbl.getUserid()+"' AND NAME="+"'"+dbl.getName()+"'";
+            ResultSet rs =stmt.executeQuery(sql);
+            while ( rs.next() ) {
+                int count = rs.getInt("count");
+                dbl.setElementCount(count);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+            System.out.println("User Has stored  "+ dbl.getElementCount() + " instance of this Layers");
+            return dbl;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

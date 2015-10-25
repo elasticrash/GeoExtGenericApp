@@ -1,16 +1,20 @@
 package DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by tougo on 23/10/15.
  */
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DBLayer {
-    public Integer ID;
+    @JsonIgnore
+    public Integer id;
     public int getId() {
-        return ID;
+        return id;
     }
-    public void setId(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
     public String Name;
     public String getName() {
@@ -53,5 +57,12 @@ public class DBLayer {
     }
     public void setUserid(String Userid) {
         this.Userid = Userid;
+    }
+    public Integer ElementCount;
+    public Integer getElementCount() {
+        return ElementCount;
+    }
+    public void setElementCount(Integer ElementCount) {
+        this.ElementCount = ElementCount;
     }
 }
