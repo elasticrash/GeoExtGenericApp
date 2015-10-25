@@ -6,7 +6,7 @@ import java.sql.*;
 /**
  * Created by tougo on 18/10/15.
  */
-public class SQLiteConnector {
+public class PostgreSQLConnector {
     public static void CreateSchema()
     {
         Connection c = null;
@@ -49,7 +49,7 @@ public class SQLiteConnector {
 //    public static void CreateSchema()
 //    {
 //        Statement stmt;
-//        Connection c = SQLiteConnector.Connector();
+//        Connection c = PostgreSQLConnector.Connector();
 //        try {
 //            String strI = "";
 //            stmt = c.createStatement();

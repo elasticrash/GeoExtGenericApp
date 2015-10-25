@@ -2,11 +2,12 @@ package rest;
 
 
 import DTO.DBLayer;
+import SQLite.PostgreSQLConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import SQLite.SQLiteConnector;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class GenericRestController {
     public @ResponseBody
     String layers() {
         Statement stmt;
-        Connection c = SQLiteConnector.Connector();
+        Connection c = PostgreSQLConnector.Connector();
         try {
             String strI = "";
             stmt = c.createStatement();
@@ -50,7 +51,7 @@ public class GenericRestController {
     public @ResponseBody
     String addlayer(@RequestBody DBLayer dbl) {
         Statement stmt;
-        Connection c = SQLiteConnector.Connector();
+        Connection c = PostgreSQLConnector.Connector();
         try {
             stmt = c.createStatement();
 
@@ -71,7 +72,7 @@ public class GenericRestController {
     public @ResponseBody
     String updatelayer(@RequestBody DBLayer dbl) {
         Statement stmt;
-        Connection c = SQLiteConnector.Connector();
+        Connection c = PostgreSQLConnector.Connector();
         try {
             stmt = c.createStatement();
 
@@ -105,7 +106,7 @@ public class GenericRestController {
     public @ResponseBody
     DBLayer IdExists(@RequestBody DBLayer dbl) {
         Statement stmt;
-        Connection c = SQLiteConnector.Connector();
+        Connection c = PostgreSQLConnector.Connector();
         try {
             stmt = c.createStatement();
             String sql = "SELECT COUNT(*) from LAYERS WHERE USERID='"+dbl.getUserid()+"' AND NAME="+"'"+dbl.getName()+"'";
