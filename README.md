@@ -20,17 +20,25 @@ There are obviously, a lot of features that are not working properly.
 - Show/Hide Layers
 - English and Greek language file (looking for anyone eager to translate to other languages)
 - Stores in Cookie a Guid to identify each client instance
+- Spring mvc/rest framework added
 
-*Comming Soon/Work on progress*
+*notes*
+- index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
+- I did a lot of work based on SQLite (not commited) but I am going to switch to Postgres for two reasons
+  - I keep getting, the db, locked and its too much fuss to find a way around it
+  - Since someone has Geoserver, it's a logical choice
+
+*Work on progress*
+- A Java BackEnd with ~~SQLite~~ PostgreSQL
+- Sql Scripts for building the database
+  - For the time the database gets deleted on application startup
+
+*Comming Soon*
 - Select features and download them as a Shapefile
 - Add/Remove Layers
-- A Java BackEnd with SQLite to keep preferences and other stuff
-  - Db Created
-  - Spring mvc/rest framework added
-    - index.html changed to index.jsp (no jsp tags though in file)
 
 *Distant Future*
 - Search GeonetWork
-- Add/Search Metadata from SQLite db
+- Add/Search Metadata from ~~SQLite~~  PostgreSQL db
 
 [follow me at twitter](http://twitter.com/CodenTonic).
