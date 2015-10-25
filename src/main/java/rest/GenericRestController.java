@@ -118,7 +118,7 @@ public class GenericRestController {
             rs.close();
             stmt.close();
             c.close();
-            System.out.println("User Has stored  "+ dbl.getElementCount() + " instance of this Layers");
+            System.out.println("User Has stored  "+ dbl.getElementCount() + " instance of this Layers: "+ dbl.getName());
             return dbl;
         } catch (SQLException e) {
             e.printStackTrace();

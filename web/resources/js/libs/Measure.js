@@ -6,6 +6,7 @@ Ext.define('Elpho.tools.MeasureAreaButton', {
     msgBoxText: LArea,
     tooltip: LMeasureArea,
     iconCls: 'icon-measure-area',
+    scale: 'medium',
     handlerClass: OpenLayers.Handler.Polygon,
     requires: [
         'GeoExt.Action'
@@ -25,7 +26,7 @@ Ext.define('Elpho.tools.MeasureAreaButton', {
         strokeDashstyle: 'dashdot'
     },
 
-    mapToggleGroup: "map-unique-action",
+    mapToggleGroup: "tools",
     constructor: function (config) {
         var me = this,
             action;
@@ -123,6 +124,7 @@ Ext.define('Elpho.tools.MeasureLineButton', {
     msgBoxText: LDistance,
     tooltip: LMeasureDistance,
     iconCls: 'icon-measure-line',
+    scale: 'medium',
     handlerClass: OpenLayers.Handler.Path,
     requires: [
         'GeoExt.Action'
@@ -142,7 +144,7 @@ Ext.define('Elpho.tools.MeasureLineButton', {
         strokeDashstyle: 'dashdot'
     },
 
-    mapToggleGroup: "map-unique-action",
+    mapToggleGroup: "tools",
     constructor: function (config) {
         var me = this,
             action;

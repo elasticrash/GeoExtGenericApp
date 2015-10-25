@@ -14,6 +14,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
     renderConfirmMsg: '',
     tooltip: LUploadArea,
     iconCls: 'icon-upload',
+    scale: 'medium',
     requires: ['GeoExt.Action'],
     constructor: function() {
         var me = this,

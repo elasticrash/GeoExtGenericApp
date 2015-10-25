@@ -254,44 +254,19 @@ Ext.application({
         map.addLayer(vector);
         map.addLayer(highlight);
 
-        //SCALE STORE
-        //var scaleStore = Ext.create("GeoExt.data.ScaleStore", {map: map});
         //MEASUREMENTS
         var measurearea = Elpho.tools.MeasureAreaButton;
         var measureline = Elpho.tools.MeasureLineButton;
-
-        //ZOOM SELECTOR
-//        var zoomSelector = Ext.create("Ext.form.ComboBox", {
-//            store: scaleStore,
-//            fieldLabel: LScale,
-//            listConfig: {
-//                getInnerTpl: function() {
-//                    return "1: {scale:round(0)}";
-//                }
-//            },
-//            editable: false,
-//            triggerAction: 'all',
-//            queryMode: 'local',
-//            labelWidth: 120
-//        });
-
-//        zoomSelector.on('select',
-//                function(combo, record, index) {
-//                    map.zoomTo(record[0].get("level"));
-//                },
-//                this
-//        );
 
         //zoom in action
         var zoomin_action = new GeoExt.Action({
             control: new OpenLayers.Control.ZoomBox,
             map: map,
             iconCls: 'icon-zoom-area',
-            // button options
+            scale: 'medium',
             toggleGroup: "tools",
             allowDepress: false,
-            tooltip: LZoomIn,
-            // check item options
+            tooltip: LZoomAreaIn,
             group: "tools"
         });
 
@@ -300,6 +275,7 @@ Ext.application({
             control: new OpenLayers.Control.Navigation(),
             map: map,
             iconCls: 'icon-pan',
+            scale: 'medium',
             toggleGroup: "tools",
             allowDepress: false,
             pressed: true,
@@ -314,6 +290,7 @@ Ext.application({
         var resetSelections = Ext.create('Ext.button.Button', {
             tooltip:  LClearResults,
             iconCls: 'icon-reset',
+            scale: 'medium',
             handler: function() {
                 highlight.removeAllFeatures();
                 vector.removeAllFeatures();
@@ -325,6 +302,7 @@ Ext.application({
             xtype: 'button',
             tooltip: LPrint,
             iconCls: 'icon-print',
+            scale: 'medium',
             margin: 5,
             handler: function () {
                 var print = Ext.create(Elpho.widgets.MapPrintWindow);
@@ -335,24 +313,11 @@ Ext.application({
         var IdentifyButton = Ext.create('Ext.button.Button',{
             iconCls: 'icon-info',
             tooltip: LIdentify,
+            scale: 'medium',
             handler: function() {
                 ident.activate();
             }
         });
-
-//        map.events.register('zoomend', this, function() {
-//            var scale = scaleStore.queryBy(function(record){
-//                return this.map.getZoom() == record.data.level;
-//            });
-//
-//            if (scale.length > 0) {
-//                scale = scale.items[0];
-//                zoomSelector.setValue("1 : " + parseInt(scale.data.scale));
-//            } else {
-//                if (!zoomSelector.rendered) return;
-//                zoomSelector.clearValue();
-//            }
-//        });
 
         var uploadArea = Elpho.tools.DownloadParcelButton;
 
@@ -362,6 +327,7 @@ Ext.application({
         var paction = Ext.create('GeoExt.Action', {
             iconCls: 'icon-previous',
             control: ctrl.previous,
+            scale: 'medium',
             disabled: true,
             tooltip: LPreviousExtent
         });
@@ -371,6 +337,7 @@ Ext.application({
         var naction = Ext.create('GeoExt.Action', {
             iconCls: 'icon-next',
             control: ctrl.next,
+            scale: 'medium',
             disabled: true,
             tooltip: LNextExtent
         });
@@ -380,6 +347,7 @@ Ext.application({
         var downloadArea = Ext.create('Ext.button.Button', {
             tooltip: LDownloadArea,
             iconCls: 'icon-download',
+            scale: 'medium',
             handler: function() {
 
                 Ext.define('DList', {
@@ -572,7 +540,7 @@ Ext.application({
         var toppanel =  Ext.create('Ext.panel.Panel', {
             border: true,
             region: "north",
-            height: 30,
+            height: 40,
             tbar: [zoomBox,navigate,previous, next,'|',measurearea, measureline,'|',IdentifyButton,'|', printbutton,'|', resetSelections, "|", uploadArea,downloadArea]
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {

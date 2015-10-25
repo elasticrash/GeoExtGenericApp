@@ -1,6 +1,6 @@
 var LClearResults = "Clear Results";
 var LScale = "Scale";
-var LZoomIn = "Zoom In";
+var LZoomAreaIn = "Zoom To Area";
 var LShowHideLayers = "Show/Hide Layers";
 var LHideAll = "Hide All Layers";
 var LNavigate = "Navigate";

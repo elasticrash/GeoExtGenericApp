@@ -1,40 +1,40 @@
 .icon-save {
-     background-image:url(images/disk.png) !important;
+     background-image:url(images/save1.png) !important;
  }
 .icon-print {
-    background-image:url(images/printer.png) !important;
+    background-image:url(images/print.png) !important;
 }
 .icon-pan {
-     background-image:url(images/gis_icons/mapPan.png) !important;
+     background-image:url(images/pan.png) !important;
  }
 
 .icon-zoom-area {
-    background-image:url(images/gis_icons/area_zoom.png) !important;
+    background-image:url(images/zoom-region.png) !important;
 }
 
 .icon-info {
-    background-image:url(images/info16.png) !important;
+    background-image:url(images/identify.png) !important;
 }
-.icon-info-suit {
-    background-image:url(images/suit.png) !important;
+.icon-options {
+    background-image:url(images/options.png) !important;
 }
-.icon-info2 {
-    background-image:url(images/eyes.png) !important;
+.icon-login {
+    background-image:url(images/login.png) !important;
 }
 
 .icon-measure-area {
-    background-image:url(images/gis_elpho/measure-polygon.png) !important;
+    background-image:url(images/area-measure.png) !important;
 }
 
 .icon-measure-line {
-    background-image:url(images/gis_elpho/measure-line.png) !important;
+    background-image:url(images/length-measure.png) !important;
 }
 
 .icon-polygon-select {
-    background-image:url(images/gis_elpho/select_polygon.png) !important;
+    background-image:url(images/select.png) !important;
 }
 .icon-polygon-query {
-    background-image:url(images/gis_elpho/polygon_query.png) !important;
+    background-image:url(images/search.png) !important;
 }
 
 .gx-popup-anc {
@@ -46,17 +46,17 @@
 }
 
 .icon-previous {
-    background-image:url(images/previous.png) !important;;
+    background-image:url(images/zoom-last.png) !important;;
 }
 .icon-next {
-    background-image:url(images/next.png) !important;;
+    background-image:url(images/zoom-next.png) !important;;
 }
 .icon-reset {
-    background-image:url(images/reset.png) !important;;
+    background-image:url(images/monitor-erase.png) !important;;
 }
 .icon-download {
-    background-image:url(images/download.png) !important;;
+    background-image:url(images/save.png) !important;;
 }
 .icon-upload {
-    background-image:url(images/upload.png) !important;;
+    background-image:url(images/open.png) !important;;
 }

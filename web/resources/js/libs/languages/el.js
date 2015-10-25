@@ -1,6 +1,6 @@
 var LClearResults = "Καθαρισμός Αποτελεσμάτων";
 var LScale = "Κλίμακα";
-var LZoomIn = "Μεγέθύνση";
+var LZoomAreaIn = "Μεγέθύνση σε Περιοχή";
 var LShowHideLayers = "Εμφάνιση/Απόκρυψη Επιπέδων";
 var LHideAll = "Απόκρυψη Όλων των Επιπέδων";
 var LNavigate = "Πλοήγηση";
