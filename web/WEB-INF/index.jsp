@@ -36,6 +36,8 @@
     var highlight;
     var table=[];
     var operators=[];
+    var layers=[];
+
 
     Ext.require([
         'Ext.direct.*',
@@ -62,14 +64,15 @@
     ]);
 </script>
 
-<script src="../resources/js/libs/GISHelper.js"></script>
-<script src="../resources/js/libs/Helper.js"></script>
-<script src="../resources/js/libs/MapReport.js"></script>
-<script src="../resources/js/libs/CustomControls.js"></script>
-<script src="../resources/js/libs/DownloadAreas.js"></script>
-<script src="../resources/js/libs/Measure.js"></script>
-<script src="../resources/js/libs/login.js"></script>
-<script type="text/javascript" src="../resources/js/panels.js"></script>
+    <script src="../resources/js/libs/GISHelper.js"></script>
+    <script src="../resources/js/libs/Helper.js"></script>
+    <script src="../resources/js/libs/MapReport.js"></script>
+    <script src="../resources/js/libs/CustomControls.js"></script>
+    <script src="../resources/js/libs/DownloadAreas.js"></script>
+    <script src="../resources/js/libs/Measure.js"></script>
+    <script src="../resources/js/libs/LoginForm.js"></script>
+    <script src="../resources/js/libs/Options.js"></script>
+    <script type="text/javascript" src="../resources/js/panels.js"></script>
 
 
 <script>
@@ -123,33 +126,11 @@ Ext.application({
             autoLoad: true
         });
 
-        var menu = Ext.create('Ext.menu.Menu', {
-            id: 'mainMenu',
-            style: {
-                overflow: 'visible'
-            },
-            items: [{
-                xtype: 'button',
-                text: LHideAll,
-                handler: function() {
-                    var treeNode = tree.getRootNode();
-                    while(treeNode.childNodes[0].firstChild) {
-                        treeNode.childNodes[0].removeChild(treeNode.childNodes[0].firstChild);
-                    }
-                    var tmenu = Ext.getCmp('mainMenu');
-                    for(var i =1; i < tmenu.items.items.length; i++)
-                    {
-                        Ext.getCmp(tmenu.items.items[i].id).setChecked(false);
-                    }
-                }
-            }]
-        })
-
         function onItemCheck(item, checked) {
             var treeNode = tree.getRootNode();
             if (checked == false) {
                 for (var j = 0; j < treeNode.childNodes[0].childNodes.length; j++) {
-                    if (item.text == treeNode.getChildAt(0).getChildAt(j).data.text) {
+                    if (item.fieldLabel == treeNode.getChildAt(0).getChildAt(j).data.text) {
                         map.removeLayer(item.llmap);
                         treeNode.getChildAt(0).getChildAt(j).remove(true);
                     }
@@ -158,7 +139,7 @@ Ext.application({
             if (checked == true) {
                 map.addLayer(item.llmap);
                 treeNode.getChildAt(0).appendChild({
-                    text: item.text,
+                    text: item.fieldLabel,
                     layer: item.llmap,
                     leaf: true,
                     checked: false,
@@ -170,6 +151,7 @@ Ext.application({
         // Dynamically add layers
         wmscapstore.load({
             callback: function (records, operation, success) {
+                var index =0;
                 for (var i = 0; i < wmscapstore.data.keys.length; i++) {
                     for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
                         var opmap = new OpenLayers.Layer.WMS(
@@ -200,14 +182,17 @@ Ext.application({
                             nodeType: "gx_overlaylayercontainer"
                         });
 
-                        Ext.getCmp('mainMenu').add({
-                            id: "id" + opmap.id,
-                            text: opmap.name,
-                            checked: true,
-                            checkHandler: onItemCheck,
-                            llmap: opmap
-                        });
-
+                       layers.push({
+                           xtype: 'checkboxfield',
+                           labelWidth: 200,
+                           id: "id" + opmap.id,
+                           fieldLabel: opmap.name,
+                           checked: true,
+                           inputValue: index,
+                           handler: onItemCheck,
+                           llmap: opmap
+                       });
+                        index++;
                         //CHECK WHETHER THERE IS A NEED TO REWRITE LAYERS TO POSTGRES DB
                         Ext.Ajax.request({
                             url: "rest/IdExists",
@@ -446,7 +431,7 @@ Ext.application({
             iconCls: 'icon-options',
             scale: 'medium',
             handler: function() {
-
+                OpenOptionForm(tree, layers);
             }
         });
 
@@ -512,15 +497,6 @@ Ext.application({
                             }
                         }
                     }
-                    ,
-                    tbar:[
-                        {
-                            xtype: 'button',
-                            text: LShowHideLayers,
-                            margin: 5,
-                            menu: menu
-                        }
-                    ]
                 }
         );
         //tree item click event. gets the layer legend and the layer's geometry column name

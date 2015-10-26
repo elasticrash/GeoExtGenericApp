@@ -3,7 +3,7 @@
  */
 function OpenLoginForm() {
     var loginstate = true;
-    var lform = Ext.create('widget.window', {
+    var lform =  new Ext.Window({
         title: 'Login/Register Form',
         bodyPadding: 5,
         defaultType: 'textfield',
