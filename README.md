@@ -32,11 +32,11 @@ There are obviously, a lot of features that are not working properly.
 - English and Greek language file (looking for anyone eager to translate to other languages)
 - Stores in Cookie a Guid to identify each client instance
 - Spring mvc/rest framework added
+- Show/Hide Layers (soon to support a database backend)
 
 *Work on progress*
 - A Java BackEnd with ~~SQLite~~ PostgreSQL
 - Sql Scripts for building the database
-- Show/Hide Layers (moved to options but its buggy, it doesnt remember the choices)
 
 *Comming Soon*
 - Select features and download them as a Shapefile
