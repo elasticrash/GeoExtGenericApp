@@ -29,10 +29,10 @@ There are obviously, a lot of features that are not working properly.
 - Go to a pair of Coordinates
 - Query Layers through wfs services
 - Automatically detect browser language and display application in the appropriate language if applicable (english being the default)
-- Show/Hide Layers
 - English and Greek language file (looking for anyone eager to translate to other languages)
 - Stores in Cookie a Guid to identify each client instance
 - Spring mvc/rest framework added
+- Show/Hide Layers (soon to support a database backend)
 
 *Work on progress*
 - A Java BackEnd with ~~SQLite~~ PostgreSQL
