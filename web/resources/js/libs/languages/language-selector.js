@@ -2,7 +2,16 @@
  * Created by stefanos on 16/10/2015.
  */
 var language = window.navigator.userLanguage || window.navigator.language;
-
+function getCookie() {
+    var name = "guid=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
 (function () {
 //dynamically load the browser language if supported synchronously to avoid the application not loading up properly
     function loadScript(url) {
@@ -35,17 +44,6 @@ var language = window.navigator.userLanguage || window.navigator.language;
         function () {return new ActiveXObject("Msxml3.XMLHTTP")},
         function () {return new ActiveXObject("Microsoft.XMLHTTP")}
     ];
-
-    function getCookie() {
-        var name = "guid=";
-        var ca = document.cookie.split(';');
-        for(var i=0; i<ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1);
-            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-        }
-        return "";
-    }
 
     var ck = getCookie();
     if(ck == "")

@@ -218,7 +218,7 @@ Ext.application({
                                 Address: opmap.url,
                                 Srs: geoserverWmsDefaults.wmsSrsName,
                                 Visible: 1,
-                                Userid: document.cookie.split("=")[1]
+                                Userid: getCookie()
                             },
                             success: function (response, options) {
                                 var result = Ext.JSON.decode(response.responseText);
