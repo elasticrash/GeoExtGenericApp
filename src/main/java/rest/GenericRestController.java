@@ -76,8 +76,8 @@ public class GenericRestController {
         try {
             stmt = c.createStatement();
 
-            String sql = "UPDATE INTO LAYERS SET NAME ="+dbl.getName()+",NS="+dbl.getNs()+",ADDRESS="+dbl.getAddress()+
-                    ",SRS="+ dbl.getSrs()+",VISIBLE="+dbl.getVisible()+",USERID="+ dbl.getUserid() + "WHERE NAME="+dbl.getName()+" AND USERID="+dbl.getUserid();
+            String sql = "UPDATE LAYERS SET NAME ='"+dbl.getName()+"',NS='"+dbl.getNs()+"',ADDRESS='"+dbl.getAddress()+
+                    "',SRS='"+ dbl.getSrs()+"',VISIBLE="+dbl.getVisible()+",USERID='"+ dbl.getUserid() + "' WHERE NAME='"+dbl.getName()+"' AND USERID='"+dbl.getUserid()+"'";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
@@ -109,12 +109,16 @@ public class GenericRestController {
         Connection c = PostgreSQLConnector.Connector();
         try {
             stmt = c.createStatement();
-            String sql = "SELECT COUNT(*) from LAYERS WHERE USERID='"+dbl.getUserid()+"' AND NAME="+"'"+dbl.getName()+"'";
+            String sql = "SELECT visible from LAYERS WHERE USERID='"+dbl.getUserid()+"' AND NAME="+"'"+dbl.getName()+"'";
             ResultSet rs =stmt.executeQuery(sql);
+            int count = 0;
             while ( rs.next() ) {
-                int count = rs.getInt("count");
-                dbl.setElementCount(count);
+                count++;
+                int visible = rs.getInt("visible");
+                dbl.setVisible(visible);
             }
+            dbl.setElementCount(count);
+
             rs.close();
             stmt.close();
             c.close();

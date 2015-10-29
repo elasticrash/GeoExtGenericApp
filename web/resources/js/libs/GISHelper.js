@@ -1,7 +1,6 @@
     function setActiveLayerForSelection(layerForSelection){
         var mapPanel = getMapPanel();
         if(!Ext.isEmpty(mapPanel)){
-            // we will add our namespace as prefix if it is missing
             if(layerForSelection.indexOf(":") === -1){
                 layerForSelection = geoserverWfsDefaults.nsAlias + ":" + layerForSelection;
             }
@@ -85,4 +84,26 @@
             }
         });
         return layerName;
+    };
+
+    function getLayerbyName(layername){
+        for(var o = 0; o <map.layers.length; o++)
+        {
+            if(map.layers[o].name == layername)
+            {
+                return map.layers[o];
+            }
+        }
+        return null;
+    };
+
+    function getwmsCapLayerbyName(layername, wmscapstore){
+        for (var i = 0; i < wmscapstore.data.keys.length; i++) {
+            for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
+                if (wmscapstore.data.items[i].data.title + " (" + wmscapstore.data.items[i].data.styles[j].name + ")" == layername) {
+                    return [wmscapstore.data.items[i].data, j];
+                }
+            }
+        }
+        return null;
     };

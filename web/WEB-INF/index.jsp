@@ -127,6 +127,7 @@ Ext.application({
         });
 
         function onItemCheck(item, checked) {
+            var visibility = 0;
             var treeNode = tree.getRootNode();
             if (checked == false) {
                 for (var j = 0; j < treeNode.childNodes[0].childNodes.length; j++) {
@@ -146,7 +147,24 @@ Ext.application({
                     children: [],
                     nodeType: "gx_overlaylayercontainer"
                 });
+                visibility = 1;
             }
+            Ext.Ajax.request({
+                url: "rest/updatelayer",
+                method: 'POST',
+                jsonData: {
+                    Name: item.fieldLabel,
+                    Ns: "ELPHO",
+                    Address: item.llmap.url,
+                    Srs: geoserverWmsDefaults.wmsSrsName,
+                    Visible: visibility,
+                    Userid: getCookie()
+                },
+                success: function (response, options) {
+                },
+                failure: function (response, options) {
+                }
+            });
         }
         // Dynamically add layers
         wmscapstore.load({
@@ -154,59 +172,58 @@ Ext.application({
                 var index =0;
                 for (var i = 0; i < wmscapstore.data.keys.length; i++) {
                     for (var j = 0; j < wmscapstore.data.items[i].data.styles.length; j++) {
-                        var opmap = new OpenLayers.Layer.WMS(
-                                wmscapstore.data.items[i].data.title + " (" + wmscapstore.data.items[i].data.styles[j].name + ")", geoserverWmsDefaults.wmsUrl,
-                                {
-                                    LAYERS: wmscapstore.data.items[i].data.name,
-                                    STYLES: wmscapstore.data.items[i].data.styles[j].name,
-                                    format: 'image/png',
-                                    transparent: true
-                                },
-                                {
-                                    buffer: 0,
-                                    displayOutsideMaxExtent: true,
-                                    isBaseLayer: false,
-                                    visibility: false
-                                }
-                        );
 
-                        map.addLayer(opmap);
-
-                        var treeNode = tree.getRootNode();
-                        treeNode.getChildAt(0).appendChild({
-                            text: opmap.name,
-                            layer: opmap,
-                            leaf: true,
-                            checked: false,
-                            children: [],
-                            nodeType: "gx_overlaylayercontainer"
-                        });
-
-                       layers.push({
-                           xtype: 'checkboxfield',
-                           labelWidth: 200,
-                           id: "id" + opmap.id,
-                           fieldLabel: opmap.name,
-                           checked: true,
-                           inputValue: index,
-                           handler: onItemCheck,
-                           llmap: opmap
-                       });
-                        index++;
                         //CHECK WHETHER THERE IS A NEED TO REWRITE LAYERS TO POSTGRES DB
+                        var layerName = wmscapstore.data.items[i].data.title + " (" + wmscapstore.data.items[i].data.styles[j].name + ")";
+                        var layerUrl = geoserverWmsDefaults.wmsUrl;
+
                         Ext.Ajax.request({
                             url: "rest/IdExists",
                             method: 'POST',
                             jsonData: {
-                                Name: opmap.name,
-                                Ns: "ELPHO",
-                                Address: opmap.url,
+                                Name: layerName,
+                                Ns: geoserverWmsDefaults.nsAlias,
+                                Address: layerUrl,
                                 Srs: geoserverWmsDefaults.wmsSrsName,
                                 Visible: 1,
                                 Userid: getCookie()
                             },
                             success: function (response, options) {
                                 var result = Ext.JSON.decode(response.responseText);
+                                index++;
+                                if(result.Visible == 1) {
+                                    var wmscaplayer = getwmsCapLayerbyName(result.name, wmscapstore);
+                                    var opmap = new OpenLayers.Layer.WMS(
+                                            result.name, geoserverWmsDefaults.wmsUrl,
+                                            {
+                                                LAYERS: wmscaplayer[0].name,
+                                                STYLES: wmscaplayer[0].styles[wmscaplayer[1]].name,
+                                                format: 'image/png',
+                                                transparent: true
+                                            },
+                                            {
+                                                buffer: 0,
+                                                displayOutsideMaxExtent: true,
+                                                isBaseLayer: false,
+                                                visibility: false
+                                            }
+                                    );
+
+                                    map.addLayer(opmap);
+
+
+                                    var treeNode = tree.getRootNode();
+                                    treeNode.getChildAt(0).appendChild({
+                                        text: opmap.name,
+                                        layer: opmap,
+                                        leaf: true,
+                                        checked: false,
+                                        children: [],
+                                        nodeType: "gx_overlaylayercontainer"
+                                    });
+                                }
+
+
                                 if(result.ElementCount == 0) {
                                     Ext.Ajax.request({
                                         url: "rest/addlayer",
@@ -223,6 +240,41 @@ Ext.application({
                                         },
                                         failure: function (response, options) {
                                         }
+                                    });
+                                }
+                                else
+                                {
+                                    var visibility = true;
+                                    if(result.Visible == 0) {
+                                        visibility = false;
+                                    }
+
+                                    var wmscaplayer = getwmsCapLayerbyName(result.name, wmscapstore);
+                                    var cmap = new OpenLayers.Layer.WMS(
+                                            result.name, geoserverWmsDefaults.wmsUrl,
+                                            {
+                                                LAYERS: wmscaplayer[0].name,
+                                                STYLES: wmscaplayer[0].styles[wmscaplayer[1]].name,
+                                                format: 'image/png',
+                                                transparent: true
+                                            },
+                                            {
+                                                buffer: 0,
+                                                displayOutsideMaxExtent: true,
+                                                isBaseLayer: false,
+                                                visibility: false
+                                            }
+                                    );
+
+                                    layers.push({
+                                        xtype: 'checkboxfield',
+                                        labelWidth: 200,
+                                        id: "id" + cmap.id,
+                                        fieldLabel: result.name,
+                                        checked: visibility,
+                                        inputValue: index,
+                                        handler: onItemCheck,
+                                        llmap: cmap
                                     });
                                 }
                             },

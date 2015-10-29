@@ -6,7 +6,7 @@ function OpenOptionForm(tree, layers) {
 
     var wsize = Ext.getBody().getViewSize();
 
-    if(optionform==null) {
+    if (optionform == null) {
         optionform = new Ext.Window({
             title: 'Options',
             width: wsize.width / 2,
@@ -44,31 +44,7 @@ function OpenOptionForm(tree, layers) {
                 }]
         });
     }
-    if(optionform!=null)
-    {
+    if (optionform != null) {
         optionform.show();
-    }
-
-    function onItemCheck(item, checked) {
-        var treeNode = tree.getRootNode();
-        if (checked == false) {
-            for (var j = 0; j < treeNode.childNodes[0].childNodes.length; j++) {
-                if (item.text == treeNode.getChildAt(0).getChildAt(j).data.text) {
-                    map.removeLayer(item.llmap);
-                    treeNode.getChildAt(0).getChildAt(j).remove(true);
-                }
-            }
-        }
-        if (checked == true) {
-            map.addLayer(item.llmap);
-            treeNode.getChildAt(0).appendChild({
-                text: item.text,
-                layer: item.llmap,
-                leaf: true,
-                checked: false,
-                children: [],
-                nodeType: "gx_overlaylayercontainer"
-            });
-        }
     }
 }
