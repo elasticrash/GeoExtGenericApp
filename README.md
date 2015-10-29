@@ -15,10 +15,7 @@
 
 *notes*
 - index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
-- I did a lot of work based on SQLite (not commited) but I am going to switch to Postgres for two reasons
-  - I keep getting, the db, locked and its too much fuss to find a way around it
-  - Since someone has Geoserver, it's the only logical choice since in some cases it comes bundled with it (look: OpenGeo)
-  - So Far the Backend does nothing more than save the user's layer in a table
+- PostgreSQL is now part of the application
 
 There are obviously, a lot of features that are not working properly.
 *But the basic concept works. So far the application:*
@@ -32,7 +29,7 @@ There are obviously, a lot of features that are not working properly.
 - English and Greek language file (looking for anyone eager to translate to other languages)
 - Stores in Cookie a Guid to identify each client instance
 - Spring mvc/rest framework added
-- Show/Hide Layers (soon to support a database backend)
+- Show/Hide Layers (Layer Visibility is stored per user in the database layer)
 
 *Work on progress*
 - A Java BackEnd with ~~SQLite~~ PostgreSQL
