@@ -8,7 +8,7 @@
     <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all.js"></script>
     <link rel="stylesheet" type="text/css" href="../resources/css/example.css"/>
     <link href="../resources/css/icon.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.debug.js"></script>
     <script src="../resources/js/thirdParty/proj4js-combined.js"></script>
     <script src="../resources/js/libs/Config.js"></script>
 
@@ -132,7 +132,7 @@ Ext.application({
             if (checked == false) {
                 for (var j = 0; j < treeNode.childNodes[0].childNodes.length; j++) {
                     if (item.fieldLabel == treeNode.getChildAt(0).getChildAt(j).data.text) {
-                        map.removeLayer(item.llmap);
+                        map.removeLayer(getLayerbyName(item.fieldLabel));
                         treeNode.getChildAt(0).getChildAt(j).remove(true);
                     }
                 }
