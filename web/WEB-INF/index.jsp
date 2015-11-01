@@ -588,7 +588,17 @@ Ext.application({
             border: true,
             region: "north",
             height: 40,
-            tbar: [zoomBox,navigate,previous, next,'|',measurearea, measureline,'|',IdentifyButton,'|', printbutton,'|', resetSelections, "|", uploadArea, downloadArea, "->", options, login]
+            tbar: [zoomBox,navigate,previous, next,{
+                xtype: 'tbseparator'
+            },measurearea, measureline,{
+                xtype: 'tbseparator'
+            },IdentifyButton,{
+                xtype: 'tbseparator'
+            }, printbutton,{
+                xtype: 'tbseparator'
+            }, resetSelections, {
+                xtype: 'tbseparator'
+            }, uploadArea, downloadArea, "->", options, login]
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {
             border: true,
