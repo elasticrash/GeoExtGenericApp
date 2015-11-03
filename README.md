@@ -9,9 +9,7 @@
 4. Add your Geoserver Address to the python proxy
 5. Create A Schema in PostgreSQL and define its jdbc connection string in PostgreSQLConnector by altering the following line
 6. 
-
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");
-
+```c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");```
 
 *notes*
 - index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
@@ -34,13 +32,14 @@ There are obviously, a lot of features that are not working properly.
 *Work on progress*
 - A Java BackEnd with ~~SQLite~~ PostgreSQL
 - Sql Scripts for building the database
+- Select Areas and Layers Save them to db and download them later as Shapefiles
 
 *Comming Soon*
-- Select features and download them as a Shapefile
 - Add/Remove Layers
 
 *Distant Future*
 - Search GeonetWork
+- Choose and Hide Tools
 - Add/Search Metadata from ~~SQLite~~  PostgreSQL db
 
 [follow me at twitter](http://twitter.com/CodenTonic).
