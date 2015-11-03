@@ -4,7 +4,8 @@
 Ext.define('Elpho.tools.DownloadParcelButton', {
     extend: 'Ext.button.Button',
     xtype: 't_base_downloadparcelbutton',
-    placeholderGeometryColumn: 'GEOM',
+    placeholderGeometryColumn: null,
+    typename: null,
     placeHolderDefaultSld: 'DEFAULT',
     filterFormat: null,
     xmlFormat: null,
@@ -151,19 +152,16 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                 method: 'POST',
                 params: {
                     filter: filter,
-                    typeName: 'ELPHO:SMU_MV_DESC',
+                    typeName: me.typename,
                     geomnameplacehoder: me.placeholderGeometryColumn,
                     version:geoserverWfsDefaults.wfsVersion,
                     request:'GetFeature',
                     outputFormat:'json'
-                    //slds: slds,
                 },
                 callback: function(){
                     me.lastRequest = null;
                     me.cleanDrawLayer();
                     mapPanel.setLoading(false);
-
-                    // deactivate after selecting
                     me.toggle(false);
                 },
                 success: function(response, options){
@@ -201,7 +199,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                             CustomMessage("Απάντηση", msg)
 
                             var myForm = Ext.create('widget.window', {
-                                title: "Αποθήκευση Περιοχης Εξαγωγής",
+                                title: LDownloadArea,
                                 closable: true,
                                 autosize: true,
                                 autoScroll: false,
@@ -213,11 +211,11 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                                         grow: true,
                                         width: 250,
                                         id: 'dec_id',
-                                        fieldLabel: "Περιγραφή"
+                                        fieldLabel: LDescription
                                     },
                                     {
                                         xtype: 'button',
-                                        text: "Αποθήκευση",
+                                        text: LSave,
                                         iconCls: 'icon-save',
                                         margin: 5,
                                         handler: function () {
@@ -226,7 +224,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                                                 method: 'POST',
                                                 jsonData: {
                                                     filter: filter,
-                                                    request: geoserverWfsDefaults.wfsUrl+"typeName=ELPHO:SMU_MV_DESC&geomnameplacehoder=GEOM&version="+geoserverWfsDefaults.wfsVersion+"&request=GetFeature&outputFormat=shape-zip&filter=" +encodeURIComponent(filter)+"&format_options=charset:ISO8859-7",
+                                                    request: geoserverWfsDefaults.wfsUrl+"typeName="+typename+"&geomnameplacehoder=GEOM&version="+geoserverWfsDefaults.wfsVersion+"&request=GetFeature&outputFormat=shape-zip&filter=" +encodeURIComponent(filter)+"&format_options=charset:ISO8859-7",
                                                     description: Ext.getCmp('dec_id').getValue()
                                                 },
                                                 success: function(response, options) {
@@ -262,28 +260,18 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
     },
     cleanupAndRenderFeatures: function(features){
         var me = this,
-        // selComp = Ext.ComponentQuery.query('t_hover_select_button')[0],
             targetLayer = getSelectionVectorLayer(),
             activeSelLayer,
             layerName;
 
-        //selComp.cleanupAll();
         vector.removeAllFeatures();
 
         if(!Ext.isEmpty(features)){
-            // get params.layer value, i.e. something like
-            // GDAWasser:MYSUPERLAYER
             activeSelLayer = getSelectionLayerFromFeature(features[0]);
-            // translate to display name of the layer
             layerName = getLayerNameByLayerParam(activeSelLayer);
-            // adjust the active selection layer
             setActiveLayerForSelection(activeSelLayer);
-            // raise the selection layer on top
             map.raiseLayer(targetLayer, map.layers.length-1);
-            // add the given features as selection
             targetLayer.addFeatures(features);
-            // fire event so that contextmenu controller can toggle disabled
-            // status of "show selected features"
             me.onGeometrySelected(activeSelLayer, targetLayer);
         }
     },

@@ -11,6 +11,7 @@ public class PostgreSQLConnector {
     {
         CreateLayers();
         CreateUsers();
+        CreateControlAreas();
     }
     public static Connection Connector() {
         Connection c = null;
@@ -62,6 +63,29 @@ public class PostgreSQLConnector {
                     "(ID serial primary key," +
                     " USERNAME TEXT, " +
                     " PASSWORD TEXT)";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+            System.out.println("table layers created successfully");
+            System.out.println(sql);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public static void CreateControlAreas()
+    {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+        c = Connector();
+        stmt = c.createStatement();
+        String sql = "  CREATE TABLE if not exists CONTROL_AREAS" +
+                "(ID serial primary key," +
+                "FILTER TEXT," +
+                "REQUEST TEXT," +
+                "DESCRIPTION TEXT)";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
