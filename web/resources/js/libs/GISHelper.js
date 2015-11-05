@@ -107,3 +107,24 @@
         }
         return null;
     };
+
+    function createOpenLayersLayer(displayname, layername, layerstyle)
+    {
+        var omaplayer = new OpenLayers.Layer.WMS(
+            displayname, geoserverWmsDefaults.wmsUrl,
+            {
+                LAYERS: layername,
+                STYLES: layerstyle,
+                format: 'image/png',
+                transparent: true
+            },
+            {
+                buffer: 0,
+                displayOutsideMaxExtent: true,
+                isBaseLayer: false,
+                visibility: false
+            }
+        );
+
+        return omaplayer;
+    }

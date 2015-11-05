@@ -193,22 +193,8 @@ Ext.application({
                                 index++;
                                 if(result.Visible == 1) {
                                     var wmscaplayer = getwmsCapLayerbyName(result.name, wmscapstore);
-                                    var opmap = new OpenLayers.Layer.WMS(
-                                            result.name, geoserverWmsDefaults.wmsUrl,
-                                            {
-                                                LAYERS: wmscaplayer[0].name,
-                                                STYLES: wmscaplayer[0].styles[wmscaplayer[1]].name,
-                                                format: 'image/png',
-                                                transparent: true
-                                            },
-                                            {
-                                                buffer: 0,
-                                                displayOutsideMaxExtent: true,
-                                                isBaseLayer: false,
-                                                visibility: false
-                                            }
-                                    );
 
+                                    var opmap = createOpenLayersLayer(result.name, wmscaplayer[0].name,wmscaplayer[0].styles[wmscaplayer[1]].name)
                                     map.addLayer(opmap);
 
 
@@ -250,21 +236,7 @@ Ext.application({
                                     }
 
                                     var wmscaplayer = getwmsCapLayerbyName(result.name, wmscapstore);
-                                    var cmap = new OpenLayers.Layer.WMS(
-                                            result.name, geoserverWmsDefaults.wmsUrl,
-                                            {
-                                                LAYERS: wmscaplayer[0].name,
-                                                STYLES: wmscaplayer[0].styles[wmscaplayer[1]].name,
-                                                format: 'image/png',
-                                                transparent: true
-                                            },
-                                            {
-                                                buffer: 0,
-                                                displayOutsideMaxExtent: true,
-                                                isBaseLayer: false,
-                                                visibility: false
-                                            }
-                                    );
+                                    var cmap = createOpenLayersLayer(result.name, wmscaplayer[0].name, wmscaplayer[0].styles[wmscaplayer[1]].name);
 
                                     layers.push({
                                         xtype: 'checkboxfield',
