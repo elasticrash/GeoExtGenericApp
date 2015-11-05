@@ -1,11 +1,9 @@
 /**
  * Created by stefanos on 5/5/2015.
  */
-Ext.define('Elpho.tools.DownloadParcelButton', {
+Ext.define('Elpho.tools.SaveFeatureArea', {
     extend: 'Ext.button.Button',
-    xtype: 't_base_downloadparcelbutton',
-    placeholderGeometryColumn: null,
-    typename: null,
+    xtype: 't_base_savefeaturearea',
     placeHolderDefaultSld: 'DEFAULT',
     filterFormat: null,
     xmlFormat: null,
@@ -152,8 +150,8 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                 method: 'POST',
                 params: {
                     filter: filter,
-                    typeName: me.typename,
-                    geomnameplacehoder: me.placeholderGeometryColumn,
+                    typeName: selectedLayer[0].params.LAYERS,
+                    geomnameplacehoder: GEOMcolumn,
                     version:geoserverWfsDefaults.wfsVersion,
                     request:'GetFeature',
                     outputFormat:'json'
@@ -176,7 +174,7 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                         // count the total number of vertices
                         Ext.each(features, function(feat) {
                             verticeCount += feat.geometry.getVertices().length;
-                            feat.geometry = feat.geometry.transform(new OpenLayers.Projection('EPSG:2100'), new OpenLayers.Projection('EPSG:900913'))
+                            feat.geometry = feat.geometry.transform(epsg, epsg900913)
                         });
 
                         var renderCallback = function(decision) {
@@ -195,8 +193,8 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                         var titleC = false;
 
                         if(result.features.length > 0) {
-                            msg+="Έχετε Επιλέξει " + result.features.length + " ΧΕΜ";
-                            CustomMessage("Απάντηση", msg)
+                            msg+="Έχετε Επιλέξει " + result.features.length;
+                            CustomMessage(LAnswer, msg)
 
                             var myForm = Ext.create('widget.window', {
                                 title: LDownloadArea,
@@ -224,7 +222,13 @@ Ext.define('Elpho.tools.DownloadParcelButton', {
                                                 method: 'POST',
                                                 jsonData: {
                                                     filter: filter,
-                                                    request: geoserverWfsDefaults.wfsUrl+"typeName="+typename+"&geomnameplacehoder=GEOM&version="+geoserverWfsDefaults.wfsVersion+"&request=GetFeature&outputFormat=shape-zip&filter=" +encodeURIComponent(filter)+"&format_options=charset:ISO8859-7",
+                                                    request: geoserverWfsDefaults.wfsUrl+
+                                                    "typeName="+selectedLayer[0].params.LAYERS+
+                                                    "&geomnameplacehoder="+GEOMcolumn+
+                                                    "&version="+geoserverWfsDefaults.wfsVersion+
+                                                    "&request=GetFeature&outputFormat=shape-zip"+
+                                                    "&filter=" +encodeURIComponent(filter)+
+                                                    "&format_options=charset:ISO8859-7",
                                                     description: Ext.getCmp('dec_id').getValue()
                                                 },
                                                 success: function(response, options) {

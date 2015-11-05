@@ -1,6 +1,5 @@
-package SQLite;
+package PostgreSQL;
 
-import java.io.File;
 import java.sql.*;
 
 /**

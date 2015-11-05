@@ -28,7 +28,7 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
 
     trigger: function (e) {
         var xyz = map.getLonLatFromPixel(e.xy);
-        var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);//.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'));
+        var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);
 
                 var olFilter = new OpenLayers.Filter.Spatial({
                     type: OpenLayers.Filter.Spatial.INTERSECTS,
@@ -67,7 +67,7 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
                             // count the total number of vertices
                             Ext.each(features, function (feat) {
                                 verticeCount += feat.geometry.getVertices().length;
-                                feat.geometry = feat.geometry.transform(new OpenLayers.Projection('EPSG:2100'), new OpenLayers.Projection('EPSG:900913'))
+                                feat.geometry = feat.geometry.transform(epsg, epsg900913)
                                 highlight.addFeatures(feat);
                             });
 
@@ -75,30 +75,33 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
 
                         identitems = [];
 
-                        for (var property in result.features[0].properties) {
-                            if (result.features[0].properties.hasOwnProperty(property)) {
-                                identitems[property] = result.features[0].properties[property];
-                            }
-                        }
-
-                        var popgrid = Ext.create('Ext.grid.property.Grid', {
-                            forceFit: true,
-                            nameColumnWidth: 250,
-                            source: identitems,
-                            listeners: {
-                                'beforeedit': {
-                                    fn: function () {
-                                        return false;
-                                    }
+                        if(result.features.length > 0) {
+                            for (var property in result.features[0].properties) {
+                                if (result.features[0].properties.hasOwnProperty(property)) {
+                                    identitems[property] = result.features[0].properties[property];
                                 }
                             }
-                        });
 
-                        var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);
-                        var attributes = {name: "my name", bar: "foo"};
-                        var feature = new OpenLayers.Feature.Vector(point, attributes);
 
-                        createPopup(feature, popgrid);
+                            var popgrid = Ext.create('Ext.grid.property.Grid', {
+                                forceFit: true,
+                                nameColumnWidth: 250,
+                                source: identitems,
+                                listeners: {
+                                    'beforeedit': {
+                                        fn: function () {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            });
+
+                            var point = new OpenLayers.Geometry.Point(xyz.lon, xyz.lat);
+                            var attributes = {name: "my name", bar: "foo"};
+                            var feature = new OpenLayers.Feature.Vector(point, attributes);
+
+                            createPopup(feature, popgrid);
+                        }
                     },
                     failure: function (response, options) {
                         var text = response.responseText;

@@ -24,9 +24,7 @@ public class DBLayer {
         this.Name = Name;
     }
     public String Ns;
-    public String getNs() {
-        return Ns;
-    }
+    public String getNs() {return Ns;}
     public void setNs(String Ns) {
         this.Ns = Ns;
     }
@@ -41,9 +39,7 @@ public class DBLayer {
     public Integer getVisible() {
         return Visible;
     }
-    public void setVisible(Integer Visible) {
-        this.Visible = Visible;
-    }
+    public void setVisible(Integer Visible) {this.Visible = Visible;}
     public String Srs;
     public String getSrs() {
         return Srs;

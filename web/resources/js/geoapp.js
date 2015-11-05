@@ -47,7 +47,7 @@ Ext.application({
         wmscapstore = Ext.create('GeoExt.data.WmsCapabilitiesLayerStore', {
             storeId: 'wmscapsStore',
             method: 'POST',
-            url: "cgi-bin/proxy.cgi?url="+encodeURIComponent(geoserverWmsDefaults.wmsUrl +"request=getCapabilities"),
+            url: OpenLayers.ProxyHost+encodeURIComponent(geoserverWmsDefaults.wmsUrl +"request=getCapabilities"),
             autoLoad: true
         });
 
@@ -254,7 +254,7 @@ Ext.application({
             }
         });
 
-        var uploadArea = Elpho.tools.DownloadParcelButton;
+        var selectArea = Elpho.tools.SaveFeatureArea;
 
         ctrl = new OpenLayers.Control.NavigationHistory();
         map.addControl(ctrl);
@@ -300,7 +300,7 @@ Ext.application({
                     autoLoad: true,
                     proxy: {
                         type: 'ajax',
-                        //url: 'rest/getControlAreas',
+                        url: 'rest/getControlAreas',
                         method: "GET",
                         reader: {
                             type: 'json',
@@ -334,7 +334,7 @@ Ext.application({
                             return Ext.String.format('<div id="{0}"></div>', id);
                         }},
                         {
-                            text: LUploadArea,
+                            text: LDownloadArea,
                             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                                 var id = Ext.id();
                                 Ext.defer(function () {
@@ -361,7 +361,7 @@ Ext.application({
                     height: 300,
                     width: 600,
                     layout   : 'fit',
-                    title: LUploadArea,
+                    title: LDownloadArea,
                     closable: true,
                     maximizable: false,
                     resizable: false,
@@ -495,7 +495,7 @@ Ext.application({
                 xtype: 'tbseparator'
             }, resetSelections, {
                 xtype: 'tbseparator'
-            }, uploadArea, downloadArea, "->", options, login]
+            }, selectArea, downloadArea, "->", options, login]
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {
             border: true,

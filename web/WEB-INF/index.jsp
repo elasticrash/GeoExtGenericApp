@@ -3,15 +3,20 @@
 <meta charset="utf-8">
 <title>GeoExt 2 Generic GIS WEB APP</title>
 
+    <!--LANGUAGE SELECTION JS FILES-->
     <script async=false defer=false src="../resources/js/libs/languages/language-selector.js"></script>
+    <!--EXTJS  JS/CSS FILES-->
     <link href="http://cdn.sencha.io/ext/gpl/4.2.1/resources/css/ext-all-gray.css" rel="stylesheet" />
     <script src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-all.js"></script>
     <link rel="stylesheet" type="text/css" href="../resources/css/example.css"/>
+    <!--CUSTOM APPLICATION ICONS-->
     <link href="../resources/css/icon.css" rel="stylesheet" />
+    <!--THE WORLD FAMOUS OPENLAYERS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.debug.js"></script>
+    <!--THE WORLD FAMOUS PROJ4JS SCRIPT-->
     <script src="../resources/js/thirdParty/proj4js-combined.js"></script>
+    <!--CONFIG SCRIPT-->
     <script src="../resources/js/libs/Config.js"></script>
-
     <!--LOADER SCRIPT-->
     <script src="../resources/js/LoaderScript.js"></script>
     <!--MAP RELATED HELPER SCRIPTS-->

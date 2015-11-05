@@ -13,8 +13,8 @@ Ext.define('Elpho.tools.MeasureAreaButton', {
     ],
     handlerOptions: null,
     sphericalMercatorSrsLookup: [
-        'EPSG:2100',
-        'EPSG:900913'
+        epsg,
+        epsg900913
     ],
     measureStyle: {
         fillColor: '#f00',

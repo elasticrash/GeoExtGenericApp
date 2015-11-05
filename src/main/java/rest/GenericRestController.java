@@ -1,8 +1,9 @@
 package rest;
 
 
+import DTO.ControlArea;
 import DTO.DBLayer;
-import SQLite.PostgreSQLConnector;
+import PostgreSQL.PostgreSQLConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/rest")
@@ -124,6 +124,58 @@ public class GenericRestController {
             c.close();
             System.out.println("User Has stored  "+ dbl.getElementCount() + " instance of this Layers: "+ dbl.getName());
             return dbl;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/addControlArea", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    String addControlArea(@RequestBody ControlArea dbl) {
+        Statement stmt;
+        Connection c = PostgreSQLConnector.Connector();
+        try {
+            stmt = c.createStatement();
+
+            String sql = "INSERT INTO CONTROL_AREAS (FILTER, REQUEST, DESCRIPTION) VALUES('"+dbl.getFilter()+"','"+dbl.getRequest() +"','"+dbl.getDescription()+"')";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+            System.out.println(sql);
+
+            return "SUCCESS";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+    }
+
+    @RequestMapping(value = "/getControlAreas", method = RequestMethod.GET)
+    public @ResponseBody
+    List<ControlArea> getControlAreas() {
+        Statement stmt;
+        Connection c = PostgreSQLConnector.Connector();
+        try {
+            List<ControlArea> lca = new ArrayList<ControlArea>();
+
+            stmt = c.createStatement();
+            String sql = "SELECT * from CONTROL_AREAS";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                ControlArea ca = new ControlArea();
+                String FILTER = rs.getString("filter");
+                String REQUEST = rs.getString("request");
+                String DESCRIPTION = rs.getString("description");
+                ca.setFilter(FILTER);
+                ca.setRequest(REQUEST);
+                ca.setDescription(DESCRIPTION);
+                lca.add(ca);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+            return lca;
         } catch (SQLException e) {
             e.printStackTrace();
         }
