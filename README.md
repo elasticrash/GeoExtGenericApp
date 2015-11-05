@@ -8,12 +8,14 @@
 3. Proxy servlet to bypass the cross-origin error of the wfs requests needs python (add path to web.xml)
 4. Add your Geoserver Address to the python proxy
 5. Create A Schema in PostgreSQL and define its jdbc connection string in PostgreSQLConnector by altering the following line
-6. 
+
 ```c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");```
 
 *notes*
 - index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
 - PostgreSQL is now part of the application
+- Thoughts to switch to Hibernate rather than raw sql
+- Thoughts to run a second similar project with OpenLayers3 and no ExtJs or GeoExt at all 
 
 There are obviously, a lot of features that are not working properly.
 *But the basic concept works. So far the application:*
@@ -32,7 +34,7 @@ There are obviously, a lot of features that are not working properly.
 *Work on progress*
 - A Java BackEnd with ~~SQLite~~ PostgreSQL
 - Sql Scripts for building the database
-- Select Areas and Layers Save them to db and download them later as Shapefiles
+- Select Areas and Layers Save them to db and download them later as Shapefiles (almost there still got a couple of bugs)
 
 *Comming Soon*
 - Add/Remove Layers
