@@ -67,7 +67,7 @@
     <script src="../resources/js/libs/GISHelper.js"></script>
     <script src="../resources/js/libs/Helper.js"></script>
     <script src="../resources/js/libs/MapReport.js"></script>
-    <script src="../resources/js/libs/CustomControls.js"></script>
+    <script src="../resources/js/libs/Identify.js"></script>
     <script src="../resources/js/libs/DownloadAreas.js"></script>
     <script src="../resources/js/libs/Measure.js"></script>
     <script src="../resources/js/libs/LoginForm.js"></script>

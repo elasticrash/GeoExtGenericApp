@@ -47,3 +47,4 @@ var LDistance = "Distance: ";
 var LMeasureDistance = "Measure Distance";
 var LOptions = "Options";
 var LLogin = "Login";
+var LSave = "Save";
