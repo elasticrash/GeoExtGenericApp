@@ -1,5 +1,5 @@
 //AREA
-Ext.define('Elpho.tools.MeasureAreaButton', {
+Ext.define('CodenTonic.tools.MeasureAreaButton', {
     extend: 'Ext.button.Button',
     xtype: 't_measureareabutton',
     msgBoxTitle: LMeasurment,
@@ -117,7 +117,7 @@ Ext.define('Elpho.tools.MeasureAreaButton', {
     }
 });
 //LINE
-Ext.define('Elpho.tools.MeasureLineButton', {
+Ext.define('CodenTonic.tools.MeasureLineButton', {
     extend: 'Ext.button.Button',
     xtype: 't_measurelinebutton',
     msgBoxTitle: LMeasurment,

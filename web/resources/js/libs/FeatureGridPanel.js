@@ -1,7 +1,7 @@
 /**
  * Created by stefanos on 26/3/2015.
  */
-Ext.define('Elpho.widgets.panel.FeatureGridPanel', {
+Ext.define('CodenTonic.widgets.panel.FeatureGridPanel', {
     extend: 'Ext.panel.Panel',
     xtype: 'w_featuregridpanel',
     requires: [

@@ -1,4 +1,4 @@
-Ext.define('Elpho.tools.PolygonSelectButton', {
+Ext.define('CodenTonic.tools.PolygonSelectButton', {
     extend: 'Ext.button.Button',
     xtype: 't_base_selectbutton',
     placeholderGeometryColumn: 'GEOM',

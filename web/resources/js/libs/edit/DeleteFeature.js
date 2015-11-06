@@ -6,7 +6,7 @@
 /**
  * @class
  */
-Ext.define('Elpho.tools.vector.DeleteFeatureButton', {
+Ext.define('CodenTonic.tools.vector.DeleteFeatureButton', {
     extend: 'Ext.button.Button',
     xtype: 't_deletefeaturebutton',
     requires : [

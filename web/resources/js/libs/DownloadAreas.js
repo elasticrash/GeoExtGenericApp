@@ -1,7 +1,7 @@
 /**
  * Created by stefanos on 5/5/2015.
  */
-Ext.define('Elpho.tools.SaveFeatureArea', {
+Ext.define('CodenTonic.tools.SaveFeatureArea', {
     extend: 'Ext.button.Button',
     xtype: 't_base_savefeaturearea',
     placeHolderDefaultSld: 'DEFAULT',

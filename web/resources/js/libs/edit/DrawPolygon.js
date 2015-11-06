@@ -3,7 +3,7 @@
 /**
  * @class
  */
-Ext.define('Elpho.tools.vector.DrawButton', {
+Ext.define('CodenTonic.tools.vector.DrawButton', {
     extend: 'Ext.button.Button',
     xtype: 't_drawbutton',
     msgBoxTitle: 'Ψηφιοποιήση',

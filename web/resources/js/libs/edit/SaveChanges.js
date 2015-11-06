@@ -6,7 +6,7 @@
 /**
  * @class
  */
-Ext.define('Elpho.tools.vector.SaveChangesButton', {
+Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
     extend: 'Ext.button.Button',
     xtype: 't_savechangesbutton',
     requires : [

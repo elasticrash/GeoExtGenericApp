@@ -190,8 +190,8 @@ Ext.application({
         map.addLayer(highlight);
 
         //MEASUREMENTS
-        var measurearea = Elpho.tools.MeasureAreaButton;
-        var measureline = Elpho.tools.MeasureLineButton;
+        var measurearea = CodenTonic.tools.MeasureAreaButton;
+        var measureline = CodenTonic.tools.MeasureLineButton;
 
         //zoom in action
         var zoomin_action = new GeoExt.Action({
@@ -240,7 +240,7 @@ Ext.application({
             scale: 'medium',
             margin: 5,
             handler: function () {
-                var print = Ext.create(Elpho.widgets.MapPrintWindow);
+                var print = Ext.create(CodenTonic.widgets.MapPrintWindow);
 
             }
         };
@@ -254,7 +254,7 @@ Ext.application({
             }
         });
 
-        var selectArea = Elpho.tools.SaveFeatureArea;
+        var selectArea = CodenTonic.tools.SaveFeatureArea;
 
         ctrl = new OpenLayers.Control.NavigationHistory();
         map.addControl(ctrl);

@@ -1,4 +1,4 @@
-Ext.define('Elpho.tools.ScaleCombo', {
+Ext.define('CodenTonic.tools.ScaleCombo', {
     extend: 'Ext.form.ComboBox',
     xtype: 't_scale_combo',
     requires : [
@@ -48,7 +48,7 @@ Ext.define('Elpho.tools.ScaleCombo', {
         var me = this,
             tplCtx = {
                 formatScale: function (values) {
-                    var formatNs = Elpho.tools.ScaleCombo;
+                    var formatNs = CodenTonic.tools.ScaleCombo;
                     return formatNs.formatScaleText(values.scale);
                 }
             },
@@ -78,7 +78,7 @@ Ext.define('Elpho.tools.ScaleCombo', {
     },
     registerEvents: function () {
         var me = this,
-            formatFunc = Elpho.tools.ScaleCombo.formatScaleNumber;
+            formatFunc = CodenTonic.tools.ScaleCombo.formatScaleNumber;
 
         // select a value from list
         me.on('select', function (combo, record) {
@@ -98,7 +98,7 @@ Ext.define('Elpho.tools.ScaleCombo', {
             map.events.register('zoomend', me, function () {
 
                 var scaleNum = map.getScale(),
-                    formatFunc = Elpho.tools.ScaleCombo.formatScaleText;
+                    formatFunc = CodenTonic.tools.ScaleCombo.formatScaleText;
                 scaleNum = parseInt(Math.round(scaleNum), 10);
                 me.setValue(formatFunc(scaleNum));
             });

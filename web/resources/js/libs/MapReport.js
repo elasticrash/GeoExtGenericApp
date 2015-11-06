@@ -1,4 +1,4 @@
-Ext.define('Elpho.widgets.MapPrintWindow', {
+Ext.define('CodenTonic.widgets.MapPrintWindow', {
     extend: 'Ext.window.Window',
     xtype: 'w_mapprintwindow',
     requires: [
@@ -81,7 +81,7 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
 
         printProvider.addListener('printexception', function() {
             Ext.Msg.alert(me.errorLabel, me.printErrorText);
-            Elpho.widgets.MapPrintWindow.hideLoadingMask();
+            CodenTonic.widgets.MapPrintWindow.hideLoadingMask();
             var pw = Ext.ComponentQuery.query('w_mapprintwindow')[0];
             if (pw) {
                 pw.setLoading(false);
@@ -333,7 +333,7 @@ Ext.define('Elpho.widgets.MapPrintWindow', {
 
         printProvider.addListener('beforedownload', function(pp, call2servlet) {
             var src;
-            src = '<center><img src="' + call2servlet + '" onload="Elpho.widgets.MapPrintWindow.hideLoadingMask();" width="337" height="238" style="background:white; border:1px solid black; box-shadow: 3px 3px 4px #000;" /></center>';
+            src = '<center><img src="' + call2servlet + '" onload="CodenTonic.widgets.MapPrintWindow.hideLoadingMask();" width="337" height="238" style="background:white; border:1px solid black; box-shadow: 3px 3px 4px #000;" /></center>';
             pv.update(src);
             return false;
         }, this, {single: true});

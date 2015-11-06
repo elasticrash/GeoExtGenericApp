@@ -1,4 +1,4 @@
-Ext.define('Elpho.tools.PolygonQueryButton', {
+Ext.define('CodenTonic.tools.PolygonQueryButton', {
     extend: 'Ext.button.Button',
     xtype: 't_base_querybutton',
     placeholderGeometryColumn: 'GEOM',
