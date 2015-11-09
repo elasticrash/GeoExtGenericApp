@@ -518,7 +518,4 @@ Ext.application({
         map.addControl(infoControls);
         selectCtrl.activate();
     }
-
-
-
 });
