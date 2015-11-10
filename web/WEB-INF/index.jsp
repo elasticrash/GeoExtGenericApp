@@ -28,7 +28,7 @@
     <!--IDENTIFY BUTTONS-->
     <script src="../resources/js/libs/Identify.js"></script>
     <!--DOWNLOAD AREAS-->
-    <script src="../resources/js/libs/DownloadAreas.js"></script>
+    <script src="../resources/js/libs/SaveFeatureArea.js"></script>
     <!--MEASURE TOOLS-->
     <script src="../resources/js/libs/Measure.js"></script>
     <!--LOGIN FORM-->

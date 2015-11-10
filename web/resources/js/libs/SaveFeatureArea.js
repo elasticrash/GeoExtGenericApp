@@ -223,7 +223,7 @@ Ext.define('CodenTonic.tools.SaveFeatureArea', {
                                                 jsonData: {
                                                     filter: filter,
                                                     request: geoserverWfsDefaults.wfsUrl+
-                                                    "typeName="+selectedLayer[0].params.LAYERS+
+                                                    "typeName=LAYERCHOICEPLACEHOLDER"+
                                                     "&geomnameplacehoder="+GEOMcolumn+
                                                     "&version="+geoserverWfsDefaults.wfsVersion+
                                                     "&request=GetFeature&outputFormat=shape-zip"+

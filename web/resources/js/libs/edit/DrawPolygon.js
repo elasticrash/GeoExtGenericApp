@@ -23,8 +23,8 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
     ],
     handlerOptions: null,
     sphericalMercatorSrsLookup: [
-        'EPSG:2100',
-        'EPSG:900913'
+        epsg,
+        epsg900913
     ],
     constructor: function (cfg) {
         var me = this,
