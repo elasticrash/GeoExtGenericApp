@@ -344,10 +344,8 @@ Ext.application({
                                         handler: function () {
                                             var selectedRecord = pgrid.getSelectionModel().getSelection()[0];
                                             var vlvalue = Ext.getCmp(selectedRecord.comboid).getValue();
-
-                                            window.open(record.data.request);
-                                            var ilots = record.data.request.replace("PARCELS_FINAL", "ILOTS");
-                                            window.open(ilots);
+                                            var requested_features = record.data.request.replace("LAYERCHOICEPLACEHOLDER", vlvalue);
+                                            window.open(requested_features);
                                         }
                                     });
                                 }, 80);
