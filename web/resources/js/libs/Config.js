@@ -1,4 +1,4 @@
-var geoserver = "http://XXX.XX.X.XXX:8080/";
+var geoserver = "http://localhost:8080/";
 
 var geoserverWfsDefaults= {
         wfsUrl: geoserver+ "geoserver/ELPHO/wfs?",
@@ -12,3 +12,12 @@ var geoserverWmsDefaults= {
     wmsSrsName: "EPSG:2100",
     nsAlias: 'ELPHO'
 };
+
+var toolcategories={
+    maintools: true,
+    measuretools: true,
+    identifytool: true,
+    printtools: true,
+    resetselectiontool: true,
+    saveareatools: true
+}

@@ -8,10 +8,11 @@ import java.sql.*;
 public class PostgreSQLConnector {
     public static void CreateSchema()
     {
+        //To Re-Initialise the schema (in case i introduce changes)
+        //DropAllTables();
         CreateLayers();
         CreateUsers();
         CreateControlAreas();
-        CreateToolSelection();
     }
     public static Connection Connector() {
         Connection c = null;
@@ -75,18 +76,18 @@ public class PostgreSQLConnector {
         }
     }
 
-    public static void CreateToolSelection()
+    public static void CreateControlAreas()
     {
         Connection c = null;
         Statement stmt = null;
         try {
-            c = Connector();
-            stmt = c.createStatement();
-            String sql = "CREATE TABLE if not exists TOOLS " +
-                    "(ID serial primary key," +
-                    " NAME TEXT, " +
-                    " VISIBLE INTEGER, "+
-                    " USERID TEXT)";
+        c = Connector();
+        stmt = c.createStatement();
+        String sql = "CREATE TABLE if not exists CONTROL_AREAS" +
+                "(ID serial primary key," +
+                "FILTER TEXT," +
+                "REQUEST TEXT," +
+                "DESCRIPTION TEXT)";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
@@ -98,22 +99,19 @@ public class PostgreSQLConnector {
         }
     }
 
-    public static void CreateControlAreas()
+
+    public static void DropAllTables()
     {
         Connection c = null;
         Statement stmt = null;
         try {
-        c = Connector();
-        stmt = c.createStatement();
-        String sql = "  CREATE TABLE if not exists CONTROL_AREAS" +
-                "(ID serial primary key," +
-                "FILTER TEXT," +
-                "REQUEST TEXT," +
-                "DESCRIPTION TEXT)";
+            c = Connector();
+            stmt = c.createStatement();
+            String sql = "DROP TABLE LAYERS,CONTROL_AREAS,USERS";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
-            System.out.println("table layers created successfully");
+            System.out.println("tables drop successfully");
             System.out.println(sql);
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );

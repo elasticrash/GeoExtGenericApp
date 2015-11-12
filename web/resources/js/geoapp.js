@@ -479,25 +479,36 @@ Ext.application({
         //identify tool, located in the CustomControl.js file
         map.addControl(ident);
 
-
         var toolbaritems = [];
-        toolbaritems.push(zoomBox);
-        toolbaritems.push(navigate);
-        toolbaritems.push(navigate);
-        toolbaritems.push(previous);
-        toolbaritems.push(next);
-        toolbaritems.push({xtype: 'tbseparator'});
-        toolbaritems.push(measurearea);
-        toolbaritems.push(measureline);
-        toolbaritems.push({xtype: 'tbseparator'});
-        toolbaritems.push(IdentifyButton);
-        toolbaritems.push({xtype: 'tbseparator'});
-        toolbaritems.push(printbutton);
-        toolbaritems.push({xtype: 'tbseparator'});
-        toolbaritems.push(resetSelections);
-        toolbaritems.push({xtype: 'tbseparator'});
-        toolbaritems.push(selectArea);
-        toolbaritems.push(downloadArea);
+
+        if(toolcategories.maintools) {
+            toolbaritems.push(zoomBox);
+            toolbaritems.push(navigate);
+            toolbaritems.push(previous);
+            toolbaritems.push(next);
+        }
+        if(toolcategories.measuretools) {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(measurearea);
+            toolbaritems.push(measureline);
+        }
+        if(toolcategories.identifytool) {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(IdentifyButton);
+        }
+        if(toolcategories.printtools) {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(printbutton);
+        }
+        if(toolcategories.resetselectiontool) {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(resetSelections);
+        }
+        if(toolcategories.saveareatools) {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(selectArea);
+            toolbaritems.push(downloadArea);
+        }
         toolbaritems.push("->");
         toolbaritems.push(options);
         toolbaritems.push(login);
