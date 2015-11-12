@@ -2,7 +2,7 @@ package rest;
 
 
 import DTO.ControlArea;
-import DTO.DBLayer;
+import DTO.Layer;
 import PostgreSQL.PostgreSQLConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -49,7 +49,7 @@ public class GenericRestController {
 
     @RequestMapping(value = "/addlayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    String addlayer(@RequestBody DBLayer dbl) {
+    String addlayer(@RequestBody Layer dbl) {
         Statement stmt;
         Connection c = PostgreSQLConnector.Connector();
         try {
@@ -70,7 +70,7 @@ public class GenericRestController {
 
     @RequestMapping(value = "/updatelayer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    String updatelayer(@RequestBody DBLayer dbl) {
+    String updatelayer(@RequestBody Layer dbl) {
         Statement stmt;
         Connection c = PostgreSQLConnector.Connector();
         try {
@@ -104,7 +104,7 @@ public class GenericRestController {
 
     @RequestMapping(value = "/IdExists", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DBLayer IdExists(@RequestBody DBLayer dbl) {
+    Layer IdExists(@RequestBody Layer dbl) {
         Statement stmt;
         Connection c = PostgreSQLConnector.Connector();
         try {

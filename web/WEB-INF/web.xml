@@ -17,8 +17,8 @@
         </init-param>
         <init-param>
             <param-name>executable</param-name>
-            <!--<param-value>C:\Python27\ArcGIS10.2\python.exe</param-value>-->
-            <param-value>/usr/local/bin/python2.7</param-value>
+            <param-value>C:\Python27\ArcGIS10.2\python.exe</param-value>
+            <!--<param-value>/usr/local/bin/python2.7</param-value>-->
         </init-param>
         <init-param>
             <param-name>passShellEnvironment</param-name>

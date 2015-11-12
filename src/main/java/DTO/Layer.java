@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Created by tougo on 23/10/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DBLayer {
+public class Layer {
     @JsonIgnore
     public Integer id;
     public int getId() {
@@ -41,12 +41,8 @@ public class DBLayer {
     }
     public void setVisible(Integer Visible) {this.Visible = Visible;}
     public String Srs;
-    public String getSrs() {
-        return Srs;
-    }
-    public void setSrs(String Srs) {
-        this.Srs = Srs;
-    }
+    public String getSrs() {return Srs;}
+    public void setSrs(String Srs) {this.Srs = Srs;}
     public String Userid;
     public String getUserid() {
         return Userid;

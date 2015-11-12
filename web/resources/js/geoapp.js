@@ -479,21 +479,34 @@ Ext.application({
         //identify tool, located in the CustomControl.js file
         map.addControl(ident);
 
+
+        var toolbaritems = [];
+        toolbaritems.push(zoomBox);
+        toolbaritems.push(navigate);
+        toolbaritems.push(navigate);
+        toolbaritems.push(previous);
+        toolbaritems.push(next);
+        toolbaritems.push({xtype: 'tbseparator'});
+        toolbaritems.push(measurearea);
+        toolbaritems.push(measureline);
+        toolbaritems.push({xtype: 'tbseparator'});
+        toolbaritems.push(IdentifyButton);
+        toolbaritems.push({xtype: 'tbseparator'});
+        toolbaritems.push(printbutton);
+        toolbaritems.push({xtype: 'tbseparator'});
+        toolbaritems.push(resetSelections);
+        toolbaritems.push({xtype: 'tbseparator'});
+        toolbaritems.push(selectArea);
+        toolbaritems.push(downloadArea);
+        toolbaritems.push("->");
+        toolbaritems.push(options);
+        toolbaritems.push(login);
+
         var toppanel =  Ext.create('Ext.panel.Panel', {
             border: true,
             region: "north",
             height: 40,
-            tbar: [zoomBox,navigate,previous, next,{
-                xtype: 'tbseparator'
-            },measurearea, measureline,{
-                xtype: 'tbseparator'
-            },IdentifyButton,{
-                xtype: 'tbseparator'
-            }, printbutton,{
-                xtype: 'tbseparator'
-            }, resetSelections, {
-                xtype: 'tbseparator'
-            }, selectArea, downloadArea, "->", options, login]
+            tbar: toolbaritems
         });
         var bottompanel =  Ext.create('Ext.panel.Panel', {
             border: true,

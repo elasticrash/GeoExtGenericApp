@@ -11,6 +11,7 @@ public class PostgreSQLConnector {
         CreateLayers();
         CreateUsers();
         CreateControlAreas();
+        CreateToolSelection();
     }
     public static Connection Connector() {
         Connection c = null;
@@ -51,6 +52,7 @@ public class PostgreSQLConnector {
             System.exit(0);
         }
     }
+
     public static void CreateUsers()
     {
         Connection c = null;
@@ -62,6 +64,29 @@ public class PostgreSQLConnector {
                     "(ID serial primary key," +
                     " USERNAME TEXT, " +
                     " PASSWORD TEXT)";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+            System.out.println("table layers created successfully");
+            System.out.println(sql);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public static void CreateToolSelection()
+    {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            c = Connector();
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE if not exists TOOLS " +
+                    "(ID serial primary key," +
+                    " NAME TEXT, " +
+                    " VISIBLE INTEGER, "+
+                    " USERID TEXT)";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
