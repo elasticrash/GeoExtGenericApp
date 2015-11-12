@@ -16,9 +16,9 @@
 - PostgreSQL is now part of the application
 - Thoughts to switch to Hibernate rather than raw sql
 - Thoughts to run a second similar project with OpenLayers3 and no ExtJs or GeoExt at all 
+- Some tools may require some Geoserver Plugins (like printing)
 
-There are obviously, a lot of features that are not working properly.
-*But the basic concept works. So far the application:*
+Application Capabilities
 - Can load all existing layers from Geoserver
 - Select the Geometry of any layer (with the identify button) regardless the name of the Geometry Column (important)
 - Display a property grid (with the identify button) but only for the first resulted geometry of the layer
@@ -30,18 +30,20 @@ There are obviously, a lot of features that are not working properly.
 - Stores in Cookie a Guid to identify each client instance
 - Spring mvc/rest framework added
 - Show/Hide Layers (Layer Visibility is stored per user in the database layer)
+- Select Areas and Layers Save them to db and download them later as Shapefiles
+- Choose and Hide Tools
 
 *Work on progress*
-- A Java BackEnd with ~~SQLite~~ PostgreSQL
+- A more complete Java BackEnd
 - Sql Scripts for building the database
-- Select Areas and Layers Save them to db and download them later as Shapefiles (almost there still got a couple of bugs)
+- Add/Search Metadata
 
 *Comming Soon*
-- Add/Remove Layers
+- Feature Editing
 
 *Distant Future*
 - Search GeonetWork
-- Choose and Hide Tools
-- Add/Search Metadata from ~~SQLite~~  PostgreSQL db
+- Networks
+- Topology
 
 [follow me at twitter](http://twitter.com/CodenTonic).
