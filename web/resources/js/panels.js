@@ -156,11 +156,11 @@ var search_panel = [
                 margin: 10,
                 cleanupAndRenderFeatures: function(features){
                     var me = this,
-                        targetLayer = vector,
+                        targetLayer = highlight,
                         activeSelLayer,
                         layerName;
 
-                    vector.removeAllFeatures();
+                    highlight.removeAllFeatures();
 
                     if(!Ext.isEmpty(features)){
                         activeSelLayer = selectedLayer[0].params.LAYERS;
@@ -256,7 +256,7 @@ var search_panel = [
                     var filter = this.createFilterFromGeometry(map.getExtent())
                     var me = this;
 
-                    vector.removeAllFeatures();
+                    highlight.removeAllFeatures();
 
                     me.lastRequest = Ext.Ajax.request({
                         url: OpenLayers.ProxyHost+geoserverWfsDefaults.wfsUrl,

@@ -23,20 +23,31 @@ Ext.application({
         //VECTOR LAYER
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-        var layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
-        layer_style.fillOpacity = 0.7;
-        layer_style.graphicOpacity = 1;
-        layer_style.fillColor ='#0000FF';
-        layer_style.border = 3;
+        var vector_layer_style = new OpenLayers.StyleMap({'default':{
+            strokeColor: "#00FF00",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            fillColor: "#FF5500",
+            fillOpacity: 0.5,
+            label : "${ltype}"
+    }});
+
+        var selection_layer_style = new OpenLayers.StyleMap({'default':{
+            strokeColor: "#FFFF00",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            fillColor: "#FF5500",
+            fillOpacity: 0.5
+        }});
 
         vector = new OpenLayers.Layer.Vector("Result Layer", {
-            style: layer_style,
+            styleMap: vector_layer_style,
             renderers: renderer,
             projection: epsg
         });
 
         highlight = new OpenLayers.Layer.Vector("Select Layer", {
-            style: layer_style,
+            styleMap: selection_layer_style,
             renderers: renderer,
             projection: epsg
         });
@@ -405,6 +416,14 @@ Ext.application({
             }
         });
 
+        var layercombo = Ext.create('Ext.form.ComboBox', {
+            id: "editlayerid",
+            fieldLabel: 'Choose Edit Layer',
+            store: wmscapstore,
+            displayField: 'name',
+            valueField: 'prefix'
+        });
+
 
         //MAP PANEL
         mapPanel = Ext.create('GeoExt.panel.Map', {
@@ -527,7 +546,8 @@ Ext.application({
         if(toolcategories.edittools)
         {
             toolbaritems.push({xtype: 'tbseparator'});
-            toolbaritems.push(drawpolygon)
+            toolbaritems.push(drawpolygon);
+            toolbaritems.push(layercombo);
         }
         toolbaritems.push("->");
         toolbaritems.push(options);
