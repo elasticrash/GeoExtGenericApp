@@ -31,6 +31,8 @@
     <script src="../resources/js/libs/SaveFeatureArea.js"></script>
     <!--MEASURE TOOLS-->
     <script src="../resources/js/libs/Measure.js"></script>
+    <!--EDIT TOOLS-->
+    <script src="../resources/js/libs/edit/DrawPolygon.js"></script>
     <!--LOGIN FORM-->
     <script src="../resources/js/libs/LoginForm.js"></script>
     <!--OPTION FORM-->

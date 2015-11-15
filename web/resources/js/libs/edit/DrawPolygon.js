@@ -1,13 +1,11 @@
-/*global Ext, GeoExt, OpenLayers, GdaWasser*/
-/*jshint camelcase:true, curly:true, eqeqeq:true, latedef:true, newcap:true, noarg:true, undef:true, trailing:true, maxlen:80 */
 /**
  * @class
  */
 Ext.define('CodenTonic.tools.vector.DrawButton', {
     extend: 'Ext.button.Button',
     xtype: 't_drawbutton',
-    msgBoxTitle: 'Ψηφιοποιήση',
-    msgBoxText: 'Οντότητα',
+    msgBoxTitle: 'editing',
+    msgBoxText: 'feature',
     tooltip: null,
     iconCls: null,
     handler: null,

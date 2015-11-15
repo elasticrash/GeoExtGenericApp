@@ -391,6 +391,21 @@ Ext.application({
             }
         });
 
+        //edit tools
+        var drawpolygon = Ext.create('CodenTonic.tools.vector.DrawButton', {
+            targetVectorLayer: vector,
+            iconCls: 'icon-edit',
+            scale: 'medium',
+            tooltip: "New Polygon",
+            handler: OpenLayers.Handler.Polygon,
+            ltype: "bio",
+            handlerOpts: {
+                style: OpenLayers.Feature.Vector.style['default'],
+                multi: OpenLayers.Handler.Polygon
+            }
+        });
+
+
         //MAP PANEL
         mapPanel = Ext.create('GeoExt.panel.Map', {
             border: true,
@@ -508,6 +523,11 @@ Ext.application({
             toolbaritems.push({xtype: 'tbseparator'});
             toolbaritems.push(selectArea);
             toolbaritems.push(downloadArea);
+        }
+        if(toolcategories.edittools)
+        {
+            toolbaritems.push({xtype: 'tbseparator'});
+            toolbaritems.push(drawpolygon)
         }
         toolbaritems.push("->");
         toolbaritems.push(options);

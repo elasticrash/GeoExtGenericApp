@@ -19,5 +19,6 @@ var toolcategories={
     identifytool: true,
     printtools: true,
     resetselectiontool: true,
-    saveareatools: true
+    saveareatools: true,
+    edittools: true
 }
