@@ -424,6 +424,17 @@ Ext.application({
             valueField: 'prefix'
         });
 
+        layercombo.on('select', function() {
+            //Ext.Ajax.request({
+            //    url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("GetFeature", this.getValue())),
+            //    method: 'GET',
+            //    success: function (response, options) {
+            //        var result = Ext.JSON.decode(response.responseText);
+            //        drawfeature.handler = OpenLayers.Handler.Point;
+            //    }
+            //});
+        });
+
         var saveButton = {
             xtype: 't_savechangesbutton',
             tooltip: LSave,
@@ -491,11 +502,10 @@ Ext.application({
         tree.on('itemclick', function(view, record, item, index, event) {
             selectedLayer = [record.data.layer];
             if(selectedLayer[0].params.STYLES!="") {
-                Ext.get(legend_image).dom.src = geoserverWmsDefaults.wmsUrl + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=30&HEIGHT=30&STRICT=false&style=" +
-                selectedLayer[0].params.STYLES;
+                Ext.get(legend_image).dom.src = CreateWMSUrl("GetLegendGraphic",null,selectedLayer[0].params.STYLES);
             }
             Ext.Ajax.request({
-                url: OpenLayers.ProxyHost + encodeURIComponent(geoserverWfsDefaults.wfsUrl + "request=describeFeatureType&typename=" + selectedLayer[0].params.LAYERS),
+                url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("describeFeatureType",selectedLayer[0].params.LAYERS)),
                 method: 'GET',
                 success: function (response, options) {
                     var result = response.responseXML;

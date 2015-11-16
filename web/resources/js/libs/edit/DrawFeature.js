@@ -87,7 +87,7 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
         var workingitem = Ext.getCmp("editlayerid");
         var layercap = getwmsCapLayerbyStripName(workingitem.value, wmscapstore);
 
-        //me.handler = layercap;
+
     },
     startUndoRedoObserving: function() {
         var me = this;
