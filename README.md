@@ -3,16 +3,16 @@
 
 *All you need to do to get it working is:*
 
-1. changing the Config.js File located at web/js/libs/
+1. changing the [Config.js](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/resources/js/libs/Config.js) File
 2. Running it on a Tomcat WebServer
-3. Proxy servlet to bypass the cross-origin error of the wfs requests needs python (add path to web.xml)
-4. Add your Geoserver Address to the python proxy
-5. Create A Schema in PostgreSQL and define its jdbc connection string in PostgreSQLConnector by altering the following line
+3. Proxy servlet to bypass the cross-origin error of the wfs requests needs python (add path to [web.xml](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/WEB-INF/web.xml))
+4. Add your Geoserver Address to the [python proxy](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/WEB-INF/cgi/proxy.cgi)
+5. Create A Schema in PostgreSQL and define its jdbc connection string in [PostgreSQLConnector](https://github.com/elasticrash/GeoExtGenericApp/blob/master/src/main/java/PostgreSQL/PostgreSQLConnector.java) by altering the following line
 
 ```c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");```
 
 *notes*
-- index.html changed to index.jsp (no jsp tags though in file) due to the spring mvc transition
+- index.html changed to [index.jsp](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/WEB-INF/index.jsp) (no jsp tags though in file) due to the spring mvc transition
 - PostgreSQL is now part of the application
 - Thoughts to switch to Hibernate rather than raw sql
 - Thoughts to run a second similar project with OpenLayers3 and no ExtJs or GeoExt at all 
