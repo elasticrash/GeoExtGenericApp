@@ -32,7 +32,7 @@
     <!--MEASURE TOOLS-->
     <script src="../resources/js/libs/Measure.js"></script>
     <!--EDIT TOOLS-->
-    <script src="../resources/js/libs/edit/DrawPolygon.js"></script>
+    <script src="../resources/js/libs/edit/DrawFeature.js"></script>
     <script src="../resources/js/libs/edit/SaveChanges.js"></script>
     <!--LOGIN FORM-->
     <script src="../resources/js/libs/LoginForm.js"></script>

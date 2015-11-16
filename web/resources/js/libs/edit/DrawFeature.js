@@ -24,6 +24,11 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
         epsg,
         epsg900913
     ],
+    initComponent: function() {
+        var me = this;
+        me.on('click', me.onClick);
+        me.callParent();
+    },
     constructor: function (cfg) {
         var me = this,
             action;
@@ -60,6 +65,7 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
                 });
 
             vector.events.register('beforefeatureadded', me, function(f) {
+
                 f.feature.attributes = {
                     ltype : Ext.getCmp("editlayerid").value,
                     pstate : "insert"
@@ -80,6 +86,13 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
             Ext.log.error("Error while initializing control: " +
                 "Could not detect targetVectorLayer.");
         }
+    },
+    onClick: function(btn, e, eOpts) {
+        var me = this;
+        var workingitem = Ext.getCmp("editlayerid");
+        var layercap = getwmsCapLayerbyStripName(workingitem.value, wmscapstore);
+
+        //me.handler = layercap;
     },
     startUndoRedoObserving: function() {
         var me = this;

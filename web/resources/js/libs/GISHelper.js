@@ -108,6 +108,15 @@
         return null;
     };
 
+    function getwmsCapLayerbyStripName(layername, wmscapstore){
+        for (var i = 0; i < wmscapstore.data.keys.length; i++) {
+                if (wmscapstore.data.items[i].data.name == layername) {
+                    return [wmscapstore.data.items[i].data];
+                }
+        }
+        return null;
+    };
+
     function createOpenLayersLayer(displayname, layername, layerstyle)
     {
         var omaplayer = new OpenLayers.Layer.WMS(

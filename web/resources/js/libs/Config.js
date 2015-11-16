@@ -1,4 +1,4 @@
-var geoserver = "http://localhost:8080/";
+var geoserver = "http://192.168.1.105:8080/";
 
 var geoserverWfsDefaults= {
         wfsUrl: geoserver+ "geoserver/ELPHO/wfs?",

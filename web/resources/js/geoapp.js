@@ -403,11 +403,11 @@ Ext.application({
         });
 
         //edit tools
-        var drawpolygon = Ext.create('CodenTonic.tools.vector.DrawButton', {
+        var drawfeature = Ext.create('CodenTonic.tools.vector.DrawButton', {
             targetVectorLayer: vector,
             iconCls: 'icon-edit',
             scale: 'medium',
-            tooltip: "New Polygon",
+            tooltip: "New Feature",
             handler: OpenLayers.Handler.Polygon,
             ltype: "bio",
             handlerOpts: {
@@ -553,7 +553,7 @@ Ext.application({
         if(toolcategories.edittools)
         {
             toolbaritems.push({xtype: 'tbseparator'});
-            toolbaritems.push(drawpolygon);
+            toolbaritems.push(drawfeature);
             toolbaritems.push(layercombo);
             toolbaritems.push(saveButton);
         }
