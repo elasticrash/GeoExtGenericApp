@@ -424,6 +424,13 @@ Ext.application({
             valueField: 'prefix'
         });
 
+        var saveButton = {
+            xtype: 't_savechangesbutton',
+            tooltip: LSave,
+            iconCls: 'icon-save',
+            scale: 'medium',
+            targetVectorLayer: vector
+        };
 
         //MAP PANEL
         mapPanel = Ext.create('GeoExt.panel.Map', {
@@ -548,6 +555,7 @@ Ext.application({
             toolbaritems.push({xtype: 'tbseparator'});
             toolbaritems.push(drawpolygon);
             toolbaritems.push(layercombo);
+            toolbaritems.push(saveButton);
         }
         toolbaritems.push("->");
         toolbaritems.push(options);

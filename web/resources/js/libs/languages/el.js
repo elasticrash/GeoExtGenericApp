@@ -48,3 +48,4 @@ var LMeasureDistance = "Μέτρηση Απόστασης";
 var LOptions = "Επιλογές";
 var LLogin = "Σύνδεση";
 var LSave = "Αποθήκευση";
+var LResults = "Αποτελέσματα";

@@ -1,11 +1,3 @@
-/**
- * Created by stefanos on 26/3/2015.
- */
-/*global Ext*/
-/*jslint plusplus: true, sloppy: true, white: true*/
-/**
- * @class
- */
 Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
     extend: 'Ext.button.Button',
     xtype: 't_savechangesbutton',
@@ -21,7 +13,6 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
     targetWmsLayer: null,
     featureStore: null,
     reloadStoreAfterWfstCommit: true,
-    iconCls: 'icon-feature-save',
     checkGeometriesValidityBeforeSave: true,
     initComponent: function() {
         var me = this;
@@ -37,9 +28,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         me.featureStore = featurePanel.grid.getStore();
         me.mapPanel = mapPanel;
 
-        if (Ext.isObject(me.featureStore) && !Ext.isEmpty(me.targetVectorLayer) && !Ext.isEmpty(me.targetWmsLayer)) {
-
-
+        if (Ext.isObject(me.featureStore) && !Ext.isEmpty(me.targetVectorLayer)) {
             var CreateInsertXml = me.insertfeaturesXMLS();
         }
     },
@@ -56,17 +45,17 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
 
         //updatefromfeaturestore
         Ext.each(me.targetVectorLayer.features, function(feat){
-                for (var l = 0; l < me.featureStore.data.keys.length; l++) {
-                    if(feat.id == me.featureStore.data.keys[l]) {
-                        for (var property in feat.data) {
-                            if (feat.data.hasOwnProperty(property)) {
-                                if(tableproperties.indexOf(property) > 1) {
-                                    feat.data[property] = me.featureStore.data.items[0].data[property];
-                                }
+            for (var l = 0; l < me.featureStore.data.keys.length; l++) {
+                if(feat.id == me.featureStore.data.keys[l]) {
+                    for (var property in feat.data) {
+                        if (feat.data.hasOwnProperty(property)) {
+                            if(tableproperties.indexOf(property) > 1) {
+                                feat.data[property] = me.featureStore.data.items[0].data[property];
                             }
                         }
                     }
                 }
+            }
         });
 
 
@@ -75,43 +64,65 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         commitment.action = [];
 
         var i = 0;
+
         Ext.each(me.targetVectorLayer.features, function(feat) {
-            if (feat.geometry !== null && (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon" || feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPolygon")) {
-                commitment.action[i] = [];
-                if (feat.pstate == "insert") {
-                    commitment.action[i].name = 'wfs:Insert';
-                }
-                if (feat.pstate == "update") {
-                    commitment.action[i].name = 'wfs:Update';
-                }
-                commitment.action[i].table = [];
-                commitment.action[i].table[i] = [];
-                commitment.action[i].table[i].name = 'ELPHO:PARCELS_DRAW';
-                commitment.action[i].table[i].attributes = [];
+            if (feat.geometry !== null) {
+                var gmlgeometry = null;
 
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
                     gml = new OpenLayers.Format.GML();
-                    var polygonGML = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                }
+                if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                    gml = new OpenLayers.Format.GML();
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                }
+                if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString") {
+                    gml = new OpenLayers.Format.GML();
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPolygon") {
                     gml = new OpenLayers.Format.GML();
-                    var polygonGML = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
                 }
-                var plgGMLString = (new XMLSerializer()).serializeToString(polygonGML);
+                if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPoint") {
+                    gml = new OpenLayers.Format.GML();
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                }
+                if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiLineString") {
+                    gml = new OpenLayers.Format.GML();
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                }
 
-                commitment.action[i].table[i].attributes[0] = [];
-                commitment.action[i].table[i].attributes[0].name = "GEOM";
-                commitment.action[i].table[i].attributes[0].data = plgGMLString;
-                var j = 1;
-                for (var property in feat.data) {
-                    if (feat.data.hasOwnProperty(property)) {
-                        commitment.action[i].table[i].attributes[j] = [];
-                        commitment.action[i].table[i].attributes[j].name = property;
-                        commitment.action[i].table[i].attributes[j].data = String(feat.data[property]).replace(/&/g,"");
-                        j++;
+                if(gmlgeometry!=null) {
+                    var plgGMLString = (new XMLSerializer()).serializeToString(gmlgeometry);
+
+                    commitment.action[i] = [];
+                    if (feat.pstate == "insert") {
+                        commitment.action[i].name = 'wfs:Insert';
                     }
+                    if (feat.pstate == "update") {
+                        commitment.action[i].name = 'wfs:Update';
+                    }
+                    commitment.action[i].table = [];
+                    commitment.action[i].table[i] = [];
+                    commitment.action[i].table[i].name = geoserverWfsDefaults.nsAlias + feat.ltype;
+                    commitment.action[i].table[i].attributes = [];
+
+                    commitment.action[i].table[i].attributes[0] = [];
+                    commitment.action[i].table[i].attributes[0].name = GEOMcolumn;
+                    commitment.action[i].table[i].attributes[0].data = plgGMLString;
+                    var j = 1;
+                    for (var property in feat.data) {
+                        if (feat.data.hasOwnProperty(property)) {
+                            commitment.action[i].table[i].attributes[j] = [];
+                            commitment.action[i].table[i].attributes[j].name = property;
+                            commitment.action[i].table[i].attributes[j].data = String(feat.data[property]).replace(/&/g, "");
+                            j++;
+                        }
+                    }
+                    i++;
                 }
-                i++;
             }
         });
 
@@ -138,7 +149,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
                     xmlpost += "</wfs:Property>";
                 }
 
-                xmlpost +="<ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>PARCELS_ID</ogc:PropertyName><ogc:Literal>"+ act.table[k].attributes[1].data +
+                xmlpost +="<ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>ID</ogc:PropertyName><ogc:Literal>"+ act.table[k].attributes[1].data +
                 "</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter>";
                 xmlpost += "</" + act.name + ">";
             }
@@ -146,6 +157,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         }
         xmlpost += "</wfs:Transaction>";
 
+        //TO DO need to save credentials in database encrypted
         Ext.Ajax.request({
             url: OpenLayers.ProxyHost+geoserverWfsDefaults.wfsUrl,
             method: 'POST',
@@ -157,10 +169,15 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
             },
             success: function(response, options){
                 var text = response.responseText;
-                me.targetWmsLayer.redraw(true);
+
+                for(var i=0;i<map.layers.length;i++)
+                {
+                   map.layers[i].redraw(true);
+                }
+
                 if(text.indexOf("SUCCESS") > -1);
                 {
-                    CustomMessage("Αποτέλεσμα", "Η αποθήκευση έγινε με επιτυχία");
+                    CustomMessage(LResults, "Save Completed");
                 }
                 me.targetVectorLayer.removeAllFeatures();
             },
@@ -217,10 +234,6 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         var me = this;
 
         if(resp.code === 1){
-            // SUCCESS
-
-            //me.updateDataExtentCacheAndReloadLayers();
-
         } else if(resp.code === 0){
             // FAILURE
             me.mapPanel.setLoading(false);
