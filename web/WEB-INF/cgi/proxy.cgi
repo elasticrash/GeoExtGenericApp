@@ -16,7 +16,6 @@ import sys, os
 # Designed to prevent Open Proxy type stuff.
 
 allowedHosts = ['192.168.1.105:8080', 'neptune:80',
-                '144.76.39.165:8082', 'geoserver.elpho.biz',
                 'prototype.openmnnd.org', 'geo.openplans.org',
                 'sigma.openplans.org', 'demo.opengeo.org',
                 'www.openstreetmap.org', 'sample.azavea.com',
