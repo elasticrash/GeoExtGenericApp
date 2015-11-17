@@ -417,6 +417,15 @@ Ext.application({
             }
         });
 
+        var selectfeature = Ext.create('Ext.button.Button',{
+            iconCls: 'icon-pointer',
+            tooltip: "Select Feature",
+            scale: 'medium',
+            handler: function() {
+                spfwms.activate();
+            }
+        });
+
         var layercombo = Ext.create('Ext.form.ComboBox', {
             id: "editlayerid",
             fieldLabel: 'Choose Edit Layer',
@@ -525,6 +534,8 @@ Ext.application({
 
         //identify tool, located in the CustomControl.js file
         map.addControl(ident);
+        //select feature from wms, located in SelectPolygonFromWms
+        map.addControl(spfwms);
 
         var toolbaritems = [];
 
@@ -560,6 +571,7 @@ Ext.application({
         {
             toolbaritems.push({xtype: 'tbseparator'});
             toolbaritems.push(drawfeature);
+            toolbaritems.push(selectfeature);
             toolbaritems.push(layercombo);
             toolbaritems.push(saveButton);
         }

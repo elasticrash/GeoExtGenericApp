@@ -1,7 +1,8 @@
 /**
  * Created by tougo on 15/11/15.
  */
-OpenLayers.Control.SelectPolygonFromWms = new OpenLayers.Class(OpenLayers.Control,{    defaultHandlerOptions: {
+OpenLayers.Control.SelectPolygonFromWms = new OpenLayers.Class(OpenLayers.Control,{
+    defaultHandlerOptions: {
     'single': true,
     'double': false,
     'pixelTolerance': 0,
@@ -46,7 +47,7 @@ OpenLayers.Control.SelectPolygonFromWms = new OpenLayers.Class(OpenLayers.Contro
             method: 'POST',
             params: {
                 filter: ogcFilterString,
-                typeName: "ELPHO:D_BIOFARM",
+                typeName: Ext.getCmp('editlayerid').getValue(),
                 geomnameplacehoder: GEOMcolumn,
                 version:geoserverWfsDefaults.wfsVersion,
                 request:'GetFeature',
@@ -66,8 +67,12 @@ OpenLayers.Control.SelectPolygonFromWms = new OpenLayers.Class(OpenLayers.Contro
                         verticeCount += feat.geometry.getVertices().length;
                         feat.geometry = feat.geometry.transform(epsg, epsg900913);
                         feat.pstate = "update";
-                        feat.ltype = "bio";
+                        feat.ltype = Ext.getCmp('editlayerid').value;
                         vector.addFeatures(feat);
+                        feat.attributes = {
+                            ltype : Ext.getCmp("editlayerid").value,
+                            pstate : "insert"
+                        }
                     });
                 }
             },

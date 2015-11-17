@@ -7,11 +7,9 @@
 .icon-pan {
      background-image:url(images/pan.png) !important;
  }
-
 .icon-zoom-area {
     background-image:url(images/zoom-region.png) !important;
 }
-
 .icon-info {
     background-image:url(images/identify.png) !important;
 }
@@ -21,30 +19,24 @@
 .icon-login {
     background-image:url(images/login.png) !important;
 }
-
 .icon-measure-area {
     background-image:url(images/area-measure.png) !important;
 }
-
 .icon-measure-line {
     background-image:url(images/length-measure.png) !important;
 }
-
 .icon-polygon-select {
     background-image:url(images/select.png) !important;
 }
 .icon-polygon-query {
     background-image:url(images/search.png) !important;
 }
-
 .gx-popup-anc {
     background: transparent url(images/anchor-neptune.png) no-repeat 0 0 !important;;
 }
-
 .gx-popup-anc.top {
     background: transparent url(images/anchor-top-neptune.png) no-repeat 0 0 !important;;
 }
-
 .icon-previous {
     background-image:url(images/zoom-last.png) !important;;
 }
@@ -62,4 +54,7 @@
 }
 .icon-edit {
     background-image:url(images/edit.png) !important;;
+}
+.icon-pointer {
+    background-image:url(images/pointer.png) !important;
 }
