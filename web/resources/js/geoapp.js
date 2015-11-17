@@ -405,6 +405,7 @@ Ext.application({
         //edit tools
         var drawfeature = Ext.create('CodenTonic.tools.vector.DrawButton', {
             targetVectorLayer: vector,
+            id: 'edittoolid',
             iconCls: 'icon-edit',
             scale: 'medium',
             tooltip: "New Feature",
@@ -425,14 +426,9 @@ Ext.application({
         });
 
         layercombo.on('select', function() {
-            //Ext.Ajax.request({
-            //    url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("GetFeature", this.getValue())),
-            //    method: 'GET',
-            //    success: function (response, options) {
-            //        var result = Ext.JSON.decode(response.responseText);
-            //        drawfeature.handler = OpenLayers.Handler.Point;
-            //    }
-            //});
+            if(Ext.getCmp('edittoolid').control.active) {
+                Ext.get('edittoolid').dom.click();
+            }
         });
 
         var saveButton = {
