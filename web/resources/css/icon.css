@@ -58,3 +58,6 @@
 .icon-pointer {
     background-image:url(images/pointer.png) !important;
 }
+.icon-feature-raster {
+    background-image:url(images/polygons-from-raster.png) !important;
+}

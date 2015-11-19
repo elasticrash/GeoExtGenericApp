@@ -23,14 +23,27 @@ Ext.application({
         //VECTOR LAYER
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-        var vector_layer_style = new OpenLayers.StyleMap({'default':{
-            strokeColor: "#00FF00",
-            strokeOpacity: 1,
-            strokeWidth: 3,
-            fillColor: "#FF5500",
-            fillOpacity: 0.5,
-            label : "${ltype}"
-    }});
+
+        var vector_layer_style = new OpenLayers.StyleMap({
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1,
+                    strokeWidth: 3,
+                    fillColor: "#FF5500",
+                    fillOpacity: 0.5,
+                    graphicZIndex: 1,
+                    label: '${ltype}',
+            },
+                {
+                    context: {
+                        label: function (feature) {
+                            if (feature.geometry && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
+                                return feature.attributes.ltype;
+                            } else {
+                                return 'X';
+                            }
+                        }
+                    }
+                });
 
         var selection_layer_style = new OpenLayers.StyleMap({'default':{
             strokeColor: "#FFFF00",
@@ -52,7 +65,6 @@ Ext.application({
             projection: epsg
         });
 
-        var selectCtrl = new OpenLayers.Control.SelectFeature(vector);
 
         //WMS CAPABILITIES
         wmscapstore = Ext.create('GeoExt.data.WmsCapabilitiesLayerStore', {
@@ -267,7 +279,7 @@ Ext.application({
 
         var selectArea = CodenTonic.tools.SaveFeatureArea;
 
-        ctrl = new OpenLayers.Control.NavigationHistory();
+        var ctrl = new OpenLayers.Control.NavigationHistory();
         map.addControl(ctrl);
 
         var paction = Ext.create('GeoExt.Action', {
@@ -417,12 +429,26 @@ Ext.application({
             }
         });
 
-        var selectfeature = Ext.create('Ext.button.Button',{
-            iconCls: 'icon-pointer',
-            tooltip: "Select Feature",
+        var extractfeature = Ext.create('Ext.button.Button',{
+            iconCls: 'icon-feature-raster',
             scale: 'medium',
+            tooltip: "Extract Feature",
             handler: function() {
                 spfwms.activate();
+            }
+        });
+
+        var selectFeatureButton = Ext.create('CodenTonic.tools.vector.SelectFeatureButton', {
+            targetVectorLayer: vector,
+            iconCls: 'icon-pointer',
+            scale: 'medium',
+            listeners: {
+                scope: this,
+                'toggle': function(button, pressed, eOpts) {
+                    if(pressed === false){
+                        mapPanel.query('.button').forEach(function(c){c.setDisabled(false);});
+                    }
+                }
             }
         });
 
@@ -571,7 +597,8 @@ Ext.application({
         {
             toolbaritems.push({xtype: 'tbseparator'});
             toolbaritems.push(drawfeature);
-            toolbaritems.push(selectfeature);
+            toolbaritems.push(extractfeature);
+            toolbaritems.push(selectFeatureButton);
             toolbaritems.push(layercombo);
             toolbaritems.push(saveButton);
         }
@@ -602,7 +629,6 @@ Ext.application({
             }
         });
 
-        map.addControl(selectCtrl);
         map.addControl(infoControls);
         selectCtrl.activate();
     }
