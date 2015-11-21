@@ -1,8 +1,8 @@
-var geoserver = "http://192.168.1.105:8080/";
+var geoserver = "http://localhost:8080/";
 
 var geoserverWfsDefaults= {
         wfsUrl: geoserver+ "geoserver/ELPHO/wfs?",
-        wfsFeatureNS: "http://demo-greece/Greek",
+        wfsFeatureNS: "http://www.elpho.gr",
         wfsVersion: "1.0.0",
         wfsSrsName: "EPSG:2100",
         nsAlias: 'ELPHO'

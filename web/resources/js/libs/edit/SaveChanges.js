@@ -60,7 +60,15 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
 
 
         var commitment = [];
-        commitment.name = 'wfs:Transaction service="WFS" version="1.0.0" xmlns:wfs="http://www.opengis.net/wfs" xmlns:ELPHO="http://www.elpho.gr" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd"'
+
+        commitment.name = 'wfs:Transaction service="WFS" version="'+geoserverWfsDefaults.wfsVersion +
+            '" xmlns:wfs="http://www.opengis.net/wfs" xmlns:'+ geoserverWfsDefaults.nsAlias + '="' +
+            geoserverWfsDefaults.wfsFeatureNS +'" xmlns:gml="http://www.opengis.net/gml"' +
+            ' xmlns:ogc="http://www.opengis.net/ogc"' +
+            ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+            ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/' +
+            geoserverWfsDefaults.wfsVersion + '/WFS-transaction.xsd"';
+
         commitment.action = [];
 
         var i = 0;
@@ -71,27 +79,27 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
 
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPolygon") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPoint") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiLineString") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:2100'))])
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
                 }
 
                 if(gmlgeometry!=null) {
@@ -133,7 +141,9 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
                 xmlpost += "<" + act.name + ">";
                 xmlpost += "<" + act.table[k].name + ">";
                 for (var l = 0; l < act.table[k].attributes.length; l++) {
-                    xmlpost += "<ELPHO:" + act.table[k].attributes[l].name + ">" + act.table[k].attributes[l].data + "</ELPHO:" + act.table[k].attributes[l].name + ">";
+                    xmlpost += "<"+geoserverWfsDefaults.nsAlias+":" +
+                                act.table[k].attributes[l].name + ">" + act.table[k].attributes[l].data +
+                                "</"+geoserverWfsDefaults.nsAlias+":" + act.table[k].attributes[l].name + ">";
                 }
                 xmlpost += "</" + act.table[k].name + ">";
                 xmlpost += "</" + act.name + ">";
@@ -157,14 +167,16 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         }
         xmlpost += "</wfs:Transaction>";
 
-        //TO DO need to save credentials in database encrypted
+        //TO DO ASK FOR CREDENTIALS
+        var geologin = AskForLogin();
+
         Ext.Ajax.request({
             url: OpenLayers.ProxyHost+geoserverWfsDefaults.wfsUrl,
             method: 'POST',
             xmlData: xmlpost,
             params: {
-                username:'admin',
-                password: 'geoserver',
+                username: geologin.username,
+                password: geologin.password,
                 request: 'Transaction'
             },
             success: function(response, options){

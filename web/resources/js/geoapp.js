@@ -24,26 +24,24 @@ Ext.application({
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-        var vector_layer_style = new OpenLayers.StyleMap({
-                    strokeColor: "#00FF00",
-                    strokeOpacity: 1,
-                    strokeWidth: 3,
-                    fillColor: "#FF5500",
-                    fillOpacity: 0.5,
-                    graphicZIndex: 1,
-                    label: '${ltype}',
-            },
-                {
-                    context: {
-                        label: function (feature) {
-                            if (feature.geometry && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
-                                return feature.attributes.ltype;
-                            } else {
-                                return 'X';
-                            }
-                        }
+        var vector_layer_style = new OpenLayers.StyleMap(new OpenLayers.Style({
+                strokeColor: "#076600",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                fillColor: "#F15560",
+                fillOpacity: 0.5,
+                graphicZIndex: 1,
+                label: '${val}',
+            },{ context: {
+                val: function (feature) {
+                    if (feature.geometry && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
+                        return feature.attributes.ltype;
+                    } else {
+                        return 'X';
                     }
-                });
+                }
+            }}
+        ));
 
         var selection_layer_style = new OpenLayers.StyleMap({'default':{
             strokeColor: "#FFFF00",
@@ -204,13 +202,14 @@ Ext.application({
 
                     }
                 }
+                map.addLayer(vector);
+                map.addLayer(highlight);
             }
         });
 
         //add predifined local layers
         map.addLayer(layer);
-        map.addLayer(vector);
-        map.addLayer(highlight);
+
 
         //MEASUREMENTS
         var measurearea = CodenTonic.tools.MeasureAreaButton;
