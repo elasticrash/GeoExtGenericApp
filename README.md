@@ -48,4 +48,4 @@ Application Capabilities
 - Networks
 - Topology
 
-[follow me at twitter](http://twitter.com/CodenTonic).
+[follow me at twitter](http://twitter.com/CodenTonic) and ask me anything.
