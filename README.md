@@ -12,6 +12,7 @@
 ```c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");```
 
 *notes*
+- Feature Editing works (insert and update) there is a bug with labeling the new features. Editing in the web is a bit complex so I have to post instructions on how the whole concept works. No attribure editing atm.
 - index.html changed to [index.jsp](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/WEB-INF/index.jsp) (no jsp tags though in file) due to the spring mvc transition
 - PostgreSQL is now part of the application
 - Thoughts to switch to Hibernate rather than raw sql
@@ -36,10 +37,11 @@ Application Capabilities
 *Work on progress*
 - A more complete Java BackEnd
 - Sql Scripts for building the database
-- Add/Search Metadata
+- Feature Editing
+- Attribute Editing
 
 *Comming Soon*
-- Feature Editing
+- Add/Search Metadata
 
 *Distant Future*
 - Search GeonetWork
