@@ -60,16 +60,17 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
                 });
 
             vector.events.register('beforefeatureadded', me, function(f) {
-
-                f.feature.attributes = {
-                    ltype : Ext.getCmp("editlayerid").value,
-                    pstate : "insert"
-            }
+                if(typeof f.feature.pstate === 'undefined') {
+                    f.feature.ltype = Ext.getCmp("editlayerid").value;
+                    f.feature.pstate = "insert";
+                }
             });
 
             me.control.events.register('featureadded', me, function(f) {
-                f.feature.attributes.ltype = Ext.getCmp("editlayerid").value;
-                f.feature.pstate = "insert";
+                if(typeof f.feature.pstate === 'undefined') {
+                    f.feature.ltype = Ext.getCmp("editlayerid").value;
+                    f.feature.pstate = "insert";
+                }
             });
 
             me.control.events.register("activate", me,

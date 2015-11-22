@@ -35,7 +35,7 @@ Ext.application({
             },{ context: {
                 val: function (feature) {
                     if (feature.geometry && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
-                        return feature.attributes.ltype;
+                        return feature.ltype;
                     } else {
                         return 'X';
                     }

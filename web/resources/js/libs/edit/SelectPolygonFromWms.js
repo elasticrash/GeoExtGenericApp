@@ -69,10 +69,6 @@ OpenLayers.Control.SelectPolygonFromWms = new OpenLayers.Class(OpenLayers.Contro
                         feat.pstate = "update";
                         feat.ltype = Ext.getCmp('editlayerid').value;
                         vector.addFeatures(feat);
-                        feat.attributes = {
-                            ltype : Ext.getCmp("editlayerid").value,
-                            pstate : "insert"
-                        }
                     });
                 }
             },

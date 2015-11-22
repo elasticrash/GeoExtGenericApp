@@ -25,10 +25,10 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         var me = this,
             allValid = false;
 
-        me.featureStore = featurePanel.grid.getStore();
+        //me.featureStore = featurePanel.grid.getStore();
         me.mapPanel = mapPanel;
 
-        if (Ext.isObject(me.featureStore) && !Ext.isEmpty(me.targetVectorLayer)) {
+        if (/*Ext.isObject(me.featureStore) &&*/ !Ext.isEmpty(me.targetVectorLayer)) {
             var CreateInsertXml = me.insertfeaturesXMLS();
         }
     },
@@ -36,7 +36,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
     {
         var me = this;
 
-        var tableproperties = [];
+        /*var tableproperties = [];
         for (var property in me.featureStore.data.items[0].data) {
             if (me.featureStore.data.items[0].data.hasOwnProperty(property)) {
                 tableproperties.push(property);
@@ -56,7 +56,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
                     }
                 }
             }
-        });
+        });*/
 
 
         var commitment = [];
@@ -79,27 +79,27 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
 
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.transform(epsg900913, epsg)])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.transform(epsg900913, epsg)])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.transform(epsg900913, epsg)])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPolygon") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.polygon.apply(gml, [feat.geometry.components[0].transform(epsg900913, epsg)])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiPoint") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.point.apply(gml, [feat.geometry.components[0].transform(epsg900913, epsg)])
                 }
                 if (feat.geometry.CLASS_NAME == "OpenLayers.Geometry.MultiLineString") {
                     gml = new OpenLayers.Format.GML();
-                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.components[0].transform(new OpenLayers.Projection(epsg900913), new OpenLayers.Projection(epsg))])
+                    gmlgeometry = gml.buildGeometry.linestring.apply(gml, [feat.geometry.components[0].transform(nepsg900913, epsg)])
                 }
 
                 if(gmlgeometry!=null) {
@@ -114,7 +114,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
                     }
                     commitment.action[i].table = [];
                     commitment.action[i].table[i] = [];
-                    commitment.action[i].table[i].name = geoserverWfsDefaults.nsAlias + feat.ltype;
+                    commitment.action[i].table[i].name = geoserverWfsDefaults.nsAlias+ ":" + feat.ltype;
                     commitment.action[i].table[i].attributes = [];
 
                     commitment.action[i].table[i].attributes[0] = [];
@@ -168,8 +168,10 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
         xmlpost += "</wfs:Transaction>";
 
         //TO DO ASK FOR CREDENTIALS
-        var geologin = AskForLogin();
-
+        var geologin = this.showConfirmationDialog("Enter Your Geoserver Credentials", this.postChanges, xmlpost, me.targetVectorLayer)
+    },
+    postChanges: function(geologin, xmlpost, targetVectorLayer)
+    {
         Ext.Ajax.request({
             url: OpenLayers.ProxyHost+geoserverWfsDefaults.wfsUrl,
             method: 'POST',
@@ -184,20 +186,58 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
 
                 for(var i=0;i<map.layers.length;i++)
                 {
-                   map.layers[i].redraw(true);
+                    map.layers[i].redraw(true);
                 }
 
                 if(text.indexOf("SUCCESS") > -1);
                 {
                     CustomMessage(LResults, "Save Completed");
                 }
-                me.targetVectorLayer.removeAllFeatures();
+                targetVectorLayer.removeAllFeatures();
             },
             failure: function(response, options){
                 var text = response.responseText;
                 Ext.log('failure');
             }
         });
+    },
+    showConfirmationDialog: function(question, yesCallback, xmlpost, targetVectorLayer) {
+        var lform =  new Ext.Window({
+            title: question,
+            bodyPadding: 5,
+            defaultType: 'textfield',
+            items: [
+                {
+                    id: 'gusernameid',
+                    fieldLabel: 'Username',
+                    name: 'username',
+                    allowBlank: true
+                },
+                {
+                    id: 'gpassbtnid',
+                    name: 'password',
+                    inputType: 'password',
+                    fieldLabel: 'Password',
+                    allowBlank: false
+                }
+            ],
+            bbar: [
+                {
+                    id: 'enterbtnid',
+                    xtype: 'button',
+                    text: "OK",
+                    margin: 5,
+                    handler: function () {
+                        var geologin = [];
+                        geologin.username = Ext.getCmp('gusernameid').value;
+                        geologin.password = Ext.getCmp('gpassbtnid').value;
+
+                        yesCallback(geologin, xmlpost,targetVectorLayer);
+                    }
+                }
+            ]
+        });
+        lform.show();
     },
     checkGeometriesValidity: function() {
 
