@@ -28,3 +28,67 @@ function CreateWMSUrl(request, typename, style)
     }
 
 }
+
+function createPopup(feature, popgrid) {
+    var win = Ext.WindowManager.getActive();
+    if (win) {
+        win.close();
+    }
+    popupOpts = Ext.apply({
+        title: LInfo,
+        location: feature,
+        width:400,
+        map:map,
+        layout   : 'fit',
+        maximizable: true,
+        collapsible: true,
+        anchorPosition: 'auto',
+        items:[popgrid]
+    });
+
+    popup = Ext.create('GeoExt.window.Popup', popupOpts);
+    popup.on({
+        close: function() {
+            vector.removeAllFeatures();
+        }
+    });
+    popup.show();
+}
+
+
+function EditAttributes(feature, popgrid) {
+    var win = Ext.WindowManager.getActive();
+    if (win) {
+        win.close();
+    }
+    popupOpts = Ext.apply({
+        title: "Add Attributes",
+        location: feature,
+        width:400,
+        map:map,
+        layout   : 'fit',
+        maximizable: true,
+        collapsible: true,
+        anchorPosition: 'auto',
+        items:[popgrid],
+        bbar: [
+            {
+                id: 'addattributevalues',
+                xtype: 'button',
+                text: "OK",
+                margin: 5,
+                handler: function () {
+                    //pass attributes
+                    win.close();
+                }
+            }
+        ]
+    });
+
+    popup = Ext.create('GeoExt.window.Popup', popupOpts);
+    popup.on({
+        close: function() {
+        }
+    });
+    popup.show();
+}

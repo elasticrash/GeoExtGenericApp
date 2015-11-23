@@ -70,7 +70,9 @@ Ext.define('CodenTonic.tools.vector.DrawButton', {
                 if(typeof f.feature.pstate === 'undefined') {
                     f.feature.ltype = Ext.getCmp("editlayerid").value;
                     f.feature.pstate = "insert";
-                }
+                 }
+                getAttributesForEditing(Ext.getCmp("editlayerid").value, f.feature);
+
             });
 
             me.control.events.register("activate", me,

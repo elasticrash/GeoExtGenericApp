@@ -115,29 +115,3 @@ OpenLayers.Control.Identify =  OpenLayers.Class(OpenLayers.Control, {
 
 
 var ident = new OpenLayers.Control.Identify();
-
-function createPopup(feature, popgrid) {
-    var win = Ext.WindowManager.getActive();
-    if (win) {
-        win.close();
-    }
-    popupOpts = Ext.apply({
-        title: LInfo,
-        location: feature,
-        width:400,
-        map:map,
-        layout   : 'fit',
-        maximizable: true,
-        collapsible: true,
-        anchorPosition: 'auto',
-        items:[popgrid]
-    });
-
-    popup = Ext.create('GeoExt.window.Popup', popupOpts);
-    popup.on({
-        close: function() {
-            vector.removeAllFeatures();
-        }
-    });
-    popup.show();
-}

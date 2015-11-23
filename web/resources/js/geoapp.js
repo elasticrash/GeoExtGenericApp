@@ -534,27 +534,7 @@ Ext.application({
             if(selectedLayer[0].params.STYLES!="") {
                 Ext.get(legend_image).dom.src = CreateWMSUrl("GetLegendGraphic",null,selectedLayer[0].params.STYLES);
             }
-            Ext.Ajax.request({
-                url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("describeFeatureType",selectedLayer[0].params.LAYERS)),
-                method: 'GET',
-                success: function (response, options) {
-                    var result = response.responseXML;
-                    var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
-                    table.length = 0;
-
-                    for (var i = 0; i < Columnchilds.length; i++) {
-                        if (Columnchilds[i].attributes.type.nodeValue == "gml:GeometryPropertyType") {
-                            GEOMcolumn = Columnchilds[i].attributes.name.nodeValue;
-                        }
-                        table[i] = {
-                            value: i,
-                            name: Columnchilds[i].attributes.name.nodeValue,
-                            type: Columnchilds[i].attributes.type.nodeValue
-                        };
-                    }
-                    selectedlayerfields.load();
-                }
-            });
+            getAttributesForQuery(selectedLayer[0].params.LAYERS);
         })
 
         //identify tool, located in the CustomControl.js file

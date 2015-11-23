@@ -137,3 +137,66 @@
 
         return omaplayer;
     }
+
+    function getAttributesForQuery(layername)
+    {
+        Ext.Ajax.request({
+            url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("describeFeatureType",layername)),
+            method: 'GET',
+            success: function (response, options) {
+                var result = response.responseXML;
+                var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
+                table.length = 0;
+
+                for (var i = 0; i < Columnchilds.length; i++) {
+                    if (Columnchilds[i].attributes.type.nodeValue == "gml:GeometryPropertyType") {
+
+                        GEOMcolumn = Columnchilds[i].attributes.name.nodeValue;
+                    }
+                    table[i] = {
+                        value: i,
+                        name: Columnchilds[i].attributes.name.nodeValue,
+                        type: Columnchilds[i].attributes.type.nodeValue
+                    };
+                }
+                selectedlayerfields.load();
+            }
+        });
+    }
+
+    function getAttributesForEditing(layername, feature)
+    {
+        Ext.Ajax.request({
+            url: OpenLayers.ProxyHost + encodeURIComponent(CreateWFSUrl("describeFeatureType",layername)),
+            method: 'GET',
+            success: function (response, options) {
+                var result = response.responseXML;
+                var Columnchilds = result.children[0].children[1].children[0].children[0].children[0].children;
+                table.length = 0;
+
+                var attributes = [];
+                for (var i = 0; i < Columnchilds.length; i++) {
+                    if (Columnchilds[i].attributes.type.nodeValue != "gml:GeometryPropertyType") {
+                        attributes[i] = {
+                            value: i,
+                            name: Columnchilds[i].attributes.name.nodeValue,
+                            type: Columnchilds[i].attributes.type.nodeValue
+                        };
+                    }
+                }
+
+                for(var att = 0; att < attributes.length; att++)
+                {
+                    feature.attributes[attributes[att].name] = "";
+                }
+
+                var popgrid = Ext.create('Ext.grid.property.Grid', {
+                    forceFit: true,
+                    nameColumnWidth: 250,
+                    source: feature.attributes,
+                });
+
+                EditAttributes(feature, popgrid);
+            }
+        });
+    }
