@@ -33,11 +33,11 @@ Application Capabilities
 - Show/Hide Layers (Layer Visibility is stored per user in the database layer)
 - Select Areas and Layers Save them to db and download them later as Shapefiles
 - Choose and Hide Tools
+- [Feature Editing](https://github.com/elasticrash/GeoExtGenericApp/wiki/Editing) Needs Improvements but it works.
 
 *Work on progress*
 - A more complete Java BackEnd
 - Sql Scripts for building the database
-- Feature Editing
 - Attribute Editing
 
 *Comming Soon*
