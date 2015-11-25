@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -8,6 +8,7 @@
 
 /*
  * @include OpenLayers/Util.js
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -34,7 +35,7 @@
  *     });
  *     // display permalink each time state is changed
  *     permalinkProvider.on({
- *         statechanged: function(provider, name, value) {
+ *         statechange: function(provider, name, value) {
  *             alert(provider.getLink());
  *         }
  *     });

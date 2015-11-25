@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -7,8 +7,9 @@
  */
 
 /*
-* @include OpenLayers/Format/CQL.js
-*/
+ * @include OpenLayers/Format/CQL.js
+ * @requires GeoExt/Version.js
+ */
 
 /**
  * A specific model for CQL Style Rules.
@@ -34,7 +35,7 @@ Ext.define('GeoExt.data.VectorStyleModel', {
         name : "symbolizers",
         convert : function(symbolizers, rec) {
             //symbolizers should be an array of OpenLayers.Symbolizer objects
-            symbolizers = ( symbolizers instanceof Array) ? symbolizers : [symbolizers];
+            symbolizers = Ext.isArray(symbolizers) ? symbolizers : [symbolizers];
             for(var i = 0; i < symbolizers.length; i++) {
                 var symbolizer = symbolizers[i];
                 //due to the way that the initial data provided to a store is processed,
@@ -45,8 +46,7 @@ Ext.define('GeoExt.data.VectorStyleModel', {
                 }
             }
             return symbolizers;
-        },
-        defaultValue : null
+        }
     }, {
         name : "filter",
         convert : function(filter) {
@@ -59,9 +59,20 @@ Ext.define('GeoExt.data.VectorStyleModel', {
     }],
     proxy : {
         type : 'memory',
-        reader : {
-            type : 'json',
-            root : "rules"
-        }
+        // TODO GeoExt ist not defined on construction so we're checking the ExtJS-Version without
+        // GeoExt.isExt4. Maybe this can be improved/beautified
+        reader: (function(){
+            if (Ext.versions.extjs.major > 4) {
+                return {
+                    type: 'json',
+                    rootProperty: 'rules'
+                }
+            } else {
+                return {
+                    type: 'json',
+                    root: 'rules'
+                }
+            }
+        })()
     }
 });

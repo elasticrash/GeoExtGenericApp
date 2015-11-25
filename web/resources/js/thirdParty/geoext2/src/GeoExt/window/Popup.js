@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -10,6 +10,7 @@
  * @include OpenLayers/Feature/Vector.js
  * @include OpenLayers/Geometry.js
  * @include GeoExt/panel/Map.js
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -19,6 +20,10 @@
  * When a popup is anchored to a {@link #location}, that means that
  * the popup will visibly point to the location on the map,
  * and move accordingly when the map is panned or zoomed.
+ *
+ * When you use the popup in an application, make sure to include the proper
+ * stylesheet depending on the Ext theme that you use: `popup-classic.css`,
+ * `popup-access.css`, 'popup-gray.css` or `popup-neptune.css`.
  *
  * Example:
  *
@@ -155,6 +160,17 @@ Ext.define('GeoExt.window.Popup', {
      */
     anchorPosition: "auto",
 
+    /**
+     * Shall this popup be always on top? Setting this to true helps in cases
+     * where the popups are working on a map panel that itself is inside of a
+     * window. Future versions of ExtJS do also have such a configuration option
+     * (http://docs.sencha.com/extjs/5.0.1/#!/api/Ext.util.Floating-cfg-alwaysOnTop)
+     * We do not full mimic the behaviour of that configuration but only support
+     * the boolean variant.
+     *
+     * @cfg {Boolean} alwaysOnTop
+     */
+    alwaysOnTop: false,
 
     initComponent: function() {
         if(this.map instanceof GeoExt.panel.Map) {
@@ -202,7 +218,7 @@ Ext.define('GeoExt.window.Popup', {
      */
     onRender: function(ct, position) {
         this.callParent(arguments);
-        this.addClass(this.popupCls);
+        this.addCls(this.popupCls);
         this.ancCls = this.popupCls + "-anc";
 
         //create anchor dom element.
@@ -344,6 +360,20 @@ Ext.define('GeoExt.window.Popup', {
             }
 
             this.setPosition(left, top);
+            this.handleAlwaysOnTop();
+        }
+    },
+
+    /**
+     * If we have been configured with #alwaysOnTop being `true`, we only need
+     * to manually change our z-indexing in ExtJS 4. ExtJS 5 brings its own
+     * version of `alwaysOnTop`.
+     *
+     * @private
+     */
+    handleAlwaysOnTop: function() {
+        if (this.alwaysOnTop && Ext.versions.core.major === 4) {
+            Ext.WindowManager.bringToFront(this.id);
         }
     },
 

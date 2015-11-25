@@ -1,9 +1,13 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
  * text of the license.
+ */
+
+/*
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -41,6 +45,13 @@ Ext.define('GeoExt.tree.View', {
     },
 
     /**
+     * @inheritdoc
+     */
+    getRowClass: function(record, rowIndex, rowParams, store) {
+        return record.get('disabled') ? 'gx-tree-row-disabled' : '';
+    },
+
+    /**
      * Called when an item updates or is added.
      *
      * @param {Ext.data.Model} record The model instance
@@ -51,30 +62,32 @@ Ext.define('GeoExt.tree.View', {
     onItem: function(records, index, node, options) {
         var me = this;
 
-        if(!(records instanceof Array)) {
+        if(!(Ext.isArray(records))) {
             records = [records]
         }
 
-        for(var i=0; i<records.length; i++) {
-            this.onNodeRendered(records[i]);
-        }
+        Ext.each(records, function(record, i){
+            me.onNodeRendered(record)
+        })
     },
 
     /**
      * Called when a node is being rendered.
-     * 
-     * 
+     *
+     *
      */
     onNodeRendered: function(node) {
         var me = this;
 
         var el = Ext.get('tree-record-'+node.id);
+
         if(!el) {
             return;
         }
 
-        if(node.get('layer'))
+        if(node.get('layer')) {
             me.fireEvent('createchild', el, node);
+        }
 
         if(node.hasChildNodes()) {
             node.eachChild(function(node) {
@@ -88,6 +101,7 @@ Ext.define('GeoExt.tree.View', {
      */
     createChild: function(el, node) {
         var component = node.get('component'),
+            isChecked = node.get('checked'),
             cmpObj;
 
         if(component) {
@@ -108,7 +122,9 @@ Ext.define('GeoExt.tree.View', {
             }
             node.gx_treecomponents[cmpObj.xtype] = cmpObj;
 
-            cmpObj.render(el);
+            if (isChecked !== false) {
+                cmpObj.render(el);
+            }
 
             el.removeCls('gx-tree-component-off');
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -7,7 +7,8 @@
  */
 
 /*
- * @include GeoExt/data/AttributeModel.js
+ * @requires GeoExt/data/AttributeModel.js
+ * @requires GeoExt/data/OwsStore.js
  */
 
 /**
@@ -30,6 +31,23 @@ Ext.define('GeoExt.data.AttributeStore', {
     config: {
         /**
          * The ignore object passed to the reader.
+         *
+         *     // ... ignore attributes of certain type or with specified name:
+         *     var ignoreObj = {
+         *         type: [
+         *             'gml:GeometryPropertyType',
+         *             'gml:PointPropertyType',
+         *             'gml:LineStringPropertyType',
+         *             'gml:SurfacePropertyType',
+         *             'gml:MultiPointPropertyType',
+         *             'gml:MultiLineStringPropertyType',
+         *             'gml:MultiSurfacePropertyType'
+         *         ],
+         *         name: [
+         *             'id',
+         *             'another_ignored_attr'
+         *         ]
+         *     };
          *
          * @cfg {Object}
          */

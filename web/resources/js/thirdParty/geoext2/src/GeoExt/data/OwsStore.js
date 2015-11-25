@@ -1,9 +1,13 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
  * text of the license.
+ */
+
+/*
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -26,7 +30,7 @@ Ext.define('GeoExt.data.OwsStore', {
 
     config: {
         /**
-         * The URL from which to retrieve the WMS DescribeLayer document.
+         * The URL from which to retrieve the OWS document.
          *
          * @cfg {String}
          */
@@ -34,12 +38,18 @@ Ext.define('GeoExt.data.OwsStore', {
 
         /**
          * A parser for transforming the XHR response into an array of objects
-         * representing attributes. Defaults to an {OpenLayers.Format.WMSDescribeLayer}
-         * parser.
+         * representing attributes.
          *
          * @cfg {OpenLayers.Format}
          */
-        format : null
+        format : null,
+
+        /**
+         * Any baseParams to use on this store.
+         *
+         * @cfg {Object}
+         */
+        baseParams: null
     },
 
     /**
@@ -62,6 +72,32 @@ Ext.define('GeoExt.data.OwsStore', {
         if(this.format) {
             this.setFormat(this.format);
         }
+        var proxy = this.getProxy();
+        if (proxy) {
+            proxy.startParam = false;
+            proxy.limitParam = false;
+            proxy.pageParam = false;
+        }
+        if (config.baseParams) {
+            this.setBaseParams(config.baseParams);
+        }
+    },
+
+    /**
+     * @private
+     */
+    applyBaseParams: function(newParams) {
+        if (newParams && Ext.isObject(newParams)) {
+            var proxy = this.getProxy();
+            if(proxy) {
+                if (proxy.setExtraParams) {
+                    // ExtJS 5 needs the setter
+                    proxy.setExtraParams(newParams);
+                } else {
+                    proxy.extraParams = newParams;
+                }
+            }
+        }
     },
 
     /**
@@ -71,7 +107,12 @@ Ext.define('GeoExt.data.OwsStore', {
         if(newValue && Ext.isString(newValue)) {
             var proxy = this.getProxy();
             if(proxy) {
-                proxy.url = newValue;
+                if (proxy.setUrl){
+                    // ExtJS 5 needs the setter
+                    proxy.setUrl(newValue);
+                } else {
+                    proxy.url = newValue;
+                }
             }
         }
     },
@@ -83,7 +124,12 @@ Ext.define('GeoExt.data.OwsStore', {
         var proxy = this.getProxy();
         var reader = (proxy) ? proxy.getReader() : null;
         if(reader) {
-            reader.format = newFormat;
+            if (reader.setFormat) {
+                // ExtJS 5 needs the setter
+                reader.setFormat(newFormat);
+            } else {
+                reader.format = newFormat;
+            }
         }
     }
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -8,7 +8,7 @@
 
 /*
  * @requires GeoExt/container/LayerLegend.js
- * @include GeoExt/FeatureRenderer.js
+ * @requires GeoExt/FeatureRenderer.js
  */
 
 /**
@@ -155,6 +155,58 @@ Ext.define('GeoExt.container.VectorLegend', {
     currentScaleDenominator: null,
 
     /**
+     * Fires when a rule title is clicked.
+     *
+     * @event titleclick
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule whose title was clicked.
+     */
+
+    /**
+     * Fires when a rule symbolizer is clicked.
+     *
+     * @event symbolclick
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule whose symbol was clicked.
+     */
+
+    /**
+     * Fires when a rule entry is clicked (fired with symbolizer or
+     * title click).
+     *
+     * @event ruleclick
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule that was clicked.
+     */
+
+    /**
+     * Fires when a rule is clicked and `selectOnClick` is set to
+     * `true`.
+     *
+     * @event ruleselected
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule that was selected.
+     */
+
+    /**
+     * Fires when the selected rule is clicked and `#selectOnClick`
+     * is set to `true`, or when a rule is unselected by selecting a
+     * different one.
+     *
+     * @event ruleunselected
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule that was unselected.
+     */
+
+    /**
+     * Fires when a rule is moved.
+     *
+     * @event rulemoved
+     * @param {GeoExt.VectorLegend} comp This component.
+     * @param {OpenLayers.Rule} rule The rule that was moved.
+     */
+
+    /**
      * Initializes this VectorLegend.
      */
     initComponent: function(){
@@ -163,10 +215,10 @@ Ext.define('GeoExt.container.VectorLegend', {
 
         if (this.layerRecord) {
             this.layer = this.layerRecord.getLayer();
-            if (this.layer.map) {
+            if (this.layer && this.layer.map) {
                 this.map = this.layer.map;
-                this.currentScaleDenominator = this.layer.map.getScale();
-                this.layer.map.events.on({
+                this.currentScaleDenominator = this.map.getScale();
+                this.map.events.on({
                     "zoomend": this.onMapZoom,
                     scope: this
                 });
@@ -203,66 +255,6 @@ Ext.define('GeoExt.container.VectorLegend', {
 
         this.add(this.rulesContainer);
 
-        this.addEvents(
-            /**
-             * Fires when a rule title is clicked.
-             *
-             * @event titleclick
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule whose title was clicked.
-             */
-            "titleclick",
-
-            /**
-             * Fires when a rule symbolizer is clicked.
-             *
-             * @event symbolclick
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule whose symbol was clicked.
-             */
-            "symbolclick",
-
-            /**
-             * Fires when a rule entry is clicked (fired with symbolizer or
-             * title click).
-             *
-             * @event ruleclick
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule that was clicked.
-             */
-            "ruleclick",
-
-            /**
-             * Fires when a rule is clicked and `selectOnClick` is set to
-             * `true`.
-             *
-             * @event ruleselected
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule that was selected.
-             */
-            "ruleselected",
-
-            /**
-             * Fires when the selected rule is clicked and `#selectOnClick`
-             * is set to `true`, or when a rule is unselected by selecting a
-             * different one.
-             *
-             * @event ruleunselected
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule that was unselected.
-             */
-            "ruleunselected",
-
-            /**
-             * Fires when a rule is moved.
-             *
-             * @event rulemoved
-             * @param {GeoExt.VectorLegend} comp This component.
-             * @param {OpenLayers.Rule} rule The rule that was moved.
-             */
-            "rulemoved"
-        );
-
         this.update();
 
     },
@@ -274,7 +266,7 @@ Ext.define('GeoExt.container.VectorLegend', {
     */
     onMapZoom: function() {
         this.setCurrentScaleDenominator(
-            this.layer.map.getScale()
+            this.map.getScale()
         );
     },
 
@@ -408,7 +400,7 @@ Ext.define('GeoExt.container.VectorLegend', {
         }
         if (newSelection) {
             var ruleEntry = this.getRuleEntry(rule);
-            ruleEntry.body.addClass("x-grid3-row-selected");
+            ruleEntry.body.addCls("x-boundlist-selected");
             this.selectedRule = rule;
             this.fireEvent("ruleselected", this, rule);
         }
@@ -424,7 +416,7 @@ Ext.define('GeoExt.container.VectorLegend', {
     unselect: function() {
         this.rulesContainer.items.each(function(item, i) {
             if (this.rules[i] == this.selectedRule) {
-                item.body.removeClass("x-grid3-row-selected");
+                item.body.removeCls("x-boundlist-selected");
                 this.selectedRule = null;
                 this.fireEvent("ruleunselected", this, this.rules[i]);
             }
@@ -577,8 +569,8 @@ Ext.define('GeoExt.container.VectorLegend', {
             ddGroup: ct.id,
             onDragOut: function(e, targetId) {
                 var target = Ext.getCmp(targetId);
-                target.removeClass("gx-ruledrag-insert-above");
-                target.removeClass("gx-ruledrag-insert-below");
+                target.removeCls("gx-ruledrag-insert-above");
+                target.removeCls("gx-ruledrag-insert-below");
                 return Ext.dd.DragZone.prototype.onDragOut.apply(this, arguments);
             },
             onDragEnter: function(e, targetId) {
@@ -591,7 +583,7 @@ Ext.define('GeoExt.container.VectorLegend', {
                 } else if (sourcePos < targetPos) {
                     cls = "gx-ruledrag-insert-below";
                 }
-                cls && target.addClass(cls);
+                cls && target.addCls(cls);
                 return Ext.dd.DragZone.prototype.onDragEnter.apply(this, arguments);
             },
             onDragDrop: function(e, targetId) {
@@ -635,7 +627,7 @@ Ext.define('GeoExt.container.VectorLegend', {
             this.doLayout();
             // make sure that the selected rule is still selected after update
             if (this.selectedRule) {
-                this.getRuleEntry(this.selectedRule).body.addClass("x-grid3-row-selected");
+                this.getRuleEntry(this.selectedRule).body.addCls("x-boundlist-selected");
             }
         }
     },
@@ -696,8 +688,8 @@ Ext.define('GeoExt.container.VectorLegend', {
                     scope: this
                 });
             }
-            if (this.layer.map && this.layer.map.events) {
-                this.layer.map.events.un({
+            if (this.map && this.map.events) {
+                this.map.events.un({
                     "zoomend": this.onMapZoom,
                     scope: this
                 });
@@ -714,20 +706,28 @@ Ext.define('GeoExt.container.VectorLegend', {
      *
      * @param {Ext.data.Store} store The store from which the record was
      *     removed.
-     * @param {Ext.data.Record} record The record object corresponding
-     *     to the removed layer.
-     * @param {Integer} index The index in the store.
+     * @param {Ext.data.Record/Ext.data.Record[]} records The record object
+     *     corresponding to the removed layer. When using ExtJS 5 this will be
+     *     an array of removed records.
+     * @param {Integer} index The index of the removed record(s).
      * @private
      */
-    onStoreRemove: function(store, record, index) {
-        if (record.getLayer() === this.layer) {
-            if (this.map && this.map.events) {
-                this.map.events.un({
-                    "zoomend": this.onMapZoom,
-                    scope: this
-                });
-            }
+    onStoreRemove: function(store, records, index) {
+        var me = this,
+            recArray = records;
+        if (!Ext.isArray(records)) {
+            recArray = [records];
         }
+        Ext.each(recArray, function(record) {
+            if (record.getLayer() === me.layer) {
+                if (me.map && me.map.events) {
+                    me.map.events.un({
+                        "zoomend": me.onMapZoom,
+                        scope: me
+                    });
+                }
+            }
+        });
     },
 
     /**
@@ -745,8 +745,8 @@ Ext.define('GeoExt.container.VectorLegend', {
         for (var i=0, len=records.length; i<len; i++) {
             var record = records[i];
             if (record.getLayer() === this.layer) {
-                if (this.layer.map && this.layer.map.events) {
-                    this.layer.map.events.on({
+                if (this.map && this.map.events) {
+                    this.map.events.on({
                         "zoomend": this.onMapZoom,
                         scope: this
                     });

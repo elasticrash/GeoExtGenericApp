@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -8,6 +8,7 @@
 
 /*
  * @include OpenLayers/Util.js
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -51,6 +52,15 @@ Ext.define('GeoExt.LegendImage', {
      */
     noImgCls: "gx-legend-noimage",
 
+    /**
+     * Fires after legend image has loaded.
+     *
+     * @event legendimageloaded
+     */
+
+    /**
+     * Initializes this component.
+     */
     initComponent: function(){
         var me = this;
         me.callParent(arguments);
@@ -130,6 +140,7 @@ Ext.define('GeoExt.LegendImage', {
         if (!OpenLayers.Util.isEquivalentUrl(el.dom.src, this.defaultImgSrc)) {
             el.removeCls(this.noImgCls);
         }
+        this.fireEvent('legendimageloaded', this);
     }
 
 });

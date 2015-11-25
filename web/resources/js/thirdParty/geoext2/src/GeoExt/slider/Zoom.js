@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -8,7 +8,8 @@
 
 /*
  * @include OpenLayers/Util.js
- * @include GeoExt/panel/Map.js
+ * @requires GeoExt/slider/MapPanelItem.js
+ * @requires GeoExt/panel/Map.js
  */
 
 /**
@@ -115,7 +116,7 @@ Ext.define('GeoExt.slider.Zoom', {
             if(this.map instanceof GeoExt.MapPanel) {
                 this.map = this.map.map;
             }
-            this.bind(this.map);
+            this.bindMap(this.map);
         }
 
         if (this.aggressive === true) {
@@ -123,7 +124,7 @@ Ext.define('GeoExt.slider.Zoom', {
         } else {
             this.on('changecomplete', this.changeHandler, this);
         }
-        this.on("beforedestroy", this.unbind, this);
+        this.on("beforedestroy", this.unbindMap, this);
     },
 
     /**
@@ -163,7 +164,7 @@ Ext.define('GeoExt.slider.Zoom', {
              */
             afterrender: function(){
                 // bind the map to the slider
-                me.bind(panel.map);
+                me.bindMap(panel.map);
             }
         });
     },
@@ -174,7 +175,7 @@ Ext.define('GeoExt.slider.Zoom', {
      * @param {OpenLayers.Map} map
      * @private
      */
-    bind: function(map) {
+    bindMap: function(map) {
         this.map = map;
         this.map.events.on({
             zoomend: this.update,
@@ -195,7 +196,7 @@ Ext.define('GeoExt.slider.Zoom', {
      *
      * @private
      */
-    unbind: function() {
+    unbindMap: function() {
         if(this.map && this.map.events) {
             this.map.events.un({
                 zoomend: this.update,
@@ -265,7 +266,7 @@ Ext.define('GeoExt.slider.Zoom', {
     },
 
     /**
-     * Registered as a listener for map zoomend.Updates the value of the slider.
+     * Registered as a listener for map zoomend. Updates the value of the slider.
      *
      * @private
      */

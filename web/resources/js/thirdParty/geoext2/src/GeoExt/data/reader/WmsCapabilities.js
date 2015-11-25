@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -10,6 +10,7 @@
  * @include OpenLayers/Format/WMSCapabilities.js
  * @include OpenLayers/Layer/WMS.js
  * @include OpenLayers/Util.js
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -28,6 +29,11 @@ Ext.define('GeoExt.data.reader.WmsCapabilities', {
     requires: [
         'GeoExt.Version'
     ],
+
+    config: {
+        preserveRawData: true
+    },
+
     /**
      * Creates new Reader.
      *
@@ -35,13 +41,28 @@ Ext.define('GeoExt.data.reader.WmsCapabilities', {
      */
     constructor: function(config) {
         if (!this.model) {
-            this.model = 'GeoExt.data.WmsCapabilitiesLayerModel';
+            this.setModel('GeoExt.data.WmsCapabilitiesLayerModel');
         }
         this.callParent([config]);
         if (!this.format) {
             this.format = new OpenLayers.Format.WMSCapabilities();
         }
     },
+
+    /**
+     * Should we keep the raw parsed result? If true, the result will be stored
+     * under the #raw property. Default is false. When using ExtJS5 a reference
+     * to the raw data is always available via the property #data.
+     *
+     * @cfg {Boolean}
+     */
+    keepRaw: false,
+
+    /**
+     * The raw parsed result, only set if #keepRaw is true.
+     * @cfg {Object}
+     */
+    raw: null,
 
     /**
      * CSS class name for the attribution DOM elements.
@@ -119,6 +140,15 @@ Ext.define('GeoExt.data.reader.WmsCapabilities', {
     },
 
     /**
+     * @private
+     */
+    destroyReader: function() {
+        var me = this;
+        delete me.raw;
+        this.callParent();
+    },
+
+    /**
      * Create a data block containing Ext.data.Records from an XML document.
      *
      * @param {DOMElement/String/Object} data A document element or XHR
@@ -131,6 +161,13 @@ Ext.define('GeoExt.data.reader.WmsCapabilities', {
      * @private
      */
     readRecords: function(data) {
+        if (data instanceof Ext.data.ResultSet) {
+            // we get into the readRecords method twice,
+            // called by Ext.data.reader.Reader#read:
+            // check if we already did our work in a previous run
+            return data;
+        }
+
         if (Ext.isArray(data)) {
             return this.callParent(data);
         }
@@ -139,6 +176,9 @@ Ext.define('GeoExt.data.reader.WmsCapabilities', {
         }
         if (!!data.error) {
             Ext.Error.raise({msg: "Error parsing WMS GetCapabilities", arg: data.error});
+        }
+        if (this.keepRaw) {
+            this.raw = data;
         }
         var version = data.version;
         var capability = data.capability || {};

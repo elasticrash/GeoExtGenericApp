@@ -1,9 +1,13 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
  * text of the license.
+ */
+
+/*
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -16,7 +20,7 @@
  * the method #removeFromMapPanel, which take care of the dimensions of the
  * sliders DOM-elements and register/unregister appropriate eventlisteners.
  *
- * Subclasses may implement #unbind, which will be called when a slider is
+ * Subclasses may implement #unbindMap, which will be called when a slider is
  * being removed from the map panel.
  *
  * @class GeoExt.slider.MapPanelItem
@@ -99,13 +103,16 @@ Ext.define('GeoExt.slider.MapPanelItem', {
                 // This method takes some of the gathered values from above and
                 // ensures that we have an expected look.
                 resizeFunction = function(){
+                    var zIndex = (panel && panel.map) ?
+                            panel.map.Z_INDEX_BASE.Control :
+                            undefined;
                     el.setStyle({
                         top: dim.top,
                         left: dim.left,
-                        width: dim.width,
+                        width: "" + dim.width + "px",
                         position: "absolute",
-                        height: dim.height,
-                        zIndex: panel.map.Z_INDEX_BASE.Control
+                        height: "" + dim.height + "px",
+                        zIndex: zIndex
                     });
                     // This is tricky...
                     if (me.vertical) {
@@ -113,14 +120,14 @@ Ext.define('GeoExt.slider.MapPanelItem', {
                         // element is controlled by the height of the element
                         // with the 'x-slider-inner'-class
                         el.down('.x-slider-inner').el.setStyle({
-                            height: dim.height - me.thumbWidth
+                            height: "" + (dim.height - me.thumbWidth) + "px"
                         });
                     } else {
                         // ...but for horizontal sliders, it's the form element
                         // with class 'x-form-item-body' that controls the
                         // height.
                         el.down('.x-form-item-body').el.setStyle({
-                            height: me.thumbHeight
+                            height: "" + me.thumbHeight + "px"
                         });
                     }
                 };
@@ -147,7 +154,7 @@ Ext.define('GeoExt.slider.MapPanelItem', {
             click: me.stopMouseEvents,
             scope: me
         });
-        me.unbind();
+        me.unbindMap();
     },
 
     /**
@@ -156,7 +163,7 @@ Ext.define('GeoExt.slider.MapPanelItem', {
      *
      * @protected
      */
-    unbind: Ext.emptyFn,
+    unbindMap: Ext.emptyFn,
 
     /**
      * Stops the event from propagating.

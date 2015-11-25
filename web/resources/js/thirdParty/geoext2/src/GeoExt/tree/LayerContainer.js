@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2015 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -7,8 +7,7 @@
  */
 
 /*
- * @include GeoExt/tree/LayerLoader.js
- * @include GeoExt/data/Loader.js
+ * @requires GeoExt/tree/LayerLoader.js
  */
 
 /**
@@ -20,6 +19,10 @@
  * To create a tree node that holds the layers of a tree, it needs to be
  * configured with the gx_layercontainer plugin that this class provides - like
  * the root node in the example below:
+ *
+ * When you use the tree in an application, make sure to include the proper
+ * stylesheet depending on the Ext theme that you use: `tree-classic.css`,
+ * `tree-access.css`, 'tree-gray.css` or `tree-neptune.css`.
  *
  *     var mapPanel = Ext.create('GeoExt.panel.Map', {
  *         layers: [new OpenLayers.Layer('foo')]
@@ -74,12 +77,12 @@ Ext.define('GeoExt.tree.LayerContainer', {
             loader : new GeoExt.tree.LayerLoader(loader);
 
         target.set('container', me);
+
         if (!target.get('text')) {
             target.set('text', me.defaultText);
             target.commit();
         }
         me.loader.load(target);
-
     },
 
     /**
@@ -88,11 +91,12 @@ Ext.define('GeoExt.tree.LayerContainer', {
      * @private
      */
     recordIndexToNodeIndex: function(index, node) {
-        var me = this;
-        var store = me.loader.store;
-        var count = store.getCount();
-        var nodeCount = node.childNodes.length;
-        var nodeIndex = -1;
+        var me = this,
+            store = me.loader.store,
+            count = store.getCount(),
+            nodeCount = node.childNodes.length,
+            nodeIndex = -1;
+
         for(var i=count-1; i>=0; --i) {
             if(me.loader.filter(store.getAt(i)) === true) {
                 ++nodeIndex;
