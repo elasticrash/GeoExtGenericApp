@@ -473,6 +473,14 @@ Ext.application({
             targetVectorLayer: vector
         };
 
+        var simplifyButton = {
+            xtype: 't_simplifypolygonbutton',
+            tooltip: LSave,
+            iconCls: 'icon-simplify-polygon',
+            scale: 'medium',
+            targetVectorLayer: vector
+        };
+
         //MAP PANEL
         mapPanel = Ext.create('GeoExt.panel.Map', {
             border: true,
@@ -580,6 +588,7 @@ Ext.application({
             toolbaritems.push(selectFeatureButton);
             toolbaritems.push(layercombo);
             toolbaritems.push(saveButton);
+            toolbaritems.push(simplifyButton);
         }
         toolbaritems.push("->");
         toolbaritems.push(options);

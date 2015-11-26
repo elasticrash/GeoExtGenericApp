@@ -61,3 +61,6 @@
 .icon-feature-raster {
     background-image:url(images/polygons-from-raster.png) !important;
 }
+.icon-simplify-polygon{
+    background-image: url(images/simplify.png) !important;
+}

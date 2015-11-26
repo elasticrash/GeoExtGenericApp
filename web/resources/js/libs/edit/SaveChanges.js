@@ -233,6 +233,7 @@ Ext.define('CodenTonic.tools.vector.SaveChangesButton', {
                         geologin.password = Ext.getCmp('gpassbtnid').value;
 
                         yesCallback(geologin, xmlpost,targetVectorLayer);
+                        lform.close();
                     }
                 }
             ]

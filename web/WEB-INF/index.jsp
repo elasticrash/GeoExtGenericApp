@@ -36,6 +36,7 @@
     <script src="../resources/js/libs/edit/SaveChanges.js"></script>
     <script src="../resources/js/libs/edit/SelectFeature.js"></script>
     <script src="../resources/js/libs/edit/SelectPolygonFromWms.js"></script>
+    <script src="../resources/js/libs/edit/SimplifyPolygon.js"></script>
     <!--LOGIN FORM-->
     <script src="../resources/js/libs/LoginForm.js"></script>
     <!--OPTION FORM-->
