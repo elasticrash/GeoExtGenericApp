@@ -12,11 +12,11 @@
 ```c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/GEODB", "postgres", "otinane");```
 
 *notes*
+- I am trying to intergrate an older project of mine [tougo](https://github.com/elasticrash/tougo) on this as geospatial functions. First try is SimplifyPolygon (just a test so just ignore it for the time being). 
 - Feature Editing works (insert and update) there is a bug with labeling the new features. Editing in the web is a bit complex so I have to post instructions on how the whole concept works. No attribure editing atm.
 - index.html changed to [index.jsp](https://github.com/elasticrash/GeoExtGenericApp/blob/master/web/WEB-INF/index.jsp) (no jsp tags though in file) due to the spring mvc transition
 - PostgreSQL is now part of the application
 - Thoughts to switch to Hibernate rather than raw sql
-- Thoughts to run a second similar project with OpenLayers3 and no ExtJs or GeoExt at all 
 - Some tools may require some Geoserver Plugins (like printing)
 
 Application Capabilities
@@ -39,6 +39,7 @@ Application Capabilities
 - A more complete Java BackEnd
 - Sql Scripts for building the database
 - Attribute Editing
+- Adding [tougo](https://github.com/elasticrash/tougo) functionalities as geospatial functions
 
 *Comming Soon*
 - Add/Search Metadata
