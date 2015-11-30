@@ -616,8 +616,5 @@ Ext.application({
                 items: [toppanel,bottompanel,mapPanel, tree, east_search_panel]
             }
         });
-
-        map.addControl(infoControls);
-        selectCtrl.activate();
     }
 });
